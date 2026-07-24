@@ -1,0 +1,45 @@
+# =====================
+# Python / Backend
+# =====================
+venv/
+.venv/
+__pycache__/
+*.pyc
+*.pyo
+
+# =====================
+# Next.js / Frontend
+# =====================
+node_modules/
+.next/
+out/
+
+# =====================
+# Secrets / Variables d'environnement
+# =====================
+.env
+.env.*
+
+# =====================
+# Documents privés
+# =====================
+Plan sécurité/
+Docs reprise projet/
+
+# =====================
+# Fichiers temporaires
+# =====================
+*.log
+*.tmp
+
+# =====================
+# IDE
+# =====================
+.vscode/
+.idea/
+
+# =====================
+# Système
+# =====================
+.DS_Store
+Thumbs.db
