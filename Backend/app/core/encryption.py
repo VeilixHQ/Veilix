@@ -30,13 +30,12 @@ import hashlib
 from cryptography.fernet import Fernet, InvalidToken
 from fastapi import HTTPException
 
-# ──────────────────────────────────────────────────────────
-# Chiffrement réversible (destination_email)
-# ──────────────────────────────────────────────────────────
+
+
 
 _KEYS: dict[int, str | None] = {
     1: os.getenv("ENCRYPTION_KEY"),
-    # 2: os.getenv("ENCRYPTION_KEY_V2"),  # à activer lors d'une rotation
+
 }
 
 CURRENT_KEY_VERSION = 1
@@ -73,9 +72,7 @@ def decrypt(value: str, version: int = 1) -> str:
         )
 
 
-# ──────────────────────────────────────────────────────────
-# Hash non-réversible pour recherche (email_hmac)
-# ──────────────────────────────────────────────────────────
+
 
 def hash_email(email: str) -> str:
     """

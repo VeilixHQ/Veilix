@@ -60,7 +60,7 @@ export function SocialProof({ lang }: Props) {
             alignItems: 'center',
           }}
         >
-          {/* IMAGE */}
+          {}
           <FadeInSection>
             <div
               style={{
@@ -87,7 +87,7 @@ export function SocialProof({ lang }: Props) {
             </div>
           </FadeInSection>
 
-          {/* TEXTE */}
+          {}
           <FadeInSection delay={120}>
             <div>
               <div
@@ -138,7 +138,7 @@ export function SocialProof({ lang }: Props) {
                 ))}
               </div>
 
-              {/* Pillars */}
+              {}
               <div
                 style={{
                   display: 'flex',

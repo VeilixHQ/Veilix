@@ -139,7 +139,7 @@ export default function Dashboard() {
   return (
     <div style={{ minHeight: '100vh', background: '#080808', color: '#f1f5f9', fontFamily: 'Inter, sans-serif' }}>
 
-      {/* POPUP INACTIVITÉ */}
+      {}
       {showWarning && (
         <InactivityWarning countdown={countdown} onStay={stayConnected} />
       )}

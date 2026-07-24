@@ -26,7 +26,7 @@ export default function Pricing() {
 
       <SimpleNav lang={lang} setLang={setLang} backLabel={back} />
 
-      {/* HERO */}
+      {}
       <section style={{ padding: '140px 24px 64px', textAlign: 'center', position: 'relative', overflow: 'hidden' }}>
         <div style={{ position: 'absolute', top: '-100px', left: '50%', transform: 'translateX(-50%)', width: 800, height: 500, background: 'radial-gradient(ellipse at 50% 0%, rgba(124,58,237,0.12) 0%, transparent 65%)', pointerEvents: 'none' }} />
         <div style={{ position: 'relative', zIndex: 1, animation: 'fadeUp 0.6s ease' }}>
@@ -36,7 +36,7 @@ export default function Pricing() {
         </div>
       </section>
 
-      {/* PLANS */}
+      {}
       <section style={{ padding: '0 24px 96px' }}>
         <div className="plans-grid" style={{ maxWidth: 1000, margin: '0 auto', display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 20 }}>
           {t.plans.map((plan, i) => {
@@ -91,7 +91,7 @@ export default function Pricing() {
         </div>
       </section>
 
-      {/* CRÉDITS */}
+      {}
       <section style={{ padding: '0 24px 96px' }}>
         <div style={{ maxWidth: 1000, margin: '0 auto', background: '#0d0d10', border: '1px solid rgba(255,255,255,0.06)', borderRadius: 16, padding: '36px 32px' }}>
           <div className="credits-row" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 32, flexWrap: 'wrap' }}>
@@ -111,7 +111,7 @@ export default function Pricing() {
         </div>
       </section>
 
-      {/* FAQ */}
+      {}
       <section style={{ padding: '0 24px 96px' }}>
         <div style={{ maxWidth: 720, margin: '0 auto' }}>
           <h2 style={{ fontSize: 22, fontWeight: 800, letterSpacing: '-0.6px', marginBottom: 32, textAlign: 'center' }}>{t.faqTitle}</h2>
@@ -123,7 +123,7 @@ export default function Pricing() {
         </div>
       </section>
 
-      {/* CTA */}
+      {}
       <section style={{ padding: '80px 24px 100px', textAlign: 'center', borderTop: '1px solid rgba(255,255,255,0.06)' }}>
         <h2 style={{ fontSize: 'clamp(22px, 3vw, 34px)', fontWeight: 800, letterSpacing: '-1px', marginBottom: 12 }}>{t.ctaTitle}</h2>
         <p style={{ fontSize: 14, color: '#64748b', marginBottom: 28 }}>{t.ctaSub}</p>

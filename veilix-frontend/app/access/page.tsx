@@ -17,7 +17,7 @@ import { registerKey, verifyKey } from '@/lib/api'
 
 type Step = 'choice' | 'generating' | 'reveal' | 'confirm' | 'recovery-email' | 'restore'
 
-/* ─── Particles (identique à la landing) ─── */
+
 function Particles() {
   const canvasRef = useRef<HTMLCanvasElement>(null)
   useEffect(() => {
@@ -56,7 +56,7 @@ function Particles() {
   return <canvas ref={canvasRef} style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', pointerEvents: 'none' }} />
 }
 
-/* ─── Nav (logo identique à la landing) ─── */
+
 function AccessNav() {
   return (
     <nav style={{ position: 'fixed', top: 0, left: 0, right: 0, zIndex: 100, display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '0 40px', height: 58, background: 'rgba(6,6,8,0.92)', backdropFilter: 'blur(16px)', borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
@@ -73,7 +73,7 @@ function AccessNav() {
   )
 }
 
-/* ─── Footer (copié à l'identique de la landing) ─── */
+
 function SiteFooter() {
   const footerCols = [
     { title: 'Produit', links: [{ label: 'Fonctionnalités', href: '/#features' }, { label: 'Fonctionnement', href: '/#how' }, { label: 'Tarifs', href: '/pricing' }, { label: 'Affiliation', href: '/pricing#affiliation' }] },
@@ -230,7 +230,7 @@ export default function Access() {
     }
   }
 
-  /** Gère la saisie dans une case : auto-avance au mot suivant si un espace est tapé. */
+  
   function handleWordChange(index: number, value: string) {
     if (value.includes(' ')) {
       const clean = value.replace(/\s+/g, ' ').trim()
@@ -249,7 +249,7 @@ export default function Access() {
     })
   }
 
-  /** Coller la phrase entière dans n'importe quelle case remplit toutes les cases (comme Phantom). */
+  
   function handleWordPaste(index: number, e: React.ClipboardEvent<HTMLInputElement>) {
     const text = e.clipboardData.getData('text').trim()
     const words = text.split(/\s+/)
@@ -293,14 +293,14 @@ export default function Access() {
       {toast && <Toast message={toast.message} type={toast.type} onClose={hideToast} />}
       <AccessNav />
 
-      {/* ── HERO / FORM ZONE ── */}
+      {}
       <section style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '120px 24px 80px', position: 'relative', overflow: 'hidden' }}>
         <Particles />
         <div style={{ position: 'absolute', top: '-80px', left: '50%', transform: 'translateX(-50%)', width: 900, height: 600, background: 'radial-gradient(ellipse at 50% 0%, rgba(124,58,237,0.13) 0%, transparent 65%)', pointerEvents: 'none' }} />
 
         <div style={{ width: '100%', maxWidth: 460, position: 'relative', zIndex: 1 }}>
 
-          {/* ── CHOIX INITIAL ── */}
+          {}
           {step === 'choice' && (
             <div className="step-enter" style={{ textAlign: 'center' }}>
               <div style={{ display: 'inline-flex', alignItems: 'center', gap: 7, padding: '5px 14px', borderRadius: 100, background: 'rgba(124,58,237,0.08)', border: '1px solid rgba(124,58,237,0.2)', fontSize: 12, color: '#a78bfa', fontWeight: 600, marginBottom: 24 }}>
@@ -338,7 +338,7 @@ export default function Access() {
             </div>
           )}
 
-          {/* ── GÉNÉRATION EN COURS ── */}
+          {}
           {step === 'generating' && (
             <div className="step-enter" style={{ textAlign: 'center', padding: '60px 0' }}>
               <div style={{ width: 48, height: 48, margin: '0 auto 24px', borderRadius: '50%', border: '3px solid rgba(124,58,237,0.15)', borderTopColor: '#7c3aed', animation: 'spin 0.8s linear infinite' }} />
@@ -347,7 +347,7 @@ export default function Access() {
             </div>
           )}
 
-          {/* ── AFFICHAGE SEED PHRASE ── */}
+          {}
           {step === 'reveal' && identity && (
             <div className="step-enter">
               <div style={{ textAlign: 'center', marginBottom: 28 }}>
@@ -438,7 +438,7 @@ export default function Access() {
             </div>
           )}
 
-          {/* ── CONFIRMATION ── */}
+          {}
           {step === 'confirm' && identity && (
             <div className="step-enter">
               <div style={{ textAlign: 'center', marginBottom: 28 }}>
@@ -475,7 +475,7 @@ export default function Access() {
             </div>
           )}
 
-          {/* ── EMAIL DE RÉCUPÉRATION OPTIONNEL ── */}
+          {}
           {step === 'recovery-email' && (
             <div className="step-enter">
               <div style={{ textAlign: 'center', marginBottom: 28 }}>
@@ -508,7 +508,7 @@ export default function Access() {
             </div>
           )}
 
-          {/* ── RESTAURATION ── */}
+          {}
           {step === 'restore' && (
             <div className="step-enter">
               <div style={{ textAlign: 'center', marginBottom: 28 }}>
@@ -522,7 +522,7 @@ export default function Access() {
 
               <div style={{ background: '#0d0d10', border: '1px solid rgba(255,255,255,0.07)', borderRadius: 14, padding: 24 }}>
 
-                {/* Zone de collage dédiée */}
+                {}
                 <div style={{ display: 'flex', gap: 8, marginBottom: 18 }}>
                   <div style={{ position: 'relative', flex: 1 }}>
                     <input

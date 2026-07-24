@@ -79,7 +79,7 @@ interface SiteNavProps {
   t: Translations
   lang: Lang
   setLang: (l: Lang) => void
-  /** 'public' = Accéder/Commencer (landing, pricing, légales...) | 'auth' = juste retour accueil (page /access) | 'app' = rien, remplacé par du contenu custom (dashboard) */
+  
   mode?: 'public' | 'auth' | 'app'
   hideNavLinks?: boolean
   rightSlot?: React.ReactNode // pour insérer le UserMenu dans le dashboard

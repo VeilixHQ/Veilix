@@ -2,22 +2,14 @@ import { getIdentity } from './crypto'
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://127.0.0.1:8000'
 
-/**
- * checkAuth — vérifie qu'une identité Veilix existe en local (IndexedDB).
- * Remplace l'ancienne vérification par JWT. Async car IndexedDB est asynchrone.
- */
+
 export async function checkAuth(): Promise<boolean> {
   if (typeof window === 'undefined') return false
   const identity = await getIdentity()
   return identity !== null
 }
 
-/**
- * Construit les headers d'auth pour une requête. Le key_id est envoyé
- * en clair (c'est un identifiant public, pas un secret) ; les requêtes
- * sensibles sont signées côté serveur via signature dérivée — voir
- * `signRequest` pour les routes qui le nécessitent.
- */
+
 async function authHeaders(): Promise<Record<string, string>> {
   const identity = await getIdentity()
   if (!identity) return {}
@@ -43,11 +35,7 @@ async function fetchWithAuth(url: string, options: RequestInit = {}) {
   return res
 }
 
-/**
- * Enregistre une nouvelle clé côté serveur (juste le key_id, aucune
- * donnée personnelle). Appelé une fois après génération + confirmation
- * de la seed phrase côté client.
- */
+
 export async function registerKey(keyId: string, recoveryEmail?: string) {
   const res = await fetch(`${API_URL}/key/register`, {
     method: 'POST',
@@ -57,7 +45,7 @@ export async function registerKey(keyId: string, recoveryEmail?: string) {
   return res.json()
 }
 
-/** Vérifie qu'un key_id restauré depuis une seed phrase existe bien côté serveur. */
+
 export async function verifyKey(keyId: string) {
   const res = await fetch(`${API_URL}/key/verify`, {
     method: 'POST',

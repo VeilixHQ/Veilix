@@ -8,13 +8,11 @@ class Alias(Base):
     key_id            = Column(Integer, ForeignKey("keys.id"), nullable=False)
     alias_email       = Column(String, unique=True, nullable=False, index=True)
 
-    # Email de destination — chiffré, jamais lisible en base
     destination_email = Column(String, nullable=False)
     key_version       = Column(Integer, nullable=False, default=1)
 
-    # Hash HMAC de l'email — permet de rechercher/comparer des emails
-    # sans jamais déchiffrer ni exposer l'email en clair dans une requête SQL.
-    # Indexé pour recherche rapide (ex: vérifier si un email est déjà utilisé).
+
+
     email_hmac        = Column(String, nullable=False, index=True)
 
     label             = Column(String, nullable=True)

@@ -1,6 +1,6 @@
-// lib/translations-pages.ts
-// Traductions des pages secondaires — séparé de translations.ts (landing)
-// pour garder chaque fichier lisible.
+
+
+
 
 export const PT = {
   fr: {

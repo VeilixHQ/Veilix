@@ -3,7 +3,6 @@ import { useEffect, useRef, useState, useCallback } from 'react'
 import { useRouter } from 'next/navigation'
 import { forgetIdentity } from '@/lib/crypto'
 
-// ⚠️ TEST : 1 minute — remettre 15 * 60 * 1000 pour la prod
 const TIMEOUT_MS = 5 * 60 * 1000
 const COUNTDOWN_S = 10
 

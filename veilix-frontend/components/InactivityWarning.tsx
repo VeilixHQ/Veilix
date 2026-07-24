@@ -19,7 +19,7 @@ export function InactivityWarning({ countdown, onStay }: Props) {
       }}>
         <style>{`@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}`}</style>
 
-        {/* Icône */}
+        {}
         <div style={{
           width: 48, height: 48, borderRadius: '50%', margin: '0 auto 20px',
           background: 'rgba(124,58,237,0.1)', border: '1px solid rgba(124,58,237,0.25)',
@@ -31,17 +31,17 @@ export function InactivityWarning({ countdown, onStay }: Props) {
           </svg>
         </div>
 
-        {/* Titre */}
+        {}
         <h2 style={{ fontSize: 17, fontWeight: 700, color: '#f1f5f9', marginBottom: 8, letterSpacing: '-0.3px' }}>
           Session inactive
         </h2>
 
-        {/* Message */}
+        {}
         <p style={{ fontSize: 13, color: '#64748b', lineHeight: 1.6, marginBottom: 24 }}>
           Vous allez être déconnecté pour des raisons de sécurité.
         </p>
 
-        {/* Compte à rebours */}
+        {}
         <div style={{
           fontSize: 40, fontWeight: 900, letterSpacing: '-2px',
           color: countdown <= 3 ? '#f87171' : '#a78bfa',
@@ -51,7 +51,7 @@ export function InactivityWarning({ countdown, onStay }: Props) {
           {countdown}s
         </div>
 
-        {/* Boutons */}
+        {}
         <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
           <button
             onClick={onStay}
