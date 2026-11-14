@@ -1,11 +1,3 @@
-"""
-Simule un appel de Mailgun vers votre webhook, avec une pièce jointe PDF et
-une signature valide. Permet de tester le code SANS passer par Mailgun.
-
-Utilisation (dans le dossier de inbound.py et du .env, serveur lancé) :
-    python test_pj.py
-    python test_pj.py http://127.0.0.1:8001/webhook/inbound
-"""
 import hashlib
 import hmac
 import os
@@ -27,7 +19,6 @@ signature = hmac.new(
     CLE.encode(), f"{timestamp}{token}".encode(), hashlib.sha256
 ).hexdigest()
 
-# Petit PDF minimal (une page vierge).
 pdf = (
     b"%PDF-1.1\n"
     b"1 0 obj<</Type/Catalog/Pages 2 0 R>>endobj\n"

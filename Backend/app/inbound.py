@@ -1,20 +1,3 @@
-"""
-Veilix - Réception, transfert et réponses d'alias via Mailgun Routes (EU).  v3
-
-Ce que fait cette version :
-- transfère TOUTES les pièces jointes, quel que soit le nom du champ envoyé
-  par Mailgun (on parcourt tous les fichiers du formulaire) ;
-- Reply-To inversé (reply+TOKEN@...) : la vraie adresse de l'utilisateur
-  n'est jamais révélée ;
-- envoi via le client httpx SYNCHRONE exécuté dans un thread (c'est celui qui
-  fonctionne sur votre PC) ;
-- une bannière au démarrage et /health indiquent la version qui tourne ;
-- des logs de diagnostic sans adresses e-mail.
-
-.env : MAILGUN_API_KEY, MAILGUN_SIGNING_KEY, MAILGUN_DOMAIN, FORWARD_TO
-       (optionnel : REPLY_DOMAIN, REPLY_DB)
-Lancement : python -m uvicorn inbound:app --port 8001
-"""
 import asyncio
 import hashlib
 import hmac
@@ -22,6 +5,9 @@ import logging
 import os
 import secrets
 import sqlite3
+import threading
+import time
+from collections import OrderedDict
 from contextlib import closing
 from email.utils import formataddr, parseaddr
 
@@ -46,10 +32,14 @@ DB_PATH = os.getenv("REPLY_DB", "reply_map.db").strip()
 API_URL = f"https://api.eu.mailgun.net/v3/{DOMAIN}/messages"
 
 MAX_PIECES = 20
-MAX_OCTETS = 20 * 1024 * 1024  # 20 Mo de pièces jointes au total
+MAX_OCTETS = 20 * 1024 * 1024
+MAX_CORPS = 40 * 1024 * 1024
+MAX_AGE_SIGNATURE = 12 * 3600
+MAX_TOKENS_SUIVIS = 50000
 
-# alias -> adresse réelle. À remplacer par une recherche en base.
-# Ne jamais en faire un relais ouvert.
+_verrou_tokens = threading.Lock()
+_tokens_traites: OrderedDict[str, float] = OrderedDict()
+
 ALIASES = {
     "test@mg.veilix.fr": FORWARD_TO,
 }
@@ -62,35 +52,52 @@ async def bannière():
     logger.info("=== Veilix inbound %s chargé (pièces jointes + réponses inversées) ===", VERSION)
 
 
-# --------------------------------------------------------------------------
-# Utilitaires
-# --------------------------------------------------------------------------
 def normaliser_email(value: str) -> str:
     _, address = parseaddr(value or "")
     return address.strip().lower()
 
 
 def nettoyer(valeur: str) -> str:
-    """Supprime retours à la ligne et espaces multiples (en-têtes)."""
     return " ".join((valeur or "").split())
 
 
 def signature_valide(timestamp: str, token: str, signature: str) -> bool:
     if not all((SIGNING_KEY, timestamp, token, signature)):
         return False
+    try:
+        emis_a = int(timestamp)
+    except ValueError:
+        return False
+    if abs(time.time() - emis_a) > MAX_AGE_SIGNATURE:
+        return False
     attendu = hmac.new(
         SIGNING_KEY.encode("utf-8"),
         msg=f"{timestamp}{token}".encode("utf-8"),
         digestmod=hashlib.sha256,
     ).hexdigest()
-    return hmac.compare_digest(attendu, signature)
+    return hmac.compare_digest(attendu.encode("utf-8"), signature.encode("utf-8"))
 
 
-# --------------------------------------------------------------------------
-# Table des adresses de réponse (token -> alias + expéditeur d'origine).
-# Contient des adresses e-mail : à ne pas versionner (.gitignore).
-# À migrer plus tard dans votre vraie base.
-# --------------------------------------------------------------------------
+def reserver_token(token: str) -> bool:
+    maintenant = time.time()
+    with _verrou_tokens:
+        while _tokens_traites:
+            plus_ancien, reserve_a = next(iter(_tokens_traites.items()))
+            if len(_tokens_traites) > MAX_TOKENS_SUIVIS or reserve_a < maintenant - MAX_AGE_SIGNATURE:
+                _tokens_traites.pop(plus_ancien, None)
+            else:
+                break
+        if token in _tokens_traites:
+            return False
+        _tokens_traites[token] = maintenant
+        return True
+
+
+def liberer_token(token: str) -> None:
+    with _verrou_tokens:
+        _tokens_traites.pop(token, None)
+
+
 def ouvrir_db() -> sqlite3.Connection:
     conn = sqlite3.connect(DB_PATH)
     conn.execute(
@@ -124,15 +131,11 @@ def retrouver(token: str):
         ).fetchone()
 
 
-# --------------------------------------------------------------------------
-# Pièces jointes : on prend TOUS les fichiers du formulaire, peu importe
-# le nom du champ (attachment-1, attachment-2, ...).
-# --------------------------------------------------------------------------
 async def lire_pieces_jointes(form):
     fichiers, total = [], 0
     for cle, valeur in form.multi_items():
         if not (hasattr(valeur, "read") and hasattr(valeur, "filename")):
-            continue  # champ texte ordinaire
+            continue
         contenu = await valeur.read()
         if not contenu:
             logger.warning("Fichier vide ignoré (champ %s).", cle)
@@ -152,7 +155,6 @@ async def lire_pieces_jointes(form):
 
 
 def envoyer_mailgun(data, fichiers):
-    """Client httpx synchrone (appelé dans un thread)."""
     return httpx.post(
         API_URL,
         auth=("api", API_KEY),
@@ -162,9 +164,6 @@ def envoyer_mailgun(data, fichiers):
     )
 
 
-# --------------------------------------------------------------------------
-# Routes HTTP
-# --------------------------------------------------------------------------
 @app.get("/health")
 async def health():
     return {"status": "ok", "version": VERSION}
@@ -176,18 +175,24 @@ async def inbound(request: Request):
         logger.error("Configuration incomplète (.env).")
         raise HTTPException(status_code=500, detail="Configuration incomplète")
 
+    taille_annoncee = request.headers.get("content-length", "")
+    if taille_annoncee.isdigit() and int(taille_annoncee) > MAX_CORPS:
+        raise HTTPException(status_code=413, detail="Message trop volumineux")
+
     form = await request.form()
 
-    # 1. Authenticité de la requête
+    jeton = str(form.get("token", ""))
     if not signature_valide(
         str(form.get("timestamp", "")),
-        str(form.get("token", "")),
+        jeton,
         str(form.get("signature", "")),
     ):
         logger.warning("Signature Mailgun invalide.")
         raise HTTPException(status_code=403, detail="Signature invalide")
+    if not reserver_token(jeton):
+        logger.warning("Webhook Mailgun rejoué.")
+        raise HTTPException(status_code=403, detail="Signature invalide")
 
-    # 2. Lecture du message
     recipient = normaliser_email(str(form.get("recipient", "")))
     nom_exp, adresse_exp = parseaddr(str(form.get("from", "")))
     expediteur = adresse_exp.strip().lower() or normaliser_email(
@@ -215,7 +220,6 @@ async def inbound(request: Request):
     local, _, domaine = recipient.partition("@")
 
     if local.startswith("reply+") and domaine == REPLY_DOMAIN:
-        # ---- Réponse de l'utilisateur : repart depuis l'alias ----
         ligne = retrouver(local[len("reply+"):])
         if not ligne:
             logger.warning("Token de réponse inconnu.")
@@ -223,7 +227,6 @@ async def inbound(request: Request):
 
         alias, destinataire_original = ligne
 
-        # Seul le propriétaire de l'alias peut répondre en son nom.
         if expediteur != (ALIASES.get(alias) or "").lower():
             logger.warning("Réponse refusée : expéditeur non propriétaire.")
             return Response(status_code=406)
@@ -236,7 +239,6 @@ async def inbound(request: Request):
         }
         sens = "réponse"
     else:
-        # ---- Message entrant vers un alias : transfert ----
         destination = ALIASES.get(recipient)
         if not destination:
             logger.warning("Alias non reconnu.")
@@ -256,17 +258,19 @@ async def inbound(request: Request):
     if html:
         data["html"] = html
 
-    # 3. Envoi via l'API Mailgun (client synchrone dans un thread)
     try:
         reponse = await asyncio.to_thread(envoyer_mailgun, data, fichiers)
     except httpx.TimeoutException:
+        liberer_token(jeton)
         logger.error("Délai dépassé pendant l'envoi Mailgun.")
         raise HTTPException(status_code=504, detail="Délai dépassé")
     except httpx.HTTPError as exc:
+        liberer_token(jeton)
         logger.error("Erreur de connexion à Mailgun : %s", type(exc).__name__)
         raise HTTPException(status_code=502, detail="Erreur de connexion")
 
     if reponse.status_code not in (200, 202):
+        liberer_token(jeton)
         logger.error(
             "Mailgun a refusé l'envoi : HTTP %s - %s",
             reponse.status_code, reponse.text[:300],

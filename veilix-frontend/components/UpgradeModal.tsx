@@ -35,7 +35,6 @@ export function UpgradeModal({ onClose }: UpgradeModalProps) {
         }}
         onClick={e => e.stopPropagation()}
       >
-        {/* Croix de fermeture */}
         <button
           onClick={onClose}
           style={{
@@ -56,7 +55,6 @@ export function UpgradeModal({ onClose }: UpgradeModalProps) {
           </svg>
         </button>
 
-        {/* Icône de quota */}
         <div
           style={{
             width: 48,

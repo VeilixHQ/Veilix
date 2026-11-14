@@ -7,9 +7,8 @@ import { Button } from '@/components/Button'
 import { T, Lang } from '@/lib/translations'
 import { PT } from '@/lib/translations-pages'
 
-/* ───────────── Plans (Pro + Pack de lancement) ───────────── */
 const PACK_TOTAL = 100
-const PACK_REMAINING = 100 // TODO : remplacer par la valeur réelle lue depuis ton API
+const PACK_REMAINING = 100
 
 type Price = { price: string; period: string; sub: string }
 
@@ -18,7 +17,7 @@ type PlanData = {
   badge?: string
   desc?: string
   lead?: string
-  monthly?: Price // présent seulement si le plan a un switch (Pro)
+  monthly?: Price
   yearly: Price
   features: string[]
   cta: string
@@ -131,7 +130,6 @@ const TEXT = {
   },
 }
 
-/* ───────────── FAQ adaptée aux 2 plans ───────────── */
 const FAQS: Record<'fr' | 'en', { q: string; a: string }[]> = {
   fr: [
     {
@@ -207,7 +205,6 @@ export default function Pricing() {
 
       <SiteNav t={t} lang={lang} setLang={setLang} mode="public" />
 
-      {/* Hero section */}
       <section style={{ padding: '140px 24px 64px', textAlign: 'center', position: 'relative', overflow: 'hidden' }}>
         <div style={{ position: 'absolute', top: '-100px', left: '50%', transform: 'translateX(-50%)', width: 800, height: 500, background: 'radial-gradient(ellipse at 50% 0%, rgba(124,58,237,0.12) 0%, transparent 65%)', pointerEvents: 'none' }} />
         <div style={{ position: 'relative', zIndex: 1, animation: 'fadeUp 0.6s ease' }}>
@@ -217,7 +214,6 @@ export default function Pricing() {
         </div>
       </section>
 
-      {/* Pricing Cards Section */}
       <section style={{ padding: '0 24px 96px' }}>
         <div className="plans-grid" style={{ maxWidth: 760, margin: '0 auto', display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 20 }}>
           {plans.map((plan, i) => {
@@ -230,19 +226,16 @@ export default function Pricing() {
             return (
               <div key={i} className="plan-card" style={{ position: 'relative', background: highlight ? 'linear-gradient(180deg, rgba(124,58,237,0.08), rgba(124,58,237,0.02))' : '#0d0d10', border: highlight ? '1px solid rgba(124,58,237,0.35)' : '1px solid rgba(255,255,255,0.07)', borderRadius: 16, padding: '32px 26px', display: 'flex', flexDirection: 'column' }}>
 
-                {/* Badge "Offre de lancement" */}
                 {plan.badge && (
                   <div style={{ position: 'absolute', top: -14, left: 26, padding: '5px 14px', borderRadius: 100, fontSize: 12, fontWeight: 700, color: '#fff', background: 'linear-gradient(135deg, #7c3aed, #4f46e5)', boxShadow: '0 4px 12px rgba(124,58,237,0.3)' }}>
                     {plan.badge}
                   </div>
                 )}
 
-                {/* Zone En-tête */}
                 <div style={{ minHeight: 95, display: 'flex', flexDirection: 'column', justifyContent: 'flex-start' }}>
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 10, marginBottom: 6 }}>
                     <div style={{ fontSize: 18, fontWeight: 800, letterSpacing: '-0.3px' }}>{plan.name}</div>
 
-                    {/* Switch Pro */}
                     {hasToggle && (
                       <div role="group" aria-label="Facturation" style={{ display: 'flex', padding: 3, borderRadius: 100, background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.08)' }}>
                         <button
@@ -267,7 +260,6 @@ export default function Pricing() {
 
                   {plan.desc && <div style={{ fontSize: 12.5, color: '#64748b', marginBottom: 12 }}>{plan.desc}</div>}
 
-                  {/* Jauge d'exemplaires du Pack */}
                   {isPack && (
                     <div style={{ marginTop: 'auto' }} aria-live="polite">
                       <div style={{ fontSize: 12, color: '#94a3b8', marginBottom: 6 }}>{soldOut ? tx.full : tx.left(PACK_REMAINING)}</div>
@@ -278,14 +270,12 @@ export default function Pricing() {
                   )}
                 </div>
 
-                {/* Bloc Prix */}
                 <div style={{ display: 'flex', alignItems: 'baseline', gap: 4, marginBottom: 4, marginTop: 12 }}>
                   <span style={{ fontSize: 36, fontWeight: 900, letterSpacing: '-1.5px' }}>{cur.price}</span>
                   <span style={{ fontSize: 13, color: '#64748b', fontWeight: 500 }}>{cur.period}</span>
                 </div>
                 <div style={{ fontSize: 12, color: '#64748b', marginBottom: 24 }}>{cur.sub}</div>
 
-                {/* Liste des fonctionnalités */}
                 {plan.lead && <div style={{ fontSize: 13, fontWeight: 600, color: '#e2e8f0', marginBottom: 14 }}>{plan.lead}</div>}
                 <div style={{ display: 'flex', flexDirection: 'column', gap: 12, marginBottom: 28, flex: 1 }}>
                   {plan.features.map((f, fi) => (
@@ -296,7 +286,6 @@ export default function Pricing() {
                   ))}
                 </div>
 
-                {/* Zone d'action alignée tout en bas */}
                 <div style={{ marginTop: 'auto' }}>
                   {isPack && soldOut ? (
                     <Button variant="secondary" size="md" disabled style={{ width: '100%', cursor: 'not-allowed' }}>{tx.full}</Button>
@@ -306,7 +295,6 @@ export default function Pricing() {
                     </Link>
                   )}
 
-                  {/* Mentions de réassurance */}
                   <div style={{ marginTop: 14, textAlign: 'center', fontSize: 12, lineHeight: 1.6, color: '#64748b' }}>
                     <div>{plan.reassure}</div>
                     <div style={{ fontSize: 11, opacity: 0.8 }}>{tx.payment}</div>
@@ -319,7 +307,6 @@ export default function Pricing() {
         </div>
       </section>
 
-      {/* Sections secondaires */}
       <section style={{ padding: '0 24px 96px' }}>
         <div style={{ maxWidth: 1000, margin: '0 auto', background: '#0d0d10', border: '1px solid rgba(255,255,255,0.06)', borderRadius: 16, padding: '36px 32px' }}>
           <div className="credits-row" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 32, flexWrap: 'wrap' }}>

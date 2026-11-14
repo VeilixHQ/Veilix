@@ -17,7 +17,6 @@ export function HowItWorks({ t }: { t: Translations }) {
         </FadeInSection>
 
         <div className="grid-2" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 80, alignItems: 'center' }}>
-          {/* Colonne gauche : Liste des étapes */}
           <FadeInSection>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 28 }}>
               {t.howSteps.map((s) => (

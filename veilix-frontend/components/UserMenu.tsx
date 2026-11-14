@@ -9,15 +9,12 @@ interface Props {
   plan: string
   keyIdShort: string
   fullKeyId: string
-  seedPhrase: string
 }
 
-export function UserMenu({ plan, keyIdShort, fullKeyId, seedPhrase }: Props) {
+export function UserMenu({ plan, keyIdShort, fullKeyId }: Props) {
   const router = useRouter()
   const [open, setOpen] = useState(false)
   const [showKeyModal, setShowKeyModal] = useState(false)
-  const [showSeedWarning, setShowSeedWarning] = useState(false)
-  const [showSeedModal, setShowSeedModal] = useState(false)
   const [copied, setCopied] = useState(false)
   const ref = useRef<HTMLDivElement>(null)
 
@@ -50,7 +47,6 @@ export function UserMenu({ plan, keyIdShort, fullKeyId, seedPhrase }: Props) {
   return (
     <>
       <div ref={ref} style={{ position: 'relative' }}>
-        {/* Avatar */}
         <button
           onClick={() => setOpen(o => !o)}
           aria-label="Menu utilisateur"
@@ -70,7 +66,6 @@ export function UserMenu({ plan, keyIdShort, fullKeyId, seedPhrase }: Props) {
           </svg>
         </button>
 
-        {/* Dropdown */}
         {open && (
           <div style={{
             position: 'absolute', top: '100%', right: 0, marginTop: 10,
@@ -80,7 +75,6 @@ export function UserMenu({ plan, keyIdShort, fullKeyId, seedPhrase }: Props) {
           }}>
             <style>{`@keyframes menuIn{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:translateY(0)}}`}</style>
 
-            {/* Header identité */}
             <div style={{ padding: '16px 18px', borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 10 }}>
                 <div style={{ width: 28, height: 28, borderRadius: '50%', background: 'linear-gradient(135deg, #7c3aed, #4f46e5)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
@@ -98,7 +92,6 @@ export function UserMenu({ plan, keyIdShort, fullKeyId, seedPhrase }: Props) {
               </div>
             </div>
 
-            {/* Menu items */}
             <div style={{ padding: 6 }}>
               <Link href="/settings" style={menuItemStyle} onClick={() => setOpen(false)}>
                 <MenuIcon path="settings" />
@@ -107,10 +100,6 @@ export function UserMenu({ plan, keyIdShort, fullKeyId, seedPhrase }: Props) {
               <button style={{ ...menuItemStyle, width: '100%', border: 'none', background: 'transparent', cursor: 'pointer', textAlign: 'left' }} onClick={() => { setShowKeyModal(true); setOpen(false) }}>
                 <MenuIcon path="key" />
                 <span>Voir ma clé</span>
-              </button>
-              <button style={{ ...menuItemStyle, width: '100%', border: 'none', background: 'transparent', cursor: 'pointer', textAlign: 'left' }} onClick={() => { setShowSeedWarning(true); setOpen(false) }}>
-                <MenuIcon path="file" />
-                <span>Phrase de récupération</span>
               </button>
             </div>
 
@@ -130,7 +119,6 @@ export function UserMenu({ plan, keyIdShort, fullKeyId, seedPhrase }: Props) {
         )}
       </div>
 
-      {/* Modal Voir ma clé */}
       {showKeyModal && (
         <Modal onClose={() => setShowKeyModal(false)}>
           <h2 style={titleStyle}>Votre clé complète</h2>
@@ -143,47 +131,6 @@ export function UserMenu({ plan, keyIdShort, fullKeyId, seedPhrase }: Props) {
           >
             {copied ? 'Copié !' : 'Copier'}
           </button>
-        </Modal>
-      )}
-
-      {/* Warning avant seed phrase */}
-      {showSeedWarning && (
-        <Modal onClose={() => setShowSeedWarning(false)}>
-          <div style={{ display: 'flex', alignItems: 'flex-start', gap: 12, marginBottom: 20, paddingRight: 24 }}>
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#f87171" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0, marginTop: 2 }}>
-              <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z" />
-              <line x1="12" y1="9" x2="12" y2="13" /><circle cx="12" cy="17" r="1" fill="#f87171" />
-            </svg>
-            <div>
-              <h2 style={{ ...titleStyle, marginBottom: 6 }}>Attention</h2>
-              <p style={{ fontSize: 13, color: '#94a3b8', lineHeight: 1.6, margin: 0 }}>
-                Votre phrase de récupération donne accès à toute votre identité. Vérifiez que personne ne regarde votre écran.
-              </p>
-            </div>
-          </div>
-          <div style={{ display: 'flex', gap: 10 }}>
-            <button onClick={() => setShowSeedWarning(false)} style={{ flex: 1, padding: '10px', borderRadius: 9, background: 'transparent', border: '1px solid rgba(255,255,255,0.1)', color: '#94a3b8', fontSize: 13, fontWeight: 600, cursor: 'pointer', fontFamily: 'Inter, sans-serif' }}>
-              Annuler
-            </button>
-            <button onClick={() => { setShowSeedWarning(false); setShowSeedModal(true) }} style={{ flex: 1, padding: '10px', borderRadius: 9, background: 'rgba(239,68,68,0.12)', border: '1px solid rgba(239,68,68,0.3)', color: '#f87171', fontSize: 13, fontWeight: 600, cursor: 'pointer', fontFamily: 'Inter, sans-serif' }}>
-              Afficher
-            </button>
-          </div>
-        </Modal>
-      )}
-
-      {/* Modal seed phrase réelle */}
-      {showSeedModal && (
-        <Modal onClose={() => setShowSeedModal(false)}>
-          <h2 style={titleStyle}>Phrase de récupération</h2>
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 8, padding: 16, background: '#0a0a0c', border: '1px solid rgba(255,255,255,0.08)', borderRadius: 10 }}>
-            {seedPhrase.split(' ').map((word, i) => (
-              <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 5, padding: '6px 8px', background: 'rgba(255,255,255,0.02)', borderRadius: 6 }}>
-                <span style={{ fontSize: 9, color: '#475569', minWidth: 12 }}>{i + 1}</span>
-                <span style={{ fontSize: 12, fontFamily: 'monospace', color: '#e2e8f0' }}>{word}</span>
-              </div>
-            ))}
-          </div>
         </Modal>
       )}
     </>

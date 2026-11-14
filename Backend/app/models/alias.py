@@ -12,7 +12,6 @@ class Alias(Base):
     key_version       = Column(Integer, nullable=False, default=1)
 
 
-
     email_hmac        = Column(String, nullable=False, index=True)
 
     label             = Column(String, nullable=True)

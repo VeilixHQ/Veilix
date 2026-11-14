@@ -4,17 +4,11 @@ import { SiteNav } from '@/components/landing/SiteNav'
 import { SiteFooter } from '@/components/landing/SiteFooter'
 import { T, Lang } from '@/lib/translations'
 
-/**
- * ⚠️ À COMPLÉTER AVANT MISE EN LIGNE PUBLIQUE
- * ─────────────────────────────────────────────
- * Remplace les [PLACEHOLDERS] ci-dessous par tes vraies informations.
- * Ces mentions sont obligatoires légalement en France (art. 6 LCEN).
- */
 const EDITOR_INFO = {
   fr: {
     name: '[Ton prénom NOM]',
     status: '[Statut : ex. Entrepreneur individuel / Auto-entrepreneur — à préciser une fois le statut créé]',
-    address: '[Ville, Pays]', // adresse complète non obligatoire publiquement si personne physique, ville suffit généralement
+    address: '[Ville, Pays]',
     email: 'contact@veilix.fr',
     siret: '[Numéro SIRET — à ajouter une fois le statut créé]',
   },

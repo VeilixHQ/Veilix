@@ -1,16 +1,12 @@
-﻿"""
-Test de charge des alias : crée N alias automatiquement et vérifie le quota.
-Base de DÉVELOPPEMENT uniquement.
-"""
-import argparse
+﻿import argparse
 import statistics
 import time
 
 from fastapi import HTTPException
 
-from app.db.session import SessionLocal  # adapter si ton module de session est ailleurs
+from app.db.session import SessionLocal
 from app.models.alias import Alias
-from app.models.key import Key
+from app.services.key_service import get_key_by_id
 from app.services.alias_service import create_alias
 
 TEST_LABEL = "loadtest"
@@ -52,7 +48,7 @@ def run_creation(key_id, count):
 def cleanup(key_id):
     db = SessionLocal()
     try:
-        key = db.query(Key).filter(Key.key_id == key_id).first()
+        key = get_key_by_id(db, key_id)
         if not key:
             print("Clé introuvable.")
             return

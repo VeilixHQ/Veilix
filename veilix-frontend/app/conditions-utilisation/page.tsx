@@ -112,7 +112,6 @@ export default function ConditionsUtilisation() {
           <p style={{ fontSize: 13, color: '#475569' }}>{c.updated}</p>
         </div>
 
-        {/* Onglets de navigation interne */}
         <div style={{ display: 'flex', gap: 8, marginBottom: 40, borderBottom: '1px solid rgba(255,255,255,0.06)', paddingBottom: 0 }}>
           {c.tabs.map(tab => (
             <button
@@ -131,7 +130,6 @@ export default function ConditionsUtilisation() {
           ))}
         </div>
 
-        {/* CGU */}
         {active === 'cgu' && (
           <div style={{ display: 'flex', flexDirection: 'column', gap: 32 }}>
             {c.cgu.sections.map((section, i) => (
@@ -143,7 +141,6 @@ export default function ConditionsUtilisation() {
           </div>
         )}
 
-        {/* CGV */}
         {active === 'cgv' && (
           <div style={{ display: 'flex', flexDirection: 'column', gap: 32 }}>
             {c.cgv.sections.map((section, i) => (
@@ -155,7 +152,6 @@ export default function ConditionsUtilisation() {
           </div>
         )}
 
-        {/* Signaler un abus */}
         {active === 'abus' && (
           <div>
             <p style={{ fontSize: 14, color: '#94a3b8', lineHeight: 1.8, marginBottom: 28, padding: '16px 18px', background: 'rgba(239,68,68,0.04)', border: '1px solid rgba(239,68,68,0.15)', borderRadius: 12 }}>

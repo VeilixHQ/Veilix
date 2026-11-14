@@ -1,5 +1,5 @@
 'use client'
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useRef, Suspense } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { useAuth } from '@/hooks/useAuth'
 import { Toast, useToast } from '@/components/Toast'
@@ -18,7 +18,7 @@ import { T, Lang } from '@/lib/translations'
 
 type Step = 'choice' | 'generating' | 'reveal' | 'confirm' | 'recovery-email' | 'restore'
 
-export default function Access() {
+function AccessContent() {
   const router = useRouter()
   const searchParams = useSearchParams()
   const mode = searchParams.get('mode')
@@ -35,7 +35,6 @@ export default function Access() {
   const [lang, setLang] = useState<Lang>('fr')
   const t = T[lang]
 
-  // Détection directe du mode "Connexion" (redirection vers l'écran de restauration si mode === 'restore')
   const [step, setStep] = useState<Step>(mode === 'restore' ? 'restore' : 'choice')
   const [identity, setIdentity] = useState<VeilixIdentity | null>(null)
   const [revealed, setRevealed] = useState(false)
@@ -47,7 +46,6 @@ export default function Access() {
   const restoreInputRefs = useRef<(HTMLInputElement | null)[]>([])
   const [loading, setLoading] = useState(false)
 
-  // Synchronisation dynamique si l'URL change en cours de navigation
   useEffect(() => {
     if (mode === 'restore') {
       setStep('restore')
@@ -86,8 +84,8 @@ export default function Access() {
     setLoading(true)
     try {
       const finalIdentity = { ...identity, recoveryEmail: skipEmail ? undefined : recoveryEmail || undefined }
-      await saveIdentity(finalIdentity)
       await registerKey(finalIdentity.keyId, finalIdentity.recoveryEmail)
+      await saveIdentity(finalIdentity)
       showToast(lang === 'fr' ? 'Clé créée avec succès' : 'Key created successfully', 'success')
       router.push('/pricing')
     } catch {
@@ -112,7 +110,7 @@ export default function Access() {
         return
       }
       const check = await verifyKey(restored.keyId)
-      if (!check || check.exists === false) {
+      if (!check || check.exists !== true) {
         showToast(lang === 'fr' ? 'Aucune clé associée à cette seed phrase' : 'No key associated with this seed phrase', 'error')
         setLoading(false)
         return
@@ -433,5 +431,13 @@ export default function Access() {
 
       <SiteFooter t={t} />
     </div>
+  )
+}
+
+export default function Access() {
+  return (
+    <Suspense fallback={<div style={{ minHeight: '100vh', background: '#060608' }} />}>
+      <AccessContent />
+    </Suspense>
   )
 }

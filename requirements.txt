@@ -7,3 +7,6 @@ passlib[bcrypt]
 python-dotenv
 slowapi
 httpx
+cryptography
+email-validator
+python-multipart

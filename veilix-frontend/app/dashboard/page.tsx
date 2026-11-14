@@ -1,7 +1,7 @@
 'use client'
 import { useState, useEffect, useCallback } from 'react'
 import { useRouter } from 'next/navigation'
-import { getAliases, createAlias, disableAlias, enableAlias, deleteAlias, verifyKey } from '@/lib/api'
+import { getAliases, createAlias, disableAlias, enableAlias, deleteAlias, resendConfirmation, verifyKey } from '@/lib/api'
 import { getIdentity } from '@/lib/crypto'
 import { useAuth } from '@/hooks/useAuth'
 import { useInactivityTimeout } from '@/hooks/useInactivityTimeout'
@@ -78,7 +78,14 @@ function TagChip({ name, count, active, onClick, size = 'sm' }: {
   )
 }
 
-function StatusBadge({ active }: { active: boolean }) {
+const STATUS_STYLES: Record<string, { label: string; color: string; bg: string; border: string }> = {
+  active: { label: 'Actif', color: '#4ade80', bg: 'rgba(74,222,128,0.1)', border: 'rgba(74,222,128,0.25)' },
+  pending: { label: 'À confirmer', color: '#a78bfa', bg: 'rgba(124,58,237,0.1)', border: 'rgba(124,58,237,0.28)' },
+  disabled: { label: 'Désactivé', color: '#fbbf24', bg: 'rgba(251,191,36,0.1)', border: 'rgba(251,191,36,0.28)' },
+}
+
+function StatusBadge({ status }: { status: string }) {
+  const s = STATUS_STYLES[status] || STATUS_STYLES.disabled
   return (
     <span
       style={{
@@ -92,12 +99,12 @@ function StatusBadge({ active }: { active: boolean }) {
         fontWeight: 600,
         lineHeight: 1.4,
         whiteSpace: 'nowrap',
-        color: active ? '#4ade80' : '#fbbf24',
-        background: active ? 'rgba(74,222,128,0.1)' : 'rgba(251,191,36,0.1)',
-        border: `1px solid ${active ? 'rgba(74,222,128,0.25)' : 'rgba(251,191,36,0.28)'}`,
+        color: s.color,
+        background: s.bg,
+        border: `1px solid ${s.border}`,
       }}
     >
-      {active ? 'Actif' : 'Désactivé'}
+      {s.label}
     </span>
   )
 }
@@ -111,7 +118,7 @@ export default function Dashboard() {
   const [lang, setLang] = useState<Lang>('fr')
   const t = T[lang]
 
-  const [identity, setIdentity] = useState<{ keyId: string; seedPhrase: string; plan?: string } | null>(null)
+  const [identity, setIdentity] = useState<{ keyId: string; plan?: string } | null>(null)
   const [aliases, setAliases] = useState<Alias[]>([])
   const [loading, setLoading] = useState(true)
   const [showModal, setShowModal] = useState(false)
@@ -138,9 +145,8 @@ export default function Dashboard() {
               detectedPlan = res.plan
             }
           } catch {
-            // Fallback si la connexion API échoue ponctuellement
           }
-          setIdentity({ keyId: id.keyId, seedPhrase: id.seedPhrase, plan: detectedPlan })
+          setIdentity({ keyId: id.keyId, plan: detectedPlan })
         }
       })
     }
@@ -156,7 +162,6 @@ export default function Dashboard() {
     } finally {
       setLoading(false)
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   useEffect(() => {
@@ -182,7 +187,16 @@ export default function Dashboard() {
       setShowModal(false)
       setNewDest('')
       setNewLabel('')
-      showToast('Alias créé', 'success')
+      if (result.status === 'pending') {
+        showToast(
+          result.confirmation_sent
+            ? `Alias créé. Confirmez l'adresse via l'e-mail envoyé à ${result.destination_email}.`
+            : 'Alias créé. E-mail de confirmation non envoyé : utilisez « Renvoyer ».',
+          'info'
+        )
+      } else {
+        showToast('Alias créé', 'success')
+      }
       fetchAliases()
     } catch {
       showToast('Erreur lors de la création', 'error')
@@ -197,10 +211,27 @@ export default function Dashboard() {
         await disableAlias(alias.id)
         showToast('Alias désactivé', 'info')
       } else {
-        await enableAlias(alias.id)
-        showToast('Alias activé', 'success')
+        const result = await enableAlias(alias.id)
+        if (result.status === 'pending') {
+          showToast('Adresse de destination à confirmer par e-mail', 'info')
+        } else {
+          showToast('Alias activé', 'success')
+        }
       }
       fetchAliases()
+    } catch {
+      showToast('Erreur', 'error')
+    }
+  }
+
+  async function handleResend(alias: Alias) {
+    try {
+      const result = await resendConfirmation(alias.id)
+      if (result.detail) {
+        showToast(typeof result.detail === 'string' ? result.detail : 'Erreur', 'error')
+        return
+      }
+      showToast(`E-mail de confirmation envoyé à ${alias.destination_email}`, 'success')
     } catch {
       showToast('Erreur', 'error')
     }
@@ -291,14 +322,12 @@ export default function Dashboard() {
               plan={PLAN_LABELS[identity.plan || 'pro'] || 'Pro'}
               keyIdShort={`K-${identity.keyId.slice(0, 4).toUpperCase()}...${identity.keyId.slice(-4).toUpperCase()}`}
               fullKeyId={identity.keyId}
-              seedPhrase={identity.seedPhrase}
             />
           )
         }
       />
 
       <div style={{ maxWidth: 880, margin: '0 auto', padding: '96px 24px 64px' }}>
-        {/* HEADER */}
         <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', marginBottom: 28, flexWrap: 'wrap', gap: 16 }}>
           <div>
             <h1 style={{ fontSize: 24, fontWeight: 800, letterSpacing: '-0.6px', color: '#f1f5f9', marginBottom: 4 }}>Alias email</h1>
@@ -311,7 +340,6 @@ export default function Dashboard() {
           </div>
         </div>
 
-        {/* STATS */}
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 12, marginBottom: 28 }}>
           {[
             { label: 'Total', value: aliases.length, color: undefined as string | undefined },
@@ -325,14 +353,12 @@ export default function Dashboard() {
           ))}
         </div>
 
-        {/* SEARCH */}
         {aliases.length > 2 && (
           <div style={{ marginBottom: 18 }}>
             <Input placeholder="Rechercher un alias ou un label..." value={search} onChange={e => setSearch(e.target.value)} />
           </div>
         )}
 
-        {/* FILTRE PAR TAGS */}
         {userTags.length > 0 && (
           <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap', alignItems: 'center', marginBottom: 18 }}>
             <button
@@ -356,7 +382,6 @@ export default function Dashboard() {
           </div>
         )}
 
-        {/* LISTE */}
         {loading ? (
           <div style={{ textAlign: 'center', padding: 60, color: '#334155', fontSize: 13 }}>Chargement...</div>
         ) : aliases.length === 0 ? (
@@ -395,22 +420,33 @@ export default function Dashboard() {
                 <span style={{ fontSize: 12, color: '#64748b', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{alias.destination_email}</span>
 
                 <div className="alias-status">
-                  <StatusBadge active={alias.status === 'active'} />
+                  <StatusBadge status={alias.status} />
                 </div>
 
                 <div className="alias-row-actions">
-                  <Button
-                    variant="secondary"
-                    size="sm"
-                    onClick={() => handleToggle(alias)}
-                    style={
-                      alias.status === 'active'
-                        ? { color: '#fbbf24', borderColor: 'rgba(251,191,36,0.35)', background: 'rgba(251,191,36,0.08)' }
-                        : { color: '#4ade80', borderColor: 'rgba(74,222,128,0.35)', background: 'rgba(74,222,128,0.08)' }
-                    }
-                  >
-                    {alias.status === 'active' ? 'Désactiver' : 'Activer'}
-                  </Button>
+                  {alias.status === 'pending' ? (
+                    <Button
+                      variant="secondary"
+                      size="sm"
+                      onClick={() => handleResend(alias)}
+                      style={{ color: '#a78bfa', borderColor: 'rgba(124,58,237,0.35)', background: 'rgba(124,58,237,0.08)' }}
+                    >
+                      Renvoyer
+                    </Button>
+                  ) : (
+                    <Button
+                      variant="secondary"
+                      size="sm"
+                      onClick={() => handleToggle(alias)}
+                      style={
+                        alias.status === 'active'
+                          ? { color: '#fbbf24', borderColor: 'rgba(251,191,36,0.35)', background: 'rgba(251,191,36,0.08)' }
+                          : { color: '#4ade80', borderColor: 'rgba(74,222,128,0.35)', background: 'rgba(74,222,128,0.08)' }
+                      }
+                    >
+                      {alias.status === 'active' ? 'Désactiver' : 'Activer'}
+                    </Button>
+                  )}
                   <Button variant="danger" size="sm" onClick={() => handleDelete(alias.id)}>Supprimer</Button>
                 </div>
               </div>
@@ -421,12 +457,10 @@ export default function Dashboard() {
 
       <SiteFooter t={t} />
 
-      {/* MODAL CRÉATION */}
       {showModal && (
         <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.75)', zIndex: 200, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 24 }} onClick={() => setShowModal(false)}>
           <div style={{ position: 'relative', background: '#0e0e0e', border: '1px solid rgba(255,255,255,0.08)', borderRadius: 16, padding: 28, width: '100%', maxWidth: 420, animation: 'fadeUp 0.2s ease' }} onClick={e => e.stopPropagation()}>
             
-            {/* Croix de fermeture */}
             <button
               onClick={() => setShowModal(false)}
               style={{ position: 'absolute', top: 16, right: 16, background: 'none', border: 'none', color: '#64748b', cursor: 'pointer', padding: 4 }}

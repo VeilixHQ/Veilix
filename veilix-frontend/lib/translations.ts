@@ -601,4 +601,12 @@ export const T = {
   },
 } as const
 
-export type Translations = typeof T.fr
+type Widen<V> =
+  V extends string ? string :
+  V extends number ? number :
+  V extends boolean ? boolean :
+  V extends readonly (infer Item)[] ? readonly Widen<Item>[] :
+  V extends object ? { readonly [K in keyof V]: Widen<V[K]> } :
+  V
+
+export type Translations = Widen<typeof T.fr>

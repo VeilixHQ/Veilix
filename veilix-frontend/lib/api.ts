@@ -42,6 +42,9 @@ export async function registerKey(keyId: string, recoveryEmail?: string) {
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ key_id: keyId, recovery_email: recoveryEmail || null }),
   })
+  if (!res.ok) {
+    throw new Error('Enregistrement de la clé impossible')
+  }
   return res.json()
 }
 
@@ -76,6 +79,20 @@ export async function disableAlias(id: number) {
 export async function enableAlias(id: number) {
   const res = await fetchWithAuth(`/alias/${id}/enable`, { method: 'PATCH' })
   return res.json()
+}
+
+export async function resendConfirmation(id: number) {
+  const res = await fetchWithAuth(`/alias/${id}/resend-confirmation`, { method: 'POST' })
+  return res.json()
+}
+
+export async function confirmDestination(token: string): Promise<boolean> {
+  const res = await fetch(`${API_URL}/destination/confirm`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ token }),
+  })
+  return res.ok
 }
 
 export async function deleteAlias(id: number) {

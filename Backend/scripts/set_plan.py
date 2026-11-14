@@ -1,18 +1,7 @@
-"""
-Change le plan (et éventuellement le statut) d'une clé dans la base de DÉVELOPPEMENT,
-sans passer par le paiement. Pratique pour tester le plan Pro.
-
-Depuis le dossier Backend :
-
-    python -m scripts.set_plan --key-id <CLE> --show
-    python -m scripts.set_plan --key-id <CLE> --plan pro
-    python -m scripts.set_plan --key-id <CLE> --plan pro --status active
-    python -m scripts.set_plan --key-id <CLE> --plan launch --status active
-"""
 import argparse
 
-from app.db.session import SessionLocal  # ← adapter si besoin
-from app.models.key import Key
+from app.db.session import SessionLocal
+from app.services.key_service import get_key_by_id
 
 
 def main() -> None:
@@ -25,7 +14,7 @@ def main() -> None:
 
     db = SessionLocal()
     try:
-        key = db.query(Key).filter(Key.key_id == args.key_id).first()
+        key = get_key_by_id(db, args.key_id)
         if not key:
             print("Clé introuvable.")
             return

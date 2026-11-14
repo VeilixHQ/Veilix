@@ -6,13 +6,17 @@ const STORE_NAME = 'identity'
 const RECORD_KEY = 'current'
 
 export interface VeilixIdentity {
-  keyId: string          // identifiant public dérivé — envoyé au serveur
-  seedPhrase: string      // 12 mots — JAMAIS envoyée au serveur
-  signingKeyHex: string   // clé privée dérivée — JAMAIS envoyée au serveur
+  keyId: string
+  seedPhrase: string
+  signingKeyHex: string
   createdAt: number
-  recoveryEmail?: string  // optionnel, géré séparément côté serveur si fourni
+  recoveryEmail?: string
 }
 
+export interface StoredIdentity {
+  keyId: string
+  createdAt: number
+}
 
 
 function openDb(): Promise<IDBDatabase> {
@@ -60,7 +64,6 @@ async function idbDelete(key: string): Promise<void> {
 }
 
 
-
 function bufferToHex(buf: ArrayBuffer): string {
   return Array.from(new Uint8Array(buf))
     .map(b => b.toString(16).padStart(2, '0'))
@@ -89,12 +92,10 @@ async function deriveFromSeed(seedBytes: Uint8Array): Promise<{ keyId: string; s
 }
 
 
-
-
 export async function generateIdentity(): Promise<VeilixIdentity> {
-  const entropy = crypto.getRandomValues(new Uint8Array(16)) // 128 bits → 12 mots
+  const entropy = crypto.getRandomValues(new Uint8Array(16))
   const seedPhrase = bip39.entropyToMnemonic(Buffer.from(entropy))
-  const seedBytes = await bip39.mnemonicToSeed(seedPhrase) // 64 bytes
+  const seedBytes = await bip39.mnemonicToSeed(seedPhrase)
   const { keyId, signingKeyHex } = await deriveFromSeed(new Uint8Array(seedBytes).slice(0, 32))
 
   return {
@@ -122,14 +123,24 @@ export async function restoreIdentityFromSeed(seedPhrase: string): Promise<Veili
 }
 
 
-export async function saveIdentity(identity: VeilixIdentity): Promise<void> {
-  await idbSet(RECORD_KEY, identity)
+export async function saveIdentity(identity: StoredIdentity): Promise<void> {
+  const stored: StoredIdentity = { keyId: identity.keyId, createdAt: identity.createdAt }
+  await idbSet(RECORD_KEY, stored)
 }
 
 
-export async function getIdentity(): Promise<VeilixIdentity | null> {
+export async function getIdentity(): Promise<StoredIdentity | null> {
   try {
-    return await idbGet<VeilixIdentity>(RECORD_KEY)
+    const record = await idbGet<Record<string, unknown>>(RECORD_KEY)
+    if (!record || typeof record.keyId !== 'string') return null
+    const stored: StoredIdentity = {
+      keyId: record.keyId,
+      createdAt: typeof record.createdAt === 'number' ? record.createdAt : Date.now(),
+    }
+    if (Object.keys(record).some(field => field !== 'keyId' && field !== 'createdAt')) {
+      await idbSet(RECORD_KEY, stored)
+    }
+    return stored
   } catch {
     return null
   }

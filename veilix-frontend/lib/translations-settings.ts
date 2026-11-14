@@ -1,8 +1,3 @@
-/**
- * Traductions de la page Paramètres (FR / EN).
- * À placer dans src/lib/translations-settings.ts
- */
-
 const fr = {
   title: 'Paramètres',
   subtitle: 'Gérez votre abonnement, vos accès API et vos préférences de confidentialité.',
