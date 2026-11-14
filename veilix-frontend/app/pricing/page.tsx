@@ -1,106 +1,334 @@
 'use client'
 import { useState } from 'react'
 import Link from 'next/link'
-import { SimpleNav } from '@/components/landing/SimpleNav'
-import { SimpleFooter } from '@/components/landing/SimpleFooter'
+import { SiteNav } from '@/components/landing/SiteNav'
+import { SiteFooter } from '@/components/landing/SiteFooter'
 import { Button } from '@/components/Button'
+import { T, Lang } from '@/lib/translations'
 import { PT } from '@/lib/translations-pages'
-import { Lang } from '@/lib/translations'
+
+/* ───────────── Plans (Pro + Pack de lancement) ───────────── */
+const PACK_TOTAL = 100
+const PACK_REMAINING = 100 // TODO : remplacer par la valeur réelle lue depuis ton API
+
+type Price = { price: string; period: string; sub: string }
+
+type PlanData = {
+  name: string
+  badge?: string
+  desc?: string
+  lead?: string
+  monthly?: Price // présent seulement si le plan a un switch (Pro)
+  yearly: Price
+  features: string[]
+  cta: string
+  href: string
+  reassure: string
+  highlight?: boolean
+}
+
+const PLANS: Record<'fr' | 'en', PlanData[]> = {
+  fr: [
+    {
+      name: 'Pro',
+      desc: 'L’essentiel pour protéger votre boîte mail.',
+      monthly: { price: '4,99 €', period: '/ mois', sub: 'ou 44,90 € / an, dont 3 mois offerts' },
+      yearly: { price: '44,90 €', period: '/ an', sub: 'soit 3,74 € / mois, dont 3 mois offerts' },
+      features: [
+        '100 alias actifs',
+        `Réponse depuis l'alias`,
+        'Pièces jointes',
+        'Tags personnalisés',
+        '3 boîtes de destination',
+        `Blocage d'expéditeurs`,
+        'Statistiques de spam bloqué',
+      ],
+      cta: 'Essayer 14 jours',
+      href: '/access?plan=pro',
+      reassure: `Période d'essai gratuite, annulable à tout moment`,
+    },
+    {
+      name: 'Pack de lancement',
+      badge: 'Offre de lancement',
+      desc: 'Offre limitée à 100 exemplaires.',
+      lead: 'Tout le plan Pro, plus :',
+      yearly: { price: '69 €', period: '/ an', sub: 'soit 5,75 € / mois' },
+      features: [
+        'Alias illimités',
+        `Domaine personnalisé (jusqu'à 3)`,
+        'Alerte de fuite en temps réel',
+        `API et clés d'accès`,
+        'Chiffrement PGP',
+        'Catch-all et 10 boîtes de destination',
+        'Support prioritaire sous 24 h',
+        'Accès anticipé aux nouveautés',
+        'Prix bloqué à vie',
+      ],
+      cta: 'Réserver mon pack dès maintenant',
+      href: '/access?plan=pack',
+      reassure: `14 jours offerts • Tarif garanti à vie`,
+      highlight: true,
+    },
+  ],
+  en: [
+    {
+      name: 'Pro',
+      desc: 'Essential privacy for your daily emails.',
+      monthly: { price: '€4.99', period: '/ month', sub: 'or €44.90 / year, 3 months free' },
+      yearly: { price: '€44.90', period: '/ year', sub: 'that is €3.74 / month, 3 months free' },
+      features: [
+        '100 active aliases',
+        'Reply from the alias',
+        'Attachments',
+        'Custom tags',
+        '3 destination mailboxes',
+        'Sender blocking',
+        'Blocked spam statistics',
+      ],
+      cta: 'Try 14 days',
+      href: '/access?plan=pro',
+      reassure: `Free trial period, cancel anytime`,
+    },
+    {
+      name: 'Launch pack',
+      badge: 'Launch offer',
+      desc: 'Limited to 100 copies.',
+      lead: 'Everything in Pro, plus:',
+      yearly: { price: '€69', period: '/ year', sub: 'that is €5.75 / month' },
+      features: [
+        'Unlimited aliases',
+        'Custom domain (up to 3)',
+        'Real-time breach alerts',
+        'API and access keys',
+        'PGP encryption',
+        'Catch-all and 10 destination mailboxes',
+        'Priority support within 24 h',
+        'Early access to new features',
+        'Price locked for life',
+      ],
+      cta: 'Reserve my pack now',
+      href: '/access?plan=pack',
+      reassure: `14 days free • Price locked for life`,
+      highlight: true,
+    },
+  ],
+}
+
+const TEXT = {
+  fr: {
+    left: (n: number) => `${n} packs restants sur ${PACK_TOTAL}`,
+    full: 'Complet',
+    monthly: 'Mensuel',
+    yearlyLabel: 'Annuel',
+    payment: 'Moyen de paiement requis',
+  },
+  en: {
+    left: (n: number) => `${n} of ${PACK_TOTAL} packs left`,
+    full: 'Sold out',
+    monthly: 'Monthly',
+    yearlyLabel: 'Yearly',
+    payment: 'Payment method required',
+  },
+}
+
+/* ───────────── FAQ adaptée aux 2 plans ───────────── */
+const FAQS: Record<'fr' | 'en', { q: string; a: string }[]> = {
+  fr: [
+    {
+      q: "Comment fonctionne l'essai de 14 jours ?",
+      a: "Vous choisissez un plan et vous enregistrez un moyen de paiement, rien n'est débité pendant 14 jours.\nÀ la fin de l'essai, l'abonnement démarre automatiquement, sauf si vous l'avez annulé avant.",
+    },
+    {
+      q: 'Pourquoi un moyen de paiement est-il requis pour l\'essai ?',
+      a: "Cela évite les comptes automatisés et protège le service pour les vrais utilisateurs. Le paiement est traité par Stripe : Veilix ne voit pas et ne conserve pas votre numéro de carte.",
+    },
+    {
+      q: 'Quelle différence entre le plan Pro et le Pack de lancement ?',
+      a: "Le Pro inclut 100 alias, la réponse depuis l'alias, les pièces jointes, les tags, 3 boîtes de destination et le blocage d'expéditeurs. Le Pack reprend tout le Pro et ajoute les alias illimités, un domaine personnalisé (jusqu'à 3), l'alerte de fuite en temps réel, l'API, le chiffrement PGP, le catch-all, 10 boîtes de destination, un support prioritaire sous 24 h et l'accès anticipé aux nouveautés.",
+    },
+    {
+      q: 'Que signifie « prix bloqué à vie » ?',
+      a: "Le Pack de lancement est facturé 69 € par an, uniquement en formule annuelle.\nCe tarif ne change pas tant que votre abonnement reste actif, même si les prix augmentent ensuite.",
+    },
+    {
+      q: 'Combien de packs sont disponibles ?',
+      a: "L'offre est limitée à 100 exemplaires. Le compteur affiché sur la carte du Pack montre le nombre de places restantes. Une fois les 100 packs réservés, l'offre n'est plus disponible.",
+    },
+    {
+      q: 'Puis-je annuler mon abonnement ?',
+      a: "Oui, à tout moment depuis la gestion de votre abonnement, que ce soit le Pro (mensuel ou annuel) ou le Pack de lancement. Si vous annulez pendant l'essai de 14 jours, rien n'est débité.",
+    },
+  ],
+  en: [
+    {
+      q: 'How does the 14-day trial work?',
+      a: 'You pick a plan and add a payment method. Nothing is charged for 14 days.\nWhen the trial ends, your subscription starts automatically unless you cancelled before.',
+    },
+    {
+      q: 'Why is a payment method required for the trial?',
+      a: 'It prevents automated accounts and protects the service for real users. Payments are processed by Stripe: Veilix does not see or store your card number.',
+    },
+    {
+      q: 'What is the difference between Pro and the Launch pack?',
+      a: 'Pro includes 100 aliases, replying from the alias, attachments, tags, 3 destination mailboxes and sender blocking. The Launch pack includes everything in Pro and adds unlimited aliases, a custom domain (up to 3), real-time breach alerts, the API, PGP encryption, catch-all, 10 destination mailboxes, priority support within 24 h and early access to new features.',
+    },
+    {
+      q: 'What does "price locked for life" mean?',
+      a: 'The Launch pack costs €69 per year, yearly billing only.\nThis price does not change as long as your subscription stays active, even if prices go up later.',
+    },
+    {
+      q: 'How many packs are available?',
+      a: 'The offer is limited to 100 copies. The counter on the pack card shows how many are left. Once all 100 packs are reserved, the offer is no longer available.',
+    },
+    {
+      q: 'Can I cancel my subscription?',
+      a: 'Yes, at any time from your subscription settings, for Pro (monthly or yearly) or the Launch pack. If you cancel during the 14-day trial, nothing is charged.',
+    },
+  ],
+}
 
 export default function Pricing() {
   const [lang, setLang] = useState<Lang>('fr')
-  const t = PT[lang].pricing
-  const back = PT[lang].back
+  const [proYearly, setProYearly] = useState(true)
+  const t = T[lang]
+  const pt = PT[lang].pricing
+  const plans = (PLANS as Record<string, PlanData[]>)[lang] ?? PLANS.fr
+  const tx = (TEXT as Record<string, typeof TEXT.fr>)[lang] ?? TEXT.fr
+  const faqs = (FAQS as Record<string, { q: string; a: string }[]>)[lang] ?? FAQS.fr
+  const soldOut = PACK_REMAINING <= 0
 
   return (
     <div style={{ minHeight: '100vh', background: '#060608', color: '#f1f5f9', fontFamily: 'Inter, sans-serif' }}>
       <style>{`
-        @keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
         .plan-card{transition:transform .25s, border-color .2s}
         .plan-card:hover{transform:translateY(-4px)}
-        @media(max-width:860px){
-          .plans-grid{grid-template-columns:1fr!important}
-          .credits-row{flex-direction:column!important}
-        }
+        @media(max-width:860px){ .plans-grid{grid-template-columns:1fr!important} .credits-row{flex-direction:column!important} }
       `}</style>
 
-      <SimpleNav lang={lang} setLang={setLang} backLabel={back} />
+      <SiteNav t={t} lang={lang} setLang={setLang} mode="public" />
 
-      {}
+      {/* Hero section */}
       <section style={{ padding: '140px 24px 64px', textAlign: 'center', position: 'relative', overflow: 'hidden' }}>
         <div style={{ position: 'absolute', top: '-100px', left: '50%', transform: 'translateX(-50%)', width: 800, height: 500, background: 'radial-gradient(ellipse at 50% 0%, rgba(124,58,237,0.12) 0%, transparent 65%)', pointerEvents: 'none' }} />
         <div style={{ position: 'relative', zIndex: 1, animation: 'fadeUp 0.6s ease' }}>
-          <div style={{ fontSize: 11, fontWeight: 700, color: '#a78bfa', textTransform: 'uppercase', letterSpacing: '1.2px', marginBottom: 14 }}>{t.kicker}</div>
-          <h1 style={{ fontSize: 'clamp(28px, 4.5vw, 48px)', fontWeight: 900, letterSpacing: '-2px', lineHeight: 1.08, marginBottom: 16 }}>{t.title}</h1>
-          <p style={{ fontSize: 15, color: '#64748b', maxWidth: 420, margin: '0 auto', lineHeight: 1.7 }}>{t.subtitle}</p>
+          <div style={{ fontSize: 11, fontWeight: 700, color: '#a78bfa', textTransform: 'uppercase', letterSpacing: '1.2px', marginBottom: 14 }}>{pt.kicker}</div>
+          <h1 style={{ fontSize: 'clamp(28px, 4.5vw, 48px)', fontWeight: 900, letterSpacing: '-2px', lineHeight: 1.08, marginBottom: 16 }}>{pt.title}</h1>
+          <p style={{ fontSize: 15, color: '#64748b', maxWidth: 420, margin: '0 auto', lineHeight: 1.7, whiteSpace: 'pre-line' }}>{pt.subtitle}</p>
         </div>
       </section>
 
-      {}
+      {/* Pricing Cards Section */}
       <section style={{ padding: '0 24px 96px' }}>
-        <div className="plans-grid" style={{ maxWidth: 1000, margin: '0 auto', display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 20 }}>
-          {t.plans.map((plan, i) => {
-            const highlight = plan.name === 'Pro'
-            const disabled = plan.name === 'Business'
+        <div className="plans-grid" style={{ maxWidth: 760, margin: '0 auto', display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 20 }}>
+          {plans.map((plan, i) => {
+            const highlight = !!plan.highlight
+            const isPack = highlight
+            const hasToggle = !!plan.monthly
+            const cur = hasToggle && !proYearly ? plan.monthly! : plan.yearly
+            const href = hasToggle ? `${plan.href}&billing=${proYearly ? 'yearly' : 'monthly'}` : plan.href
+
             return (
-              <div
-                key={i}
-                className="plan-card"
-                style={{
-                  position: 'relative',
-                  background: highlight ? 'linear-gradient(180deg, rgba(124,58,237,0.08), rgba(124,58,237,0.02))' : '#0d0d10',
-                  border: highlight ? '1px solid rgba(124,58,237,0.35)' : '1px solid rgba(255,255,255,0.07)',
-                  borderRadius: 16,
-                  padding: '32px 26px',
-                  display: 'flex',
-                  flexDirection: 'column',
-                  opacity: disabled ? 0.6 : 1,
-                }}
-              >
-                {highlight && (
-                  <div style={{ position: 'absolute', top: -12, left: 26, padding: '4px 12px', borderRadius: 100, fontSize: 11, fontWeight: 700, color: '#fff', background: 'linear-gradient(135deg, #7c3aed, #4f46e5)' }}>
-                    {t.popular}
+              <div key={i} className="plan-card" style={{ position: 'relative', background: highlight ? 'linear-gradient(180deg, rgba(124,58,237,0.08), rgba(124,58,237,0.02))' : '#0d0d10', border: highlight ? '1px solid rgba(124,58,237,0.35)' : '1px solid rgba(255,255,255,0.07)', borderRadius: 16, padding: '32px 26px', display: 'flex', flexDirection: 'column' }}>
+
+                {/* Badge "Offre de lancement" */}
+                {plan.badge && (
+                  <div style={{ position: 'absolute', top: -14, left: 26, padding: '5px 14px', borderRadius: 100, fontSize: 12, fontWeight: 700, color: '#fff', background: 'linear-gradient(135deg, #7c3aed, #4f46e5)', boxShadow: '0 4px 12px rgba(124,58,237,0.3)' }}>
+                    {plan.badge}
                   </div>
                 )}
-                <div style={{ fontSize: 15, fontWeight: 700, marginBottom: 4 }}>{plan.name}</div>
-                <div style={{ fontSize: 13, color: '#64748b', marginBottom: 20 }}>{plan.desc}</div>
-                <div style={{ display: 'flex', alignItems: 'baseline', gap: 4, marginBottom: 24 }}>
-                  <span style={{ fontSize: 36, fontWeight: 900, letterSpacing: '-1.5px' }}>{plan.price}</span>
-                  {plan.period && <span style={{ fontSize: 13, color: '#64748b', fontWeight: 500 }}>{plan.period}</span>}
+
+                {/* Zone En-tête */}
+                <div style={{ minHeight: 95, display: 'flex', flexDirection: 'column', justifyContent: 'flex-start' }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 10, marginBottom: 6 }}>
+                    <div style={{ fontSize: 18, fontWeight: 800, letterSpacing: '-0.3px' }}>{plan.name}</div>
+
+                    {/* Switch Pro */}
+                    {hasToggle && (
+                      <div role="group" aria-label="Facturation" style={{ display: 'flex', padding: 3, borderRadius: 100, background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.08)' }}>
+                        <button
+                          type="button"
+                          aria-pressed={!proYearly}
+                          onClick={() => setProYearly(false)}
+                          style={{ padding: '5px 11px', borderRadius: 100, border: 'none', cursor: 'pointer', fontFamily: 'Inter, sans-serif', fontSize: 11, fontWeight: 600, whiteSpace: 'nowrap', color: !proYearly ? '#fff' : '#64748b', background: !proYearly ? 'rgba(124,58,237,0.35)' : 'transparent', transition: 'background .2s, color .2s' }}
+                        >
+                          {tx.monthly}
+                        </button>
+                        <button
+                          type="button"
+                          aria-pressed={proYearly}
+                          onClick={() => setProYearly(true)}
+                          style={{ padding: '5px 11px', borderRadius: 100, border: 'none', cursor: 'pointer', fontFamily: 'Inter, sans-serif', fontSize: 11, fontWeight: 600, whiteSpace: 'nowrap', color: proYearly ? '#fff' : '#64748b', background: proYearly ? 'rgba(124,58,237,0.35)' : 'transparent', transition: 'background .2s, color .2s' }}
+                        >
+                          {tx.yearlyLabel}
+                        </button>
+                      </div>
+                    )}
+                  </div>
+
+                  {plan.desc && <div style={{ fontSize: 12.5, color: '#64748b', marginBottom: 12 }}>{plan.desc}</div>}
+
+                  {/* Jauge d'exemplaires du Pack */}
+                  {isPack && (
+                    <div style={{ marginTop: 'auto' }} aria-live="polite">
+                      <div style={{ fontSize: 12, color: '#94a3b8', marginBottom: 6 }}>{soldOut ? tx.full : tx.left(PACK_REMAINING)}</div>
+                      <div style={{ height: 5, borderRadius: 100, background: 'rgba(255,255,255,0.08)', overflow: 'hidden' }}>
+                        <div style={{ height: '100%', width: `${((PACK_TOTAL - PACK_REMAINING) / PACK_TOTAL) * 100}%`, borderRadius: 100, background: 'linear-gradient(135deg, #7c3aed, #4f46e5)' }} />
+                      </div>
+                    </div>
+                  )}
                 </div>
+
+                {/* Bloc Prix */}
+                <div style={{ display: 'flex', alignItems: 'baseline', gap: 4, marginBottom: 4, marginTop: 12 }}>
+                  <span style={{ fontSize: 36, fontWeight: 900, letterSpacing: '-1.5px' }}>{cur.price}</span>
+                  <span style={{ fontSize: 13, color: '#64748b', fontWeight: 500 }}>{cur.period}</span>
+                </div>
+                <div style={{ fontSize: 12, color: '#64748b', marginBottom: 24 }}>{cur.sub}</div>
+
+                {/* Liste des fonctionnalités */}
+                {plan.lead && <div style={{ fontSize: 13, fontWeight: 600, color: '#e2e8f0', marginBottom: 14 }}>{plan.lead}</div>}
                 <div style={{ display: 'flex', flexDirection: 'column', gap: 12, marginBottom: 28, flex: 1 }}>
                   {plan.features.map((f, fi) => (
                     <div key={fi} style={{ display: 'flex', alignItems: 'flex-start', gap: 9 }}>
-                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke={highlight ? '#a78bfa' : '#4ade80'} strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0, marginTop: 3 }}>
-                        <polyline points="20 6 9 17 4 12" />
-                      </svg>
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke={highlight ? '#a78bfa' : '#4ade80'} strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0, marginTop: 3 }}><polyline points="20 6 9 17 4 12" /></svg>
                       <span style={{ fontSize: 13, color: '#94a3b8', lineHeight: 1.5 }}>{f}</span>
                     </div>
                   ))}
                 </div>
-                {disabled ? (
-                  <Button variant="secondary" size="md" disabled style={{ width: '100%', cursor: 'not-allowed' }}>{plan.cta}</Button>
-                ) : (
-                  <Link href={plan.name === 'Pro' ? '/access?plan=pro' : '/access'} style={{ textDecoration: 'none' }}>
-                    <Button variant={highlight ? 'primary' : 'secondary'} size="md" style={{ width: '100%' }}>{plan.cta}</Button>
-                  </Link>
-                )}
+
+                {/* Zone d'action alignée tout en bas */}
+                <div style={{ marginTop: 'auto' }}>
+                  {isPack && soldOut ? (
+                    <Button variant="secondary" size="md" disabled style={{ width: '100%', cursor: 'not-allowed' }}>{tx.full}</Button>
+                  ) : (
+                    <Link href={href} style={{ textDecoration: 'none' }}>
+                      <Button variant={highlight ? 'primary' : 'secondary'} size="md" style={{ width: '100%' }}>{plan.cta}</Button>
+                    </Link>
+                  )}
+
+                  {/* Mentions de réassurance */}
+                  <div style={{ marginTop: 14, textAlign: 'center', fontSize: 12, lineHeight: 1.6, color: '#64748b' }}>
+                    <div>{plan.reassure}</div>
+                    <div style={{ fontSize: 11, opacity: 0.8 }}>{tx.payment}</div>
+                  </div>
+                </div>
+
               </div>
             )
           })}
         </div>
       </section>
 
-      {}
+      {/* Sections secondaires */}
       <section style={{ padding: '0 24px 96px' }}>
         <div style={{ maxWidth: 1000, margin: '0 auto', background: '#0d0d10', border: '1px solid rgba(255,255,255,0.06)', borderRadius: 16, padding: '36px 32px' }}>
           <div className="credits-row" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 32, flexWrap: 'wrap' }}>
             <div style={{ maxWidth: 380 }}>
-              <h3 style={{ fontSize: 18, fontWeight: 800, letterSpacing: '-0.4px', marginBottom: 8 }}>{t.creditsTitle}</h3>
-              <p style={{ fontSize: 13, color: '#64748b', lineHeight: 1.7 }}>{t.creditsDesc}</p>
+              <h3 style={{ fontSize: 18, fontWeight: 800, letterSpacing: '-0.4px', marginBottom: 8 }}>{pt.creditsTitle}</h3>
+              <p style={{ fontSize: 13, color: '#64748b', lineHeight: 1.7 }}>{pt.creditsDesc}</p>
             </div>
             <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }}>
-              {t.creditsPacks.map((pack, i) => (
+              {pt.creditsPacks.map((pack, i) => (
                 <div key={i} style={{ textAlign: 'center', padding: '14px 18px', borderRadius: 10, background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.06)', minWidth: 100 }}>
                   <div style={{ fontSize: 16, fontWeight: 800, marginBottom: 2 }}>{pack.price}</div>
                   <div style={{ fontSize: 11, color: '#475569' }}>{pack.amount}</div>
@@ -111,28 +339,16 @@ export default function Pricing() {
         </div>
       </section>
 
-      {}
       <section style={{ padding: '0 24px 96px' }}>
         <div style={{ maxWidth: 720, margin: '0 auto' }}>
-          <h2 style={{ fontSize: 22, fontWeight: 800, letterSpacing: '-0.6px', marginBottom: 32, textAlign: 'center' }}>{t.faqTitle}</h2>
+          <h2 style={{ fontSize: 22, fontWeight: 800, letterSpacing: '-0.6px', marginBottom: 32, textAlign: 'center' }}>{pt.faqTitle}</h2>
           <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-            {t.faqs.map((faq, i) => (
-              <PricingFAQItem key={i} q={faq.q} a={faq.a} />
-            ))}
+            {faqs.map((faq, i) => <PricingFAQItem key={i} q={faq.q} a={faq.a} />)}
           </div>
         </div>
       </section>
 
-      {}
-      <section style={{ padding: '80px 24px 100px', textAlign: 'center', borderTop: '1px solid rgba(255,255,255,0.06)' }}>
-        <h2 style={{ fontSize: 'clamp(22px, 3vw, 34px)', fontWeight: 800, letterSpacing: '-1px', marginBottom: 12 }}>{t.ctaTitle}</h2>
-        <p style={{ fontSize: 14, color: '#64748b', marginBottom: 28 }}>{t.ctaSub}</p>
-        <Link href="/access" style={{ padding: '13px 28px', borderRadius: 9, fontSize: 14, fontWeight: 600, color: '#fff', background: 'linear-gradient(135deg, #7c3aed, #4f46e5)', textDecoration: 'none' }}>
-          {t.ctaBtn}
-        </Link>
-      </section>
-
-      <SimpleFooter lang={lang} />
+      <SiteFooter t={t} />
     </div>
   )
 }
@@ -143,11 +359,9 @@ function PricingFAQItem({ q, a }: { q: string; a: string }) {
     <div style={{ background: '#0d0d10', border: `1px solid ${open ? 'rgba(124,58,237,0.3)' : 'rgba(255,255,255,0.06)'}`, borderRadius: 12, overflow: 'hidden', transition: 'border-color 0.2s' }}>
       <button onClick={() => setOpen(o => !o)} style={{ width: '100%', padding: '16px 18px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: 'transparent', border: 'none', cursor: 'pointer', textAlign: 'left', fontFamily: 'Inter, sans-serif' }}>
         <span style={{ fontSize: 13, fontWeight: 600, color: '#e2e8f0' }}>{q}</span>
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#64748b" strokeWidth="2" strokeLinecap="round" style={{ flexShrink: 0, marginLeft: 12, transition: 'transform 0.2s', transform: open ? 'rotate(45deg)' : 'rotate(0)' }}>
-          <line x1="12" y1="5" x2="12" y2="19" /><line x1="5" y1="12" x2="19" y2="12" />
-        </svg>
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#64748b" strokeWidth="2" strokeLinecap="round" style={{ flexShrink: 0, marginLeft: 12, transition: 'transform 0.2s', transform: open ? 'rotate(45deg)' : 'rotate(0)' }}><line x1="12" y1="5" x2="12" y2="19" /><line x1="5" y1="12" x2="19" y2="12" /></svg>
       </button>
-      {open && <div style={{ padding: '0 18px 16px', fontSize: 13, color: '#64748b', lineHeight: 1.7 }}>{a}</div>}
+      {open && <div style={{ padding: '0 18px 16px', fontSize: 13, color: '#64748b', lineHeight: 1.7, whiteSpace: 'pre-line' }}>{a}</div>}
     </div>
   )
 }

@@ -1,10 +1,19 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { checkAuth } from '@/lib/api'
+import { checkAuth, verifyKey } from '@/lib/api'
+import { getIdentity } from '@/lib/crypto'
 
+/**
+ * user  : true si connecté, false sinon, null pendant le chargement (inchangé).
+ * plan  : plan effectif renvoyé par le serveur (/key/verify) : "pro", "pack" ou "admin".
+ *         null tant que non chargé ou si indisponible.
+ * loading reste true jusqu'à ce que le plan soit connu, pour éviter d'afficher
+ * brièvement le mauvais plan.
+ */
 export function useAuth() {
   const [user, setUser] = useState<boolean | null>(null)
+  const [plan, setPlan] = useState<string | null>(null)
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
@@ -15,7 +24,21 @@ export function useAuth() {
         const result = await checkAuth()
         if (!alive) return
 
-        setUser(!!result)
+        const authenticated = !!result
+        setUser(authenticated)
+
+        if (authenticated) {
+          try {
+            const identity = await getIdentity()
+            if (identity) {
+              const check = await verifyKey(identity.keyId)
+              if (!alive) return
+              setPlan(check?.plan ?? null)
+            }
+          } catch {
+            // Plan indisponible : le dashboard retombe sur le plan par défaut
+          }
+        }
       } catch {
         if (!alive) return
         setUser(false)
@@ -32,5 +55,5 @@ export function useAuth() {
     }
   }, [])
 
-  return { user, loading }
+  return { user, plan, loading }
 }

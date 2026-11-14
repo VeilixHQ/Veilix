@@ -7,7 +7,14 @@ def create_key(db: Session, key_id: str, recovery_email: str | None = None) -> K
     existing = db.query(Key).filter(Key.key_id == key_id).first()
     if existing:
         return existing
-    key = Key(key_id=key_id, recovery_email=recovery_email, plan="starter", status="active", credits=0)
+    key = Key(
+        key_id=key_id, 
+        recovery_email=recovery_email, 
+        plan="pro", 
+        status="active", 
+        credits=0,
+        is_admin=False
+    )
     db.add(key)
     db.commit()
     db.refresh(key)

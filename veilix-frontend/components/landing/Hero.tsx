@@ -65,11 +65,6 @@ export function Hero({ t }: { t: Translations }) {
       <Particles />
       <div style={{ position: 'absolute', top: '-80px', left: '50%', transform: 'translateX(-50%)', width: 900, height: 600, background: 'radial-gradient(ellipse at 50% 0%, rgba(124,58,237,0.13) 0%, transparent 65%)', pointerEvents: 'none' }} />
 
-      <div style={{ display: 'inline-flex', alignItems: 'center', gap: 7, padding: '5px 14px', borderRadius: 100, background: 'rgba(124,58,237,0.08)', border: '1px solid rgba(124,58,237,0.2)', fontSize: 12, color: '#a78bfa', fontWeight: 600, marginBottom: 28, position: 'relative', zIndex: 1, animation: 'fadeUp 0.6s ease', letterSpacing: '0.1px' }}>
-        <span style={{ width: 5, height: 5, borderRadius: '50%', background: '#7c3aed', display: 'inline-block', flexShrink: 0 }} />
-        {t.badge}
-      </div>
-
       <h1 className="hero-h1" style={{ position: 'relative', zIndex: 1, maxWidth: 640, animation: 'fadeUp 0.6s ease 0.1s both' }}>
         <span style={{ display: 'block', fontSize: 'clamp(30px, 4.5vw, 56px)', fontWeight: 900, lineHeight: 1.06, letterSpacing: '-2px', marginBottom: 4 }}>{t.h1a}</span>
         <span style={{ display: 'block', fontSize: 'clamp(22px, 3.2vw, 40px)', fontWeight: 800, lineHeight: 1.1, letterSpacing: '-1.5px', background: 'linear-gradient(135deg, #c4b5fd 20%, #93c5fd 80%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>{t.h1b}</span>

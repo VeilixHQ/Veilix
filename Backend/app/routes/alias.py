@@ -20,15 +20,15 @@ def list_all(key_id: int = Depends(get_current_key_id), db: Session = Depends(ge
 @router.patch("/alias/{alias_id}/disable", response_model=AliasResponse)
 def disable(alias_id: int, key_id: int = Depends(get_current_key_id), key_id_str: str = Depends(get_current_key_id_str), db: Session = Depends(get_db)):
     enforce_daily_limit(key_id_str)
-    return disable_alias(db, alias_id, key_id)
+    return disable_alias(db, key_id, alias_id)
 
 @router.patch("/alias/{alias_id}/enable", response_model=AliasResponse)
 def enable(alias_id: int, key_id: int = Depends(get_current_key_id), key_id_str: str = Depends(get_current_key_id_str), db: Session = Depends(get_db)):
     enforce_daily_limit(key_id_str)
-    return enable_alias(db, alias_id, key_id)
+    return enable_alias(db, key_id, alias_id)
 
 @router.delete("/alias/{alias_id}")
 def remove(alias_id: int, key_id: int = Depends(get_current_key_id), key_id_str: str = Depends(get_current_key_id_str), db: Session = Depends(get_db)):
     enforce_daily_limit(key_id_str)
-    delete_alias(db, alias_id, key_id)
+    delete_alias(db, key_id, alias_id)
     return {"status": "deleted"}

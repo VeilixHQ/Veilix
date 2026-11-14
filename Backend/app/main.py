@@ -9,7 +9,9 @@ from app.db.session import engine
 
 Base.metadata.create_all(bind=engine)
 limiter = Limiter(key_func=get_remote_address)
-app = FastAPI(title="Veilix API", version="2.0.0")
+app = FastAPI(title="Veilix API", version="1.0.0")
+
+
 
 app.add_middleware(
     CORSMiddleware,
@@ -17,7 +19,10 @@ app.add_middleware(
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
+
 )
+
+
 
 app.state.limiter = limiter
 app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
@@ -25,6 +30,8 @@ app.include_router(key.router)
 app.include_router(alias.router)
 app.include_router(email.router)
 
+
+
 @app.get("/")
 def health():
-    return {"status": "veilix running", "version": "2.0.0", "architecture": "no-account"}
+    return {"status": "Veilix running", "version": "1.0.0", "architecture": "no-account"}

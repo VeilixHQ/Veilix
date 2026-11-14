@@ -12,9 +12,9 @@ const content = {
     kicker: 'Notre histoire',
     title: 'Protéger son identité ne devrait pas être un luxe.',
     paragraphs: [
-      "Vous vous inscrivez quelque part. Un site, une app, une newsletter. On vous demande votre email, alors vous le donnez — c'est le prix à payer pour accéder à ce que vous voulez.",
-      "Sauf que ce prix, on ne vous le montre jamais vraiment. Votre adresse finit revendue à des annonceurs, ajoutée à des listes de diffusion, exposée lors de la prochaine fuite de données. Votre boîte mail devient un endroit que vous n'avez plus envie d'ouvrir.",
-      "On a construit Veilix parce qu'on trouvait ça absurde. Pourquoi devrait-on choisir entre utiliser un service et protéger son identité ?",
+      "Vous vous inscrivez quelque part. Un site, une app, une newsletter.<br />On vous demande votre email, alors vous le donnez, c'est le prix à payer pour accéder à ce que vous voulez.",
+      "Sauf que ce prix, on ne vous le montre jamais vraiment. Votre adresse finit revendue à des annonceurs, ajoutée à des listes de diffusion, exposée lors de la prochaine fuite de données.<br />Votre boîte mail devient un endroit que vous n'avez plus envie d'ouvrir.",
+      "On a construit Veilix parce qu'on trouvait ça absurde.<br />Pourquoi devrait-on choisir entre utiliser un service et protéger son identité ?",
       "Avec Veilix, vous donnez un alias à la place de votre vraie adresse. Aucun compte à créer, aucun mot de passe à retenir. Juste une clé générée dans votre navigateur, que vous seul possédez.",
     ],
     pillars: ['No Account', 'No Logs', 'No Tracking', 'Open Source'],
@@ -24,9 +24,9 @@ const content = {
     kicker: 'Our story',
     title: "Protecting your identity shouldn't be a luxury.",
     paragraphs: [
-      "You sign up somewhere. A website, an app, a newsletter. They ask for your email, so you give it — it's the price to pay for what you want.",
-      "Except that price is never really shown to you. Your address ends up resold to advertisers, added to mailing lists, exposed in the next data breach. Your inbox becomes a place you no longer want to open.",
-      "We built Veilix because we found that absurd. Why should you have to choose between using a service and protecting your identity?",
+      "You sign up somewhere. A website, an app, a newsletter.<br />They ask for your email, so you give it, it's the price to pay for what you want.",
+      "Except that price is never really shown to you. Your address ends up resold to advertisers, added to mailing lists, exposed in the next data breach.<br />Your inbox becomes a place you no longer want to open.",
+      "We built Veilix because we found that absurd.<br />Why should you have to choose between using a service and protecting your identity?",
       "With Veilix, you give an alias instead of your real address. No account to create, no password to remember. Just a key generated in your browser, that only you own.",
     ],
     pillars: ['No Account', 'No Logs', 'No Tracking', 'Open Source'],
@@ -60,7 +60,6 @@ export function SocialProof({ lang }: Props) {
             alignItems: 'center',
           }}
         >
-          {}
           <FadeInSection>
             <div
               style={{
@@ -87,7 +86,6 @@ export function SocialProof({ lang }: Props) {
             </div>
           </FadeInSection>
 
-          {}
           <FadeInSection delay={120}>
             <div>
               <div
@@ -132,13 +130,11 @@ export function SocialProof({ lang }: Props) {
                       color: '#64748b',
                       lineHeight: 1.8,
                     }}
-                  >
-                    {paragraph}
-                  </p>
+                    dangerouslySetInnerHTML={{ __html: paragraph }}
+                  />
                 ))}
               </div>
 
-              {}
               <div
                 style={{
                   display: 'flex',

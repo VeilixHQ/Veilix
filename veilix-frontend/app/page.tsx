@@ -3,7 +3,6 @@ import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { checkAuth } from '@/lib/api'
 import { T, Lang } from '@/lib/translations'
-
 import { BackToTop } from '@/components/landing/Utils'
 import { SiteNav } from '@/components/landing/SiteNav'
 import { Hero } from '@/components/landing/Hero'
@@ -35,22 +34,31 @@ export default function Home() {
         @keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
         @keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
         @keyframes marquee{0%{transform:translateX(0)}100%{transform:translateX(-33.333%)}}
+        
+        .pre-line { white-space: pre-line; }
+
         .nav-link{font-size:13px;color:#64748b;font-weight:500;text-decoration:none;transition:color .15s;cursor:pointer}
         .nav-link:hover{color:#a78bfa}
         .footer-link{font-size:13px;color:#475569;text-decoration:none;transition:color .15s}
         .footer-link:hover{color:#a78bfa}
-        .feat-card{background:#0d0d10;padding:26px 24px;transition:background .2s,transform .25s;cursor:default}
-        .feat-card:hover{background:#111118;transform:scale(1.025)}
+        
+        .feat-card{background:#0d0d10;padding:26px 24px;border-radius:14px;border:1px solid rgba(255,255,255,0.06);transition:background .2s,transform .25s,border-color .2s;cursor:default;white-space:pre-line}
+        .feat-card:hover{background:#111118;transform:translateY(-4px);border-color:rgba(124,58,237,0.3)}
+        
         .comp-card{transition:transform .25s}
         .comp-card:hover{transform:scale(1.02)}
+        
         .marquee-track{display:flex;width:max-content;animation:marquee 38s linear infinite}
         .marquee-track:hover{animation-play-state:paused}
         .marquee-item{display:flex;align-items:center;justify-content:center;padding:0 44px;border-right:1px solid rgba(255,255,255,0.05);transition:opacity .2s;opacity:.55;height:52px;min-width:100px}
         .marquee-item:hover{opacity:1}
-        .btn-access{padding:7px 16px;border-radius:7px;font-size:13px;font-weight:500;color:#94a3b8;background:transparent;border:1px solid rgba(255,255,255,0.08);text-decoration:none;transition:all .15s}
+        
+        .btn-access{padding:8px 14px;border-radius:8px;font-size:13px;font-weight:600;color:#94a3b8;background:transparent;border:1px solid rgba(255,255,255,0.08);text-decoration:none;transition:all .15s}
         .btn-access:hover{border-color:rgba(255,255,255,0.2);color:#f1f5f9}
-        .btn-start{padding:7px 16px;border-radius:7px;font-size:13px;font-weight:600;color:#fff;background:#7c3aed;text-decoration:none;transition:background .15s}
-        .btn-start:hover{background:#6d28d9}
+        
+        .btn-start{padding:8px 16px;border-radius:8px;font-size:13px;font-weight:600;color:#fff;background:linear-gradient(135deg, #7c3aed, #4f46e5);box-shadow:0 4px 12px rgba(124,58,237,0.25);text-decoration:none;transition:transform .15s, opacity .15s}
+        .btn-start:hover{opacity:.95;transform:translateY(-1px)}
+        
         @media(max-width:768px){
           .grid-2{grid-template-columns:1fr!important}
           .grid-3{grid-template-columns:1fr!important}

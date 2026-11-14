@@ -79,10 +79,9 @@ interface SiteNavProps {
   t: Translations
   lang: Lang
   setLang: (l: Lang) => void
-  
   mode?: 'public' | 'auth' | 'app'
   hideNavLinks?: boolean
-  rightSlot?: React.ReactNode // pour insérer le UserMenu dans le dashboard
+  rightSlot?: React.ReactNode
 }
 
 const LOGO_SIZE = 48
@@ -108,13 +107,20 @@ export function SiteNav({ t, lang, setLang, mode = 'public', hideNavLinks = fals
         {mode === 'public' && (
           <>
             <div style={{ width: 1, height: 20, background: 'rgba(255,255,255,0.06)' }} />
-            <Link href="/access" className="btn-access">{t.nav.login}</Link>
-            <Link href="/access" className="btn-start">{t.nav.start}</Link>
+            <Link href="/access?mode=restore" className="btn-access" style={{ padding: '8px 14px', borderRadius: 8, fontSize: 13, fontWeight: 600, color: '#94a3b8', textDecoration: 'none', transition: 'color .15s' }}>
+              {t.nav.login}
+            </Link>
+            <Link href="/access" className="btn-start" style={{ padding: '8px 16px', borderRadius: 8, fontSize: 13, fontWeight: 600, color: '#fff', background: 'linear-gradient(135deg, #7c3aed, #4f46e5)', textDecoration: 'none', boxShadow: '0 4px 12px rgba(124,58,237,0.25)' }}>
+              {t.nav.start}
+            </Link>
           </>
         )}
         {mode === 'auth' && (
-          <Link href="/" className="nav-link" style={{ textDecoration: 'none' }}>
-            ← {lang === 'fr' ? "Retour à l'accueil" : 'Back to home'}
+          <Link href="/" className="btn-start" style={{ display: 'inline-flex', alignItems: 'center', gap: 6, padding: '8px 14px', borderRadius: 8, fontSize: 13, fontWeight: 600, color: '#fff', background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.08)', textDecoration: 'none' }}>
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+              <line x1="19" y1="12" x2="5" y2="12" /><polyline points="12 19 5 12 12 5" />
+            </svg>
+            {lang === 'fr' ? 'Retour' : 'Back'}
           </Link>
         )}
         {mode === 'app' && rightSlot}

@@ -11,7 +11,7 @@ def get_current_key_id(
     db: Session = Depends(get_db),
 ) -> int:
     if len(x_veilix_key_id) != KEY_ID_LENGTH or not all(c in "0123456789abcdef" for c in x_veilix_key_id):
-        raise HTTPException(status_code=401, detail="Format de clé invalide")
+        raise HTTPException(status_code=401, detail="Unauthorized")
     key = require_active_key(db, x_veilix_key_id)
     return key.id
 

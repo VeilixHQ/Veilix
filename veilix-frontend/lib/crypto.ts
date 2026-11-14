@@ -1,5 +1,3 @@
-
-
 import * as bip39 from 'bip39'
 
 const DB_NAME = 'veilix'

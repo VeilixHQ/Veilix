@@ -1,20 +1,10 @@
-
-
-
-
 export const PT = {
   fr: {
     back: '← Retour',
     pricing: {
       kicker: 'Tarifs',
       title: 'Simple. Transparent.',
-      subtitle: 'Aucun compte requis pour commencer. Payez uniquement si vous avez besoin de plus.',
-      plans: [
-        { name: 'Starter', price: '0€', period: '', desc: 'Pour découvrir Veilix', cta: 'Commencer gratuitement', features: ['5 alias actifs', 'Forwarding email illimité', 'Dashboard complet', 'Activation / désactivation en un clic', 'Aucune carte requise'] },
-        { name: 'Pro', price: '4,99€', period: '/mois', desc: 'Pour un usage quotidien', cta: 'Passer Pro', features: ['100 alias actifs', 'Forwarding email illimité', 'Dashboard complet', 'Labels et organisation avancée', 'Support prioritaire', 'Alertes de fuite de données'] },
-        { name: 'Business', price: 'Bientôt', period: '', desc: 'Pour les équipes', cta: 'Bientôt disponible', features: ['Alias illimités', 'Gestion multi-utilisateurs', 'Domaine personnalisé', 'API dédiée'] },
-      ],
-      popular: 'Populaire',
+      subtitle: 'Testez gratuitement pendant 14 jours,\nNe payez que si Veilix vous convainc.',
       creditsTitle: "Besoin d'alias ponctuels ?",
       creditsDesc: "Achetez des alias à l'unité avec le système de crédits, sans vous engager dans un abonnement. Idéal pour un usage occasionnel.",
       creditsPacks: [
@@ -23,27 +13,18 @@ export const PT = {
         { amount: '50 alias', price: '6,99€' },
       ],
       faqTitle: 'Questions sur les tarifs',
-      faqs: [
-        { q: 'Puis-je changer de plan à tout moment ?', a: 'Oui, vous pouvez passer de Starter à Pro (ou inversement) à tout moment depuis votre dashboard.' },
-        { q: 'Les crédits expirent-ils ?', a: "Non, les alias achetés via crédits restent actifs tant que vous ne les supprimez pas vous-même." },
-        { q: 'Quels moyens de paiement acceptez-vous ?', a: "Carte bancaire, Apple Pay et Google Pay via Stripe. Le paiement en cryptomonnaies arrivera dans une prochaine version." },
-        { q: 'Y a-t-il un engagement ?', a: 'Aucun. Le plan Pro est sans engagement, résiliable à tout moment.' },
-      ],
-      ctaTitle: 'Prêt à protéger votre identité ?',
-      ctaSub: 'Commencez gratuitement, sans email ni mot de passe.',
-      ctaBtn: 'Créer ma clé maintenant',
     },
     confidentialite: {
       kicker: 'Légal',
       title: 'Politique de confidentialité',
-      updated: 'Dernière mise à jour : 1er juillet 2026',
+      updated: 'Dernière mise à jour : 18 octobre 2026',
       sections: [
         { title: '1. Qui sommes-nous ?', content: "Veilix est un service de protection d'identité numérique par alias email. Notre mission est de protéger votre vie privée en permettant la création d'alias email anonymes, sans nécessiter de compte utilisateur traditionnel." },
         { title: '2. Architecture No Account', content: "Veilix utilise une architecture \"No Account\" : aucun email, aucun mot de passe ne vous est demandé. À votre première utilisation, une clé cryptographique est générée localement dans votre navigateur. Seul un identifiant dérivé (key_id) est envoyé à nos serveurs — il est impossible de remonter à votre identité depuis cet identifiant." },
-        { title: '3. Données que nous collectons', content: "Nous collectons uniquement : (1) le key_id — un hash cryptographique anonyme, (2) les alias email que vous créez et les adresses de destination associées (chiffrées AES-256), (3) un email de récupération optionnel. Nous ne collectons jamais : votre nom, votre adresse IP de manière persistante, vos habitudes de navigation, le contenu de vos emails." },
+        { title: '3. Données que nous collectons', content: "Nous collectons uniquement : (1) le key_id — un hash cryptographique anonyme, (2) les alias email que vous créez et les adresses de destination associées (chiffrées AES-256), (3) un email de récupération optionnel, (4) l'identifiant client de notre prestataire de paiement et le statut de votre abonnement. Le paiement est traité par Stripe : Veilix ne conserve pas votre numéro de carte. Nous ne collectons jamais : votre nom, votre adresse IP de manière persistante, vos habitudes de navigation, le contenu de vos emails." },
         { title: '4. Vos emails', content: "Veilix ne lit pas, ne stocke pas et n'analyse pas le contenu de vos emails. Nous redirigeons simplement le flux entrant vers votre adresse de destination." },
         { title: '5. Hébergement et localisation des données', content: "Toutes les données sont hébergées en Europe, conformément au RGPD." },
-        { title: '6. Partage des données', content: "Nous ne vendons jamais vos données et ne les partageons avec aucun tiers à des fins publicitaires." },
+        { title: '6. Partage des données', content: "Nous ne vendons jamais vos données et ne les partageons avec aucun tiers à des fins publicitaires. Seul notre prestataire de paiement, Stripe, traite vos données de paiement." },
         { title: '7. Vos droits (RGPD)', content: "Droit d'accès, de rectification, à l'effacement, à la portabilité, d'opposition. Contactez-nous via la page Contact." },
         { title: '8. Cookies', content: "Veilix n'utilise pas de cookies à des fins publicitaires ou de tracking." },
         { title: '9. Sécurité', content: "Chiffrement TLS en transit, chiffrement AES-256 des adresses email en base, hachage cryptographique des identifiants." },
@@ -53,15 +34,15 @@ export const PT = {
     cgu: {
       kicker: 'Légal',
       title: "Conditions Générales d'Utilisation",
-      updated: 'Dernière mise à jour : 1er juillet 2026',
+      updated: 'Dernière mise à jour : 18 octobre 2026',
       sections: [
         { title: '1. Acceptation des conditions', content: "En utilisant Veilix, vous acceptez les présentes CGU." },
         { title: '2. Description du service', content: "Veilix permet de créer des alias email temporaires, sans compte utilisateur traditionnel." },
         { title: '3. Utilisation du service', content: "Interdiction d'utiliser Veilix pour spam, phishing ou contenus illégaux." },
-        { title: '4. Plans et tarification', content: "Starter gratuit (5 alias), Pro payant (100 alias, 4,99€/mois). Préavis de 30 jours pour tout changement de tarif." },
-        { title: '5. Paiement et remboursement', content: "Paiements sécurisés via Stripe. Remboursement possible sous 14 jours." },
+        { title: '4. Plans et tarification', content: "Veilix propose un essai de 14 jours, moyen de paiement requis. Plan Pro : 100 alias, 4,99€/mois ou 44,90€/an. Pack de lancement : offre limitée à 100 exemplaires, alias illimités, 69€/an, tarif bloqué tant que l'abonnement reste actif. Préavis de 30 jours pour tout changement de tarif." },
+        { title: '5. Essai, paiement et remboursement', content: "Paiements sécurisés via Stripe. Aucun débit pendant les 14 jours d'essai ; à l'issue de l'essai, l'abonnement démarre automatiquement, sauf annulation préalable. Remboursement possible sous 14 jours." },
         { title: '6. Disponibilité du service', content: "Service disponible 24/7, hors maintenance ponctuelle." },
-        { title: '7. Résiliation', content: 'Suppression possible à tout moment via "Oublier cette clé".' },
+        { title: '7. Résiliation', content: 'Vous pouvez résilier votre abonnement à tout moment depuis la gestion de votre abonnement. La suppression de votre clé est possible à tout moment via "Oublier cette clé".' },
         { title: '8. Limitation de responsabilité', content: "Responsabilité limitée aux sommes versées sur 12 mois." },
         { title: '9. Propriété intellectuelle', content: "Frontend open source, backend et marque propriétaires." },
         { title: '10. Modifications des CGU', content: "Préavis de 30 jours pour tout changement substantiel." },
@@ -93,7 +74,8 @@ export const PT = {
           category: 'Général',
           items: [
             { q: "Qu'est-ce que Veilix ?", a: "Veilix est un service de protection d'identité numérique par alias email. Il vous permet de créer des adresses email jetables qui redirigent les messages vers votre vraie boîte." },
-            { q: 'Veilix est-il gratuit ?', a: 'Oui. Le plan Starter est gratuit (5 alias). Le plan Pro (100 alias) coûte 4,99€/mois.' },
+            { q: 'Veilix est-il gratuit ?', a: "Veilix propose un essai de 14 jours, avec un moyen de paiement requis. Ensuite, le plan Pro (100 alias) coûte 4,99€/mois ou 44,90€/an, et le Pack de lancement (alias illimités, offre limitée à 100 exemplaires) 69€/an." },
+            { q: "Comment fonctionne l'essai de 14 jours ?", a: "Vous enregistrez un moyen de paiement, rien n'est débité pendant 14 jours. À la fin de l'essai, l'abonnement démarre automatiquement, sauf si vous l'avez annulé avant." },
             { q: 'Veilix est-il open source ?', a: 'Le frontend est open source. Le backend reste propriétaire pour des raisons de sécurité anti-abus.' },
           ],
         },
@@ -108,9 +90,9 @@ export const PT = {
         {
           category: 'Alias & Emails',
           items: [
-            { q: "Combien d'alias puis-je créer ?", a: '5 alias sur Starter, 100 sur Pro, plus des crédits à l\'unité.' },
+            { q: "Combien d'alias puis-je créer ?", a: '100 alias avec le plan Pro, illimités avec le Pack de lancement.' },
             { q: 'Mes emails sont-ils lus ou stockés ?', a: 'Non, jamais. Nous redirigeons le flux en temps réel.' },
-            { q: 'Puis-je répondre depuis un alias ?', a: 'Pas encore, prévu dans une prochaine version.' },
+            { q: 'Puis-je répondre depuis un alias ?', a: 'Oui, la réponse est envoyée depuis l\'alias, sans révéler votre vraie adresse.' },
             { q: 'Que se passe-t-il si je désactive un alias ?', a: 'Les emails sont ignorés. Réactivable à tout moment.' },
             { q: 'Puis-je choisir mon alias ?', a: 'Non, génération aléatoire pour garantir unicité et anonymat.' },
           ],
@@ -120,7 +102,8 @@ export const PT = {
           items: [
             { q: 'Veilix vend-il mes données ?', a: 'Non, jamais.' },
             { q: 'Veilix est-il conforme au RGPD ?', a: 'Oui, hébergement européen strict.' },
-            { q: 'Que contient la base de données de Veilix ?', a: 'key_id anonyme, alias, emails de destination chiffrés AES-256, email de récupération optionnel.' },
+            { q: 'Que contient la base de données de Veilix ?', a: "key_id anonyme, alias, emails de destination chiffrés AES-256, email de récupération optionnel, identifiant client du prestataire de paiement et statut de l'abonnement." },
+            { q: 'Que sait Stripe de moi ?', a: "Le paiement est traité par Stripe, notre prestataire de paiement, qui reçoit votre moyen de paiement et l'email associé au paiement. Veilix ne conserve pas votre numéro de carte." },
           ],
         },
       ],
@@ -132,7 +115,7 @@ export const PT = {
       title: 'Construire la privacy accessible à tous.',
       intro: "Veilix est né d'un constat simple : protéger son identité numérique ne devrait pas être réservé aux experts en sécurité.",
       origin: { title: "L'origine du projet", content: "Veilix a été créé en 2026 par un développeur passionné de cybersécurité et de privacy. Fatigué de voir son email envahi de spam après chaque inscription en ligne, il a voulu construire une solution simple, radicalement privée, et sans compromis." },
-      philosophy: { title: 'Notre philosophie', content: "Veilix ne vend pas des alias email. Veilix vend du contrôle, de la séparation d'identité, et de la protection numérique.", points: ['No Account — Aucune inscription requise', 'No Logs — Vos emails ne sont jamais lus ni stockés', "No Tracking — Vous n'êtes pas le produit", 'Open Source — Code frontend auditable publiquement'] },
+      philosophy: { title: 'Notre philosophie', content: "Veilix ne vend pas des alias email. Veilix vend du contrôle, de la séparation d'identité, et de la protection numérique.", points: ['No Account — Aucun email ni mot de passe requis', 'No Logs — Vos emails ne sont jamais lus ni stockés', "No Tracking — Vous n'êtes pas le produit", 'Open Source — Code frontend auditable publiquement'] },
       architecture: { title: 'Architecture No Account', content: "Veilix a été l'un des premiers services SaaS à implémenter une architecture \"No Account\" basée sur la cryptographie BIP39 — le même standard utilisé par les wallets crypto." },
       stats: [
         { value: '2026', label: 'Année de création' },
@@ -140,8 +123,8 @@ export const PT = {
         { value: '0', label: 'Données vendues' },
       ],
       ctaTitle: 'Prêt à reprendre le contrôle ?',
-      ctaSub: 'Commencez gratuitement, sans email ni mot de passe.',
-      ctaBtn: 'Commencer',
+      ctaSub: 'Essayez Veilix pendant 14 jours, annulable à tout moment.',
+      ctaBtn: 'Essayer 14 jours',
     },
     access: {
       badge: 'No Account · No Logs',
@@ -150,9 +133,9 @@ export const PT = {
       generateBtn: 'Générer ma clé',
       restoreBtn: "J'ai déjà une clé",
       reassurance: [
-        { icon: '🔒', text: 'Clé générée et stockée uniquement dans votre navigateur' },
-        { icon: '🚫', text: 'Aucune donnée personnelle envoyée à nos serveurs' },
-        { icon: '🔑', text: 'Vous seul possédez votre phrase de récupération' },
+        { text: 'Clé générée et stockée uniquement dans votre navigateur' },
+        { text: 'Aucune donnée personnelle envoyée à nos serveurs' },
+        { text: 'Vous seul possédez votre phrase de récupération' },
       ],
       generatingText: 'Génération de votre clé...',
       generatingSub: 'Chiffrement local en cours',
@@ -185,13 +168,7 @@ export const PT = {
     pricing: {
       kicker: 'Pricing',
       title: 'Simple. Transparent.',
-      subtitle: 'No account needed to get started. Pay only if you need more.',
-      plans: [
-        { name: 'Starter', price: '€0', period: '', desc: 'To discover Veilix', cta: 'Start for free', features: ['5 active aliases', 'Unlimited email forwarding', 'Full dashboard', 'One-click activation / deactivation', 'No card required'] },
-        { name: 'Pro', price: '€4.99', period: '/month', desc: 'For daily use', cta: 'Go Pro', features: ['100 active aliases', 'Unlimited email forwarding', 'Full dashboard', 'Advanced labels & organization', 'Priority support', 'Data breach alerts'] },
-        { name: 'Business', price: 'Soon', period: '', desc: 'For teams', cta: 'Coming soon', features: ['Unlimited aliases', 'Multi-user management', 'Custom domain', 'Dedicated API'] },
-      ],
-      popular: 'Popular',
+      subtitle: 'Try free for 14 days,\nOnly pay if Veilix works for you.',
       creditsTitle: 'Need aliases occasionally?',
       creditsDesc: 'Buy aliases one by one with the credit system, no subscription required. Perfect for occasional use.',
       creditsPacks: [
@@ -200,27 +177,18 @@ export const PT = {
         { amount: '50 aliases', price: '€6.99' },
       ],
       faqTitle: 'Pricing questions',
-      faqs: [
-        { q: 'Can I change plans anytime?', a: 'Yes, you can switch from Starter to Pro (or back) anytime from your dashboard.' },
-        { q: 'Do credits expire?', a: 'No, aliases bought with credits stay active until you delete them yourself.' },
-        { q: 'What payment methods do you accept?', a: 'Credit card, Apple Pay and Google Pay via Stripe. Crypto payments are coming in a future version.' },
-        { q: 'Is there a commitment?', a: 'None. The Pro plan has no commitment and can be cancelled anytime.' },
-      ],
-      ctaTitle: 'Ready to protect your identity?',
-      ctaSub: 'Start for free, no email or password needed.',
-      ctaBtn: 'Create my key now',
     },
     confidentialite: {
       kicker: 'Legal',
       title: 'Privacy Policy',
-      updated: 'Last updated: July 1, 2026',
+      updated: 'Last updated: October 18, 2026',
       sections: [
         { title: '1. Who we are', content: "Veilix is a digital identity protection service using email aliases. Our mission is to protect your privacy by enabling anonymous email alias creation, without requiring a traditional user account." },
         { title: '2. No Account Architecture', content: "Veilix uses a \"No Account\" architecture: no email, no password required. On first use, a cryptographic key is generated locally in your browser. Only a derived identifier (key_id) is sent to our servers." },
-        { title: '3. Data we collect', content: "We only collect: (1) the key_id — an anonymous cryptographic hash, (2) the email aliases you create and their associated destination addresses (AES-256 encrypted), (3) an optional recovery email." },
+        { title: '3. Data we collect', content: "We only collect: (1) the key_id — an anonymous cryptographic hash, (2) the email aliases you create and their associated destination addresses (AES-256 encrypted), (3) an optional recovery email, (4) the customer identifier from our payment provider and your subscription status. Payments are processed by Stripe: Veilix does not store your card number." },
         { title: '4. Your emails', content: "Veilix does not read, store or analyze the content of your emails. We simply redirect the incoming flow to your destination address." },
         { title: '5. Data hosting and location', content: "All data is hosted in Europe, in compliance with GDPR." },
-        { title: '6. Data sharing', content: "We never sell your data and never share it with third parties for advertising purposes." },
+        { title: '6. Data sharing', content: "We never sell your data and never share it with third parties for advertising purposes. Only our payment provider, Stripe, processes your payment data." },
         { title: '7. Your rights (GDPR)', content: "Right to access, rectify, erase, port, and object. Contact us via the Contact page." },
         { title: '8. Cookies', content: "Veilix does not use cookies for advertising or tracking purposes." },
         { title: '9. Security', content: "TLS encryption in transit, AES-256 encryption of email addresses in database, cryptographic hashing of identifiers." },
@@ -230,15 +198,15 @@ export const PT = {
     cgu: {
       kicker: 'Legal',
       title: 'Terms of Service',
-      updated: 'Last updated: July 1, 2026',
+      updated: 'Last updated: October 18, 2026',
       sections: [
         { title: '1. Acceptance of terms', content: "By using Veilix, you accept these Terms of Service." },
         { title: '2. Service description', content: "Veilix allows the creation of temporary email aliases, without a traditional user account." },
         { title: '3. Service usage', content: "Prohibited to use Veilix for spam, phishing or illegal content." },
-        { title: '4. Plans and pricing', content: "Free Starter (5 aliases), paid Pro (100 aliases, €4.99/month). 30-day notice for any pricing change." },
-        { title: '5. Payment and refund', content: "Secure payments via Stripe. Refund possible within 14 days." },
+        { title: '4. Plans and pricing', content: "Veilix offers a 14-day trial, payment method required. Pro plan: 100 aliases, €4.99/month or €44.90/year. Launch pack: limited to 100 copies, unlimited aliases, €69/year, price locked as long as the subscription stays active. 30-day notice for any pricing change." },
+        { title: '5. Trial, payment and refund', content: "Secure payments via Stripe. No charge during the 14-day trial; when the trial ends, the subscription starts automatically unless cancelled beforehand. Refund possible within 14 days." },
         { title: '6. Service availability', content: "Service available 24/7, except scheduled maintenance." },
-        { title: '7. Termination', content: 'Deletion possible anytime via "Forget this key".' },
+        { title: '7. Termination', content: 'You can cancel your subscription at any time from your subscription settings. Deleting your key is possible anytime via "Forget this key".' },
         { title: '8. Limitation of liability', content: "Liability limited to amounts paid over 12 months." },
         { title: '9. Intellectual property', content: "Frontend open source, backend and brand proprietary." },
         { title: '10. Terms modifications', content: "30-day notice for any substantial change." },
@@ -270,7 +238,8 @@ export const PT = {
           category: 'General',
           items: [
             { q: 'What is Veilix?', a: 'Veilix is a digital identity protection service using email aliases. It lets you create disposable email addresses that forward to your real inbox.' },
-            { q: 'Is Veilix free?', a: 'Yes. The Starter plan is free (5 aliases). The Pro plan (100 aliases) costs €4.99/month.' },
+            { q: 'Is Veilix free?', a: 'Veilix offers a 14-day trial, payment method required. After that, the Pro plan (100 aliases) costs €4.99/month or €44.90/year, and the Launch pack (unlimited aliases, limited to 100 copies) €69/year.' },
+            { q: 'How does the 14-day trial work?', a: 'You add a payment method, nothing is charged for 14 days. When the trial ends, your subscription starts automatically unless you cancelled before.' },
             { q: 'Is Veilix open source?', a: 'The frontend is open source. The backend remains proprietary for anti-abuse security reasons.' },
           ],
         },
@@ -285,9 +254,9 @@ export const PT = {
         {
           category: 'Aliases & Emails',
           items: [
-            { q: 'How many aliases can I create?', a: '5 on Starter, 100 on Pro, plus one-off credits.' },
+            { q: 'How many aliases can I create?', a: '100 with the Pro plan, unlimited with the Launch pack.' },
             { q: 'Are my emails read or stored?', a: 'No, never. We redirect the flow in real time.' },
-            { q: 'Can I reply from an alias?', a: 'Not yet, planned for a future version.' },
+            { q: 'Can I reply from an alias?', a: 'Yes, your reply is sent from the alias, without revealing your real address.' },
             { q: 'What happens if I disable an alias?', a: 'Emails are ignored. Reactivatable anytime.' },
             { q: 'Can I choose my alias?', a: 'No, random generation to guarantee uniqueness and anonymity.' },
           ],
@@ -297,7 +266,8 @@ export const PT = {
           items: [
             { q: 'Does Veilix sell my data?', a: 'No, never.' },
             { q: 'Is Veilix GDPR compliant?', a: 'Yes, strict European hosting.' },
-            { q: "What does Veilix's database contain?", a: 'Anonymous key_id, aliases, AES-256 encrypted destination emails, optional recovery email.' },
+            { q: "What does Veilix's database contain?", a: 'Anonymous key_id, aliases, AES-256 encrypted destination emails, optional recovery email, payment provider customer identifier and subscription status.' },
+            { q: 'What does Stripe know about me?', a: 'Payments are processed by Stripe, our payment provider, which receives your payment method and the email linked to the payment. Veilix does not store your card number.' },
           ],
         },
       ],
@@ -309,7 +279,7 @@ export const PT = {
       title: 'Building privacy accessible to everyone.',
       intro: 'Veilix was born from a simple observation: protecting your digital identity should not be reserved for security experts.',
       origin: { title: 'The origin of the project', content: 'Veilix was created in 2026 by a developer passionate about cybersecurity and privacy. Tired of seeing his email flooded with spam after every online sign-up, he wanted to build a simple, radically private, uncompromising solution.' },
-      philosophy: { title: 'Our philosophy', content: 'Veilix does not sell email aliases. Veilix sells control, identity separation, and digital protection.', points: ['No Account — No sign-up required', 'No Logs — Your emails are never read or stored', 'No Tracking — You are not the product', 'Open Source — Frontend code publicly auditable'] },
+      philosophy: { title: 'Our philosophy', content: 'Veilix does not sell email aliases. Veilix sells control, identity separation, and digital protection.', points: ['No Account — No email or password required', 'No Logs — Your emails are never read or stored', 'No Tracking — You are not the product', 'Open Source — Frontend code publicly auditable'] },
       architecture: { title: 'No Account Architecture', content: 'Veilix was one of the first SaaS services to implement a "No Account" architecture based on BIP39 cryptography — the same standard used by crypto wallets.' },
       stats: [
         { value: '2026', label: 'Year founded' },
@@ -317,8 +287,8 @@ export const PT = {
         { value: '0', label: 'Data sold' },
       ],
       ctaTitle: 'Ready to take back control?',
-      ctaSub: 'Start for free, no email or password needed.',
-      ctaBtn: 'Get started',
+      ctaSub: 'Try Veilix for 14 days, cancel anytime.',
+      ctaBtn: 'Try 14 days',
     },
     access: {
       badge: 'No Account · No Logs',
@@ -327,9 +297,9 @@ export const PT = {
       generateBtn: 'Generate my key',
       restoreBtn: 'I already have a key',
       reassurance: [
-        { icon: '🔒', text: 'Key generated and stored only in your browser' },
-        { icon: '🚫', text: 'No personal data sent to our servers' },
-        { icon: '🔑', text: 'Only you own your recovery phrase' },
+        { text: 'Key generated and stored only in your browser' },
+        { text: 'No personal data sent to our servers' },
+        { text: 'Only you own your recovery phrase' },
       ],
       generatingText: 'Generating your key...',
       generatingSub: 'Local encryption in progress',
