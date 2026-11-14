@@ -1,8 +1,7 @@
-import os
-
+from app.core.config import ADMIN_KEY_IDS
 from app.core.keys import stored_key_id
 
-ADMIN_KEYS = {stored_key_id(k.strip()) for k in os.getenv("ADMIN_KEY_IDS", "").split(",") if k.strip()}
+ADMIN_KEYS = {stored_key_id(k.strip()) for k in ADMIN_KEY_IDS.split(",") if k.strip()}
 
 PLAN_QUOTAS = {
     "pro": 100,

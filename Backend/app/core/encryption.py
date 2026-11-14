@@ -9,10 +9,11 @@ from cryptography.hazmat.primitives import hashes
 from cryptography.hazmat.primitives.ciphers.aead import AESGCM
 from cryptography.hazmat.primitives.kdf.hkdf import HKDF
 from fastapi import HTTPException
+from app.core.config import ENCRYPTION_KEY, HMAC_SECRET
 
 
 _KEYS: dict[int, str | None] = {
-    1: os.getenv("ENCRYPTION_KEY"),
+    1: ENCRYPTION_KEY,
 
 }
 
@@ -71,7 +72,7 @@ def decrypt(value: str, version: int = 1) -> str:
 
 
 def hash_email(email: str) -> str:
-    secret = os.getenv("HMAC_SECRET")
+    secret = HMAC_SECRET
     if not secret:
         raise RuntimeError(
             "HMAC_SECRET manquante dans les variables d'environnement. "
