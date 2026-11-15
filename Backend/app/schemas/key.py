@@ -16,6 +16,14 @@ class VerifyKeyResponse(BaseModel):
     plan: Optional[str] = None
     status: Optional[str] = None
 
+class KeyAccountResponse(BaseModel):
+    plan: str
+    status: str
+    credits: int
+    aliases_used: int
+    alias_quota: Optional[int] = None
+    created_at: Optional[datetime] = None
+
 class KeyResponse(BaseModel):
     model_config = ConfigDict(from_attributes=True)
 

@@ -1,6 +1,6 @@
 from datetime import datetime, timezone
 
-from sqlalchemy import Column, Integer, String, DateTime, Boolean, false
+from sqlalchemy import Column, Integer, String, DateTime, Boolean, CheckConstraint, false
 from app.db.base import Base
 
 
@@ -10,6 +10,10 @@ def _utc_now() -> datetime:
 
 class Key(Base):
     __tablename__ = "keys"
+    __table_args__ = (
+        CheckConstraint("plan IN ('credits', 'pro', 'pack', 'premium')", name="ck_keys_plan"),
+        CheckConstraint("credits >= 0", name="ck_keys_credits_positifs"),
+    )
 
     id = Column(Integer, primary_key=True, index=True)
     key_id = Column(String, unique=True, index=True, nullable=False)

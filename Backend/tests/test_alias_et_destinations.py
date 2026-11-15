@@ -2,6 +2,7 @@ from datetime import datetime, timedelta, timezone
 
 import pytest
 from fastapi import HTTPException
+from sqlalchemy.exc import IntegrityError
 
 from app.core.encryption import encrypt, hash_email
 from app.core.rate_limit import DAILY_LIMIT, enforce_daily_limit
@@ -123,11 +124,11 @@ def test_quota_du_plan_pro(client, db):
     assert reponse.json()["detail"] == "LIMIT_REACHED_PRO"
 
 
-def test_plan_inconnu_ne_peut_rien_creer(client, db):
-    cle = inscrire(client)
-    db.query(Key).update({Key.plan: "inexistant"})
-    db.commit()
-    assert client.post("/alias", headers=entetes(cle), json={"destination_email": "alice@example.com"}).status_code == 403
+def test_plan_inconnu_refuse_par_la_base(client, db):
+    inscrire(client)
+    with pytest.raises(IntegrityError):
+        db.query(Key).update({Key.plan: "inexistant"})
+    db.rollback()
 
 
 def test_limite_quotidienne_d_actions():

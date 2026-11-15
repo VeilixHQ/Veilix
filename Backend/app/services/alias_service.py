@@ -5,7 +5,7 @@ from app.models.alias import Alias
 from app.models.key import Key
 from app.core.config import DOMAIN, INTERNAL_DOMAINS
 from app.core.encryption import encrypt, hash_email
-from app.plans import get_effective_plan, can_create_alias
+from app.plans import get_effective_plan, check_alias_allowance, limit_detail
 from app.services.key_service import get_key_by_id
 from app.services.destination_service import is_verified
 
@@ -26,19 +26,26 @@ def _resolve_key(db: Session, key_arg) -> Key:
         raise HTTPException(status_code=401, detail="Clé inconnue")
     return key_obj
 
-def _check_quota(db: Session, key_arg):
-    key_obj = _resolve_key(db, key_arg)
-    current_count = db.query(Alias).filter(Alias.key_id == key_obj.id).count()
-    
-    effective_plan = get_effective_plan(key_obj.key_id, key_obj.plan)
-    if getattr(key_obj, "is_admin", False):
-        effective_plan = "admin"
+def count_aliases(db: Session, key_obj: Key) -> int:
+    return db.query(Alias).filter(Alias.key_id == key_obj.id).count()
 
-    if not can_create_alias(effective_plan, current_count):
-        raise HTTPException(
-            status_code=403,
-            detail="LIMIT_REACHED_PRO"
-        )
+def _lock_key(db: Session, key_obj: Key) -> Key:
+    return (
+        db.query(Key)
+        .filter(Key.id == key_obj.id)
+        .with_for_update()
+        .populate_existing()
+        .one()
+    )
+
+def _reserve_slot(db: Session, key_obj: Key) -> None:
+    plan = get_effective_plan(key_obj.key_id, key_obj.plan, key_obj.is_admin)
+    allowance = check_alias_allowance(plan, count_aliases(db, key_obj), key_obj.credits)
+    if not allowance.allowed:
+        db.rollback()
+        raise HTTPException(status_code=403, detail=limit_detail(plan))
+    if allowance.uses_credit:
+        key_obj.credits -= 1
 
 def _generate_alias_email(db: Session) -> str:
     for _ in range(ALIAS_GENERATION_ATTEMPTS):
@@ -52,7 +59,8 @@ def create_alias(db: Session, key_arg, destination_email: str, label: str | None
     destination = destination_email.strip()
     if destination.rpartition("@")[2].lower() in INTERNAL_DOMAINS:
         raise HTTPException(status_code=400, detail="Une adresse Veilix ne peut pas servir de destination.")
-    _check_quota(db, key_obj)
+    key_obj = _lock_key(db, key_obj)
+    _reserve_slot(db, key_obj)
 
     encrypted_dest, key_version = encrypt(destination)
     email_hmac = hash_email(destination)
