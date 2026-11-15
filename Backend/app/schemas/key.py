@@ -1,4 +1,4 @@
-from pydantic import BaseModel, EmailStr, Field
+from pydantic import BaseModel, ConfigDict, EmailStr, Field
 from typing import Optional
 from datetime import datetime
 
@@ -17,10 +17,10 @@ class VerifyKeyResponse(BaseModel):
     status: Optional[str] = None
 
 class KeyResponse(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+
     key_id: str
     plan: str
     status: str
     credits: int
     created_at: Optional[datetime] = None
-    class Config:
-        from_attributes = True
