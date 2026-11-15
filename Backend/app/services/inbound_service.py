@@ -8,7 +8,7 @@ from app.core.config import INTERNAL_DOMAINS
 from app.core.encryption import decrypt, is_encrypted
 from app.models.alias import Alias
 from app.models.key import Key
-from app.services import email_service, reply_service
+from app.services import email_service, reply_service, sender_auth
 from app.services.destination_service import is_verified
 
 logger = logging.getLogger("veilix.inbound")
@@ -28,6 +28,7 @@ class InboundMessage:
     text: str
     html: str
     attachments: list[tuple[str, bytes, str]] = field(default_factory=list)
+    headers: list[tuple[str, str]] = field(default_factory=list)
 
 
 def normalize_address(value: str) -> str:
@@ -92,6 +93,9 @@ def _forward(db: Session, recipient: str, sender: str, message: InboundMessage) 
     destination = _deliverable(db, alias)
     if not destination:
         return {"status": "ignored"}
+    if sender_auth.obviously_spoofed(message.headers):
+        logger.warning("Message refusé : expéditeur usurpé (SPF en échec, DKIM non valide).")
+        return {"status": "ignored"}
     display_name = clean(parseaddr(message.from_header or "")[0]) or sender
     data = {
         "from": formataddr((f"{display_name} via Veilix", alias.alias_email)),
@@ -114,6 +118,12 @@ def _reply(db: Session, token: str, sender: str, message: InboundMessage) -> dic
     owner = _deliverable(db, alias)
     if not owner or sender != owner:
         logger.warning("Réponse refusée : expéditeur non autorisé.")
+        return {"status": "ignored"}
+    if not sender_auth.sender_authenticated(message.headers, message.from_header, message.envelope_sender):
+        if sender_auth.has_verdict(message.headers):
+            logger.warning("Réponse refusée : expéditeur non authentifié par SPF ou DKIM.")
+        else:
+            logger.warning("Réponse refusée : verdict SPF/DKIM absent, activer « Mark spam with MIME headers » dans Mailgun.")
         return {"status": "ignored"}
     data = {
         "from": alias.alias_email,

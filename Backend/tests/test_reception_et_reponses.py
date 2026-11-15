@@ -1,4 +1,6 @@
+import json
 import logging
+from email.utils import parseaddr
 
 import pytest
 
@@ -20,12 +22,16 @@ def alias_actif(client, emails):
     return {"cle": cle, **alias}
 
 
-def recevoir(client, destinataire, expediteur=CORRESPONDANT, fichiers=None, **champs):
+SPF_OK = [["X-Mailgun-Spf", "Pass"]]
+
+
+def recevoir(client, destinataire, expediteur=CORRESPONDANT, fichiers=None, entetes_mailgun=SPF_OK, **champs):
     data = {
         **signature_mailgun(),
         "recipient": destinataire,
         "from": expediteur,
-        "sender": "bounce@exemple.org",
+        "sender": parseaddr(expediteur)[1],
+        "message-headers": json.dumps(entetes_mailgun),
         "subject": "Facture de novembre",
         "body-plain": "Bonjour, voici la facture.",
         "body-html": "<p>Bonjour, voici la facture.</p>",
@@ -199,7 +205,126 @@ def test_aucune_adresse_dans_les_journaux(client, emails, alias_actif, caplog):
 
 
 def test_sujet_et_nom_nettoyes_des_retours_a_la_ligne(client, emails, alias_actif):
-    recevoir(client, alias_actif["alias_email"], expediteur="Jean\r\nBcc: x@y.z <jean@exemple.org>", subject="Ligne 1\r\nBcc: cible@exemple.org")
+    recevoir(client, alias_actif["alias_email"], expediteur="Jean\r\nBcc: x@y.z <jean@exemple.org>", sender="jean@exemple.org", subject="Ligne 1\r\nBcc: cible@exemple.org")
     envoye = emails[0]
     assert "\n" not in envoye["subject"] and "\r" not in envoye["subject"]
     assert "\n" not in envoye["from"] and "\r" not in envoye["from"]
+
+
+def preparer_reponse(client, emails, alias_actif):
+    recevoir(client, alias_actif["alias_email"])
+    emails.clear()
+    return adresse_de_reponse_pour(client, alias_actif)
+
+
+def adresse_de_reponse_pour(client, alias_actif):
+    from app.db.session import SessionLocal
+    from app.services import reply_service
+
+    with SessionLocal() as session:
+        alias = session.query(Alias).filter(Alias.id == alias_actif["id"]).one()
+        return reply_service.reply_address(session, alias, "jean.dupont@exemple.org")
+
+
+def repondre(client, retour, entetes_mailgun, enveloppe="alice@example.com", expediteur="Alice <alice@example.com>"):
+    return recevoir(client, retour, expediteur=expediteur, entetes_mailgun=entetes_mailgun, sender=enveloppe).json()
+
+
+def test_reponse_refusee_sans_verdict_spf_dkim(client, emails, alias_actif, caplog):
+    retour = preparer_reponse(client, emails, alias_actif)
+    with caplog.at_level(logging.WARNING):
+        assert repondre(client, retour, []) == {"status": "ignored"}
+    assert "Mark spam with MIME headers" in caplog.text
+    assert emails == []
+
+
+@pytest.mark.parametrize("verdict", ["Fail", "SoftFail", "Neutral"])
+def test_reponse_refusee_si_spf_non_valide(client, emails, alias_actif, verdict):
+    retour = preparer_reponse(client, emails, alias_actif)
+    assert repondre(client, retour, [["X-Mailgun-Spf", verdict]]) == {"status": "ignored"}
+    assert emails == []
+
+
+@pytest.mark.parametrize("enveloppe", ["pirate@attaquant.org", "x@evilexample.com", "x@example.com.attaquant.org", ""])
+def test_reponse_refusee_si_spf_valide_pour_un_autre_domaine(client, emails, alias_actif, enveloppe):
+    retour = preparer_reponse(client, emails, alias_actif)
+    assert repondre(client, retour, SPF_OK, enveloppe=enveloppe) == {"status": "ignored"}
+    assert emails == []
+
+
+def test_reponse_acceptee_avec_sous_domaine_aligne(client, emails, alias_actif):
+    retour = preparer_reponse(client, emails, alias_actif)
+    assert repondre(client, retour, SPF_OK, enveloppe="bounce@mail.example.com") == {"status": "replied"}
+
+
+def test_reponse_acceptee_par_dkim_aligne_meme_si_spf_echoue(client, emails, alias_actif):
+    retour = preparer_reponse(client, emails, alias_actif)
+    entetes_dkim = [
+        ["X-Mailgun-Spf", "Fail"],
+        ["X-Mailgun-Dkim-Check-Result", "Pass"],
+        ["DKIM-Signature", "v=1; a=rsa-sha256; d=example.com; s=s1; b=abc"],
+    ]
+    assert repondre(client, retour, entetes_dkim, enveloppe="pirate@attaquant.org") == {"status": "replied"}
+
+
+def test_dkim_refuse_si_une_signature_vient_d_un_autre_domaine(client, emails, alias_actif):
+    retour = preparer_reponse(client, emails, alias_actif)
+    entetes_dkim = [
+        ["X-Mailgun-Dkim-Check-Result", "Pass"],
+        ["DKIM-Signature", "v=1; d=attaquant.org; s=s1; b=abc"],
+        ["DKIM-Signature", "v=1; d=example.com; s=s1; b=faux"],
+    ]
+    assert repondre(client, retour, entetes_dkim, enveloppe="pirate@attaquant.org") == {"status": "ignored"}
+
+
+def test_dkim_refuse_sans_signature(client, emails, alias_actif):
+    retour = preparer_reponse(client, emails, alias_actif)
+    assert repondre(client, retour, [["X-Mailgun-Dkim-Check-Result", "Pass"]], enveloppe="pirate@attaquant.org") == {"status": "ignored"}
+
+
+@pytest.mark.parametrize("entetes_injectes", [
+    [["X-Mailgun-Spf", "Fail"], ["X-Mailgun-Spf", "Pass"]],
+    [["x-mailgun-spf", "Pass"], ["X-Mailgun-Spf", "Fail"]],
+    [["X-Mailgun-Dkim-Check-Result", "Pass"], ["X-Mailgun-Dkim-Check-Result", "Fail"], ["X-Mailgun-Spf", "Fail"], ["DKIM-Signature", "d=example.com; b=x"]],
+])
+def test_verdict_injecte_par_l_expediteur_rend_le_message_suspect(client, emails, alias_actif, entetes_injectes):
+    retour = preparer_reponse(client, emails, alias_actif)
+    assert repondre(client, retour, entetes_injectes) == {"status": "ignored"}
+    assert emails == []
+
+
+def test_entetes_illisibles_traites_comme_absents(client, emails, alias_actif):
+    retour = preparer_reponse(client, emails, alias_actif)
+    reponse = recevoir(client, retour, expediteur="alice@example.com", sender="alice@example.com", entetes_mailgun=[], **{"message-headers": "{pas du json"})
+    assert reponse.json() == {"status": "ignored"}
+
+
+def test_transfert_refuse_si_expediteur_manifestement_usurpe(client, emails, alias_actif):
+    reponse = recevoir(client, alias_actif["alias_email"], entetes_mailgun=[["X-Mailgun-Spf", "Fail"]])
+    assert reponse.json() == {"status": "ignored"}
+    assert emails == []
+
+
+@pytest.mark.parametrize("entetes_mailgun", [
+    [["X-Mailgun-Spf", "Fail"], ["X-Mailgun-Dkim-Check-Result", "Pass"]],
+    [["X-Mailgun-Spf", "SoftFail"]],
+    [["X-Mailgun-Spf", "Neutral"]],
+    [],
+])
+def test_transfert_maintenu_si_pas_d_usurpation_avere(client, emails, alias_actif, entetes_mailgun):
+    reponse = recevoir(client, alias_actif["alias_email"], entetes_mailgun=entetes_mailgun)
+    assert reponse.json() == {"status": "forwarded"}
+
+
+def test_entetes_en_json_natif_acceptes(client, emails, alias_actif):
+    retour = preparer_reponse(client, emails, alias_actif)
+    corps = {
+        "signature": signature_mailgun(),
+        "recipient": retour,
+        "from": "alice@example.com",
+        "sender": "alice@example.com",
+        "subject": "Re",
+        "body-plain": "ok",
+        "message-headers": SPF_OK,
+    }
+    assert client.post("/email/inbound", json=corps).json() == {"status": "replied"}

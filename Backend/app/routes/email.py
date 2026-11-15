@@ -7,7 +7,7 @@ from sqlalchemy.orm import Session
 
 from app.core.mailgun import claim_token, release_token, verify_signature
 from app.db.session import get_db
-from app.services import inbound_service
+from app.services import inbound_service, sender_auth
 from app.services.inbound_service import InboundMessage
 
 logger = logging.getLogger("veilix.email")
@@ -74,6 +74,7 @@ async def inbound(request: Request, db: Session = Depends(get_db)):
         text=str(data.get("body-plain") or data.get("body") or ""),
         html=str(data.get("body-html") or ""),
         attachments=await _read_attachments(uploads),
+        headers=sender_auth.parse_headers(data.get("message-headers")),
     )
 
     try:
