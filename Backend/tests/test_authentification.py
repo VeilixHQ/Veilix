@@ -32,13 +32,14 @@ def test_empreinte_stockee_ne_permet_pas_de_se_connecter(client, db):
     assert client.post("/key/verify", json={"key_id": stocke}).status_code == 422
 
 
-def test_cle_et_email_de_recuperation_jamais_en_clair(client, db):
-    cle = inscrire(client, recovery_email="secours@example.com")
+def test_cle_et_email_de_contact_jamais_en_clair(client, db):
+    cle = inscrire(client, contact_email="secours@example.com")
     enregistrement = db.query(Key).one()
     assert enregistrement.key_id.startswith("h:")
     assert cle not in enregistrement.key_id
-    assert enregistrement.recovery_email.startswith("v2:")
-    assert "secours" not in enregistrement.recovery_email
+    assert enregistrement.contact_email.startswith("v2:")
+    assert "secours" not in enregistrement.contact_email
+    assert "secours" not in enregistrement.contact_email_hmac
 
 
 def test_verify_ne_divulgue_rien_pour_une_cle_inconnue(client):
@@ -62,11 +63,16 @@ def test_un_utilisateur_ne_touche_pas_aux_alias_d_un_autre(client, db):
 
 def test_inscription_limitee_en_frequence(client):
     codes = [client.post("/key/register", json={"key_id": nouvelle_cle()}).status_code for _ in range(21)]
-    assert codes[:20] == [200] * 20
+    assert 429 not in codes[:20]
     assert codes[20] == 429
 
 
-@pytest.mark.xfail(strict=True, reason="Faille connue : /key/register active un plan Pro sans paiement, à corriger avec Stripe")
-def test_inscription_n_active_pas_de_plan_sans_paiement(client, db):
-    inscrire(client)
-    assert db.query(Key).one().status != "active"
+def test_inscription_sans_code_refusee(client, db):
+    reponse = client.post("/key/register", json={"key_id": nouvelle_cle(), "contact_email": "a@example.com", "accept_terms": True})
+    assert reponse.status_code == 422
+    assert db.query(Key).count() == 0
+
+
+def test_inscription_publique_n_active_pas_de_plan_sans_paiement(client, db):
+    inscrire(client, phase="public", plan=None)
+    assert db.query(Key).one().status == "pending_payment"

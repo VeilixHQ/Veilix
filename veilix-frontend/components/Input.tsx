@@ -7,7 +7,7 @@ interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
 
 export const Input = forwardRef<HTMLInputElement, InputProps>(({ label, error, style, ...props }, ref) => (
   <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
-    {label && <label style={{ fontSize: 13, fontWeight: 500, color: '#94a3b8' }}>{label}</label>}
+    {label && <label htmlFor={props.id} style={{ fontSize: 13, fontWeight: 500, color: '#94a3b8' }}>{label}</label>}
     <input
       ref={ref}
       style={{

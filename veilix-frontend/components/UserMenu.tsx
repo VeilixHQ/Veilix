@@ -4,14 +4,16 @@ import { createPortal } from 'react-dom'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { forgetIdentity } from '@/lib/crypto'
+import { AccountBadge, BadgeDefs, BadgeRow } from '@/components/Badges'
 
 interface Props {
   plan: string
   keyIdShort: string
   fullKeyId: string
+  badges?: AccountBadge[]
 }
 
-export function UserMenu({ plan, keyIdShort, fullKeyId }: Props) {
+export function UserMenu({ plan, keyIdShort, fullKeyId, badges = [] }: Props) {
   const router = useRouter()
   const [open, setOpen] = useState(false)
   const [showKeyModal, setShowKeyModal] = useState(false)
@@ -46,6 +48,7 @@ export function UserMenu({ plan, keyIdShort, fullKeyId }: Props) {
 
   return (
     <>
+      <BadgeDefs />
       <div ref={ref} style={{ position: 'relative' }}>
         <button
           onClick={() => setOpen(o => !o)}
@@ -88,8 +91,9 @@ export function UserMenu({ plan, keyIdShort, fullKeyId }: Props) {
                 Key: {keyIdShort}
               </div>
               <div style={{ display: 'inline-flex', alignItems: 'center', gap: 5, padding: '2px 9px', borderRadius: 100, background: plan === 'pro' ? 'rgba(124,58,237,0.12)' : 'rgba(100,116,139,0.1)', border: `1px solid ${plan === 'pro' ? 'rgba(124,58,237,0.25)' : 'rgba(100,116,139,0.2)'}` }}>
-                <span style={{ fontSize: 11, fontWeight: 600, color: plan === 'pro' ? '#a78bfa' : '#94a3b8', textTransform: 'capitalize' }}>{plan}</span>
+                <span style={{ fontSize: 11, fontWeight: 600, color: plan === 'pro' ? '#a78bfa' : '#94a3b8' }}>{plan}</span>
               </div>
+              <BadgeRow badges={badges} />
             </div>
 
             <div style={{ padding: 6 }}>

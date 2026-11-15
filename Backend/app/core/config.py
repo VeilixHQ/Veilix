@@ -31,3 +31,41 @@ if DATABASE_URL.startswith("postgres://"):
     DATABASE_URL = "postgresql://" + DATABASE_URL[len("postgres://"):]
 if IS_PRODUCTION and not all((ENCRYPTION_KEY, HMAC_SECRET, MAILGUN_SIGNING_KEY, MAILGUN_API_KEY, MAILGUN_DOMAIN)):
     raise RuntimeError("Configuration de production incomplète : ENCRYPTION_KEY, HMAC_SECRET et les variables Mailgun sont obligatoires.")
+
+
+def _env_datetime(name: str, default: str = ""):
+    from datetime import datetime, timezone
+    raw = os.getenv(name)
+    raw = (default if raw is None else raw).strip()
+    if not raw:
+        return None
+    value = datetime.fromisoformat(raw)
+    if value.tzinfo is not None:
+        value = value.astimezone(timezone.utc).replace(tzinfo=None)
+    return value
+
+
+def _env_flag(name: str, default: bool) -> bool:
+    raw = os.getenv(name)
+    if raw is None or not raw.strip():
+        return default
+    return raw.strip().lower() in ("1", "true", "yes", "on")
+
+
+BETA_PRIVATE_INVITE_TOKEN    = os.getenv("BETA_PRIVATE_INVITE_TOKEN", "").strip()
+BETA_PRIVATE_SEATS           = int(os.getenv("BETA_PRIVATE_SEATS", "15"))
+BETA_PRIVATE_OPENS_AT        = _env_datetime("BETA_PRIVATE_OPENS_AT", "2026-12-01T00:00:00+01:00")
+BETA_PRIVATE_SIGNUPS_CLOSE_AT = _env_datetime("BETA_PRIVATE_SIGNUPS_CLOSE_AT", "2027-01-01T00:00:00+01:00")
+BETA_PRIVATE_ENDS_AT         = _env_datetime("BETA_PRIVATE_ENDS_AT", "2027-01-16T00:00:00+01:00")
+BETA_PUBLIC_OPENS_AT         = _env_datetime("BETA_PUBLIC_OPENS_AT", "2027-02-01T00:00:00+01:00")
+BETA_PUBLIC_SIGNUPS_CLOSE_AT = _env_datetime("BETA_PUBLIC_SIGNUPS_CLOSE_AT")
+BETA_PUBLIC_WAVE1_SEATS      = int(os.getenv("BETA_PUBLIC_WAVE1_SEATS", "10"))
+BETA_PUBLIC_WAVE2_SEATS      = int(os.getenv("BETA_PUBLIC_WAVE2_SEATS", "20"))
+BETA_PUBLIC_WAVE2_AFTER_DAYS = int(os.getenv("BETA_PUBLIC_WAVE2_AFTER_DAYS", "14"))
+BETA_PUBLIC_WAVE2_HOLD       = _env_flag("BETA_PUBLIC_WAVE2_HOLD", False)
+BETA_PUBLIC_ENDS_AT          = _env_datetime("BETA_PUBLIC_ENDS_AT", "2027-03-01T00:00:00+01:00")
+LAUNCH_AT                    = _env_datetime("LAUNCH_AT", "2027-03-01T00:00:00+01:00")
+BETA_CODE_VALID_DAYS         = int(os.getenv("BETA_CODE_VALID_DAYS", "7"))
+BETA_SCHEDULER_ENABLED       = _env_flag("BETA_SCHEDULER_ENABLED", True)
+BETA_SCHEDULER_INTERVAL_SECONDS = int(os.getenv("BETA_SCHEDULER_INTERVAL_SECONDS", "600"))
+ADMIN_ALLOWED_IPS            = {ip.strip() for ip in os.getenv("ADMIN_ALLOWED_IPS", "").split(",") if ip.strip()}

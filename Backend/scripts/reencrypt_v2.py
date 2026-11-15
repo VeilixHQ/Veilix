@@ -21,12 +21,12 @@ def main() -> None:
             aliases += 1
 
         keys = 0
-        for key in db.query(Key).filter(Key.recovery_email.isnot(None)).all():
-            if not _needs_conversion(key.recovery_email):
+        for key in db.query(Key).filter(Key.contact_email.isnot(None)).all():
+            if not _needs_conversion(key.contact_email):
                 continue
-            stored = key.recovery_email
+            stored = key.contact_email
             plain = decrypt(stored) if is_encrypted(stored) else stored
-            key.recovery_email = encrypt(plain)[0]
+            key.contact_email = encrypt(plain)[0]
             keys += 1
 
         db.commit()

@@ -7,7 +7,7 @@ from app.core.encryption import encrypt, hash_email
 from app.models.alias import Alias
 from app.models.key import Key
 from app.plans import check_alias_allowance
-from tests.conftest import entetes, inscrire, nouvelle_cle
+from tests.conftest import code_d_acces, corps_d_inscription, entetes, inscrire, nouvelle_cle
 
 
 def definir(db, plan=None, credits=None):
@@ -77,7 +77,7 @@ def test_compte_compte_les_alias_de_la_cle_seulement(client):
 
 
 def test_inscription_renvoie_la_date_de_creation(client):
-    reponse = client.post("/key/register", json={"key_id": nouvelle_cle()})
+    reponse = client.post("/key/register", json=corps_d_inscription(nouvelle_cle(), code_d_acces()))
     assert reponse.status_code == 200
     assert reponse.json()["created_at"]
 

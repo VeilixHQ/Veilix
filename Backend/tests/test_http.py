@@ -51,6 +51,7 @@ def test_ip_cliente_ignore_les_en_tetes_par_defaut(client):
         client.post("/key/register", json={"key_id": nouvelle_cle()}, headers={"X-Real-IP": f"10.0.0.{i}", "X-Forwarded-For": f"10.0.1.{i}"}).status_code
         for i in range(21)
     ]
+    assert 429 not in codes[:20]
     assert codes[20] == 429
 
 

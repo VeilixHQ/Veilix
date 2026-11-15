@@ -1,16 +1,27 @@
+import asyncio
 import logging
+from contextlib import asynccontextmanager, suppress
 
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
-from slowapi import _rate_limit_exceeded_handler
-from slowapi.errors import RateLimitExceeded
-from app.routes import key, alias, email, destination
-from app.core.config import CORS_ORIGINS, IS_PRODUCTION
-from app.core.limiter import limiter
+from app.routes import admin, alias, beta, destination, email, key
+from app.core import scheduler
+from app.core.config import BETA_SCHEDULER_ENABLED, CORS_ORIGINS, IS_PRODUCTION
 
 logging.getLogger("uvicorn.access").disabled = True
 
+@asynccontextmanager
+async def lifespan(_: FastAPI):
+    task = asyncio.create_task(scheduler.run_forever()) if BETA_SCHEDULER_ENABLED else None
+    yield
+    if task:
+        task.cancel()
+        with suppress(asyncio.CancelledError):
+            await task
+
+
 app = FastAPI(
+    lifespan=lifespan,
     title="Veilix API",
     version="1.0.0",
     docs_url=None if IS_PRODUCTION else "/docs",
@@ -43,12 +54,12 @@ app.add_middleware(
     allow_headers=["Content-Type", "X-Veilix-Key-Id", "X-Client-Source"],
 )
 
-app.state.limiter = limiter
-app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
 app.include_router(key.router)
 app.include_router(alias.router)
 app.include_router(email.router)
 app.include_router(destination.router)
+app.include_router(beta.router)
+app.include_router(admin.router)
 
 
 @app.get("/")

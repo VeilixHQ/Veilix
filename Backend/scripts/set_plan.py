@@ -13,7 +13,7 @@ def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--key-id", required=True)
     parser.add_argument("--plan", choices=STORED_PLANS)
-    parser.add_argument("--status", choices=["active", "suspended"])
+    parser.add_argument("--status", choices=["active", "suspended", "pending_payment"])
     parser.add_argument("--add-credits", type=int, help="Nombre de crédits à ajouter (négatif pour en retirer)")
     parser.add_argument("--show", action="store_true", help="Afficher plan, statut et crédits sans rien modifier")
     args = parser.parse_args()

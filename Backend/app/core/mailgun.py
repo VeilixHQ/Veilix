@@ -1,16 +1,20 @@
 import hashlib
 import hmac
-import threading
 import time
-from collections import OrderedDict
+
+from sqlalchemy import text
 
 from app.core.config import MAILGUN_SIGNING_KEY
+from app.db.session import engine
 
 MAX_SIGNATURE_AGE_SECONDS = 12 * 3600
-MAX_TRACKED_TOKENS = 50000
 
-_lock = threading.Lock()
-_claimed_tokens: OrderedDict[str, float] = OrderedDict()
+_PURGE_TOKENS = text("DELETE FROM webhook_tokens WHERE claimed_at < now() - make_interval(secs => :age)")
+_CLAIM_TOKEN = text(
+    "INSERT INTO webhook_tokens (token_hash, claimed_at) VALUES (:token_hash, now()) "
+    "ON CONFLICT (token_hash) DO NOTHING RETURNING token_hash"
+)
+_RELEASE_TOKEN = text("DELETE FROM webhook_tokens WHERE token_hash = :token_hash")
 
 
 def verify_signature(timestamp: str, token: str, signature: str) -> bool:
@@ -30,21 +34,17 @@ def verify_signature(timestamp: str, token: str, signature: str) -> bool:
     return hmac.compare_digest(expected.encode("utf-8"), str(signature).encode("utf-8"))
 
 
+def _token_hash(token: str) -> str:
+    return hashlib.sha256(token.encode("utf-8")).hexdigest()
+
+
 def claim_token(token: str) -> bool:
-    now = time.time()
-    with _lock:
-        while _claimed_tokens:
-            oldest_token, claimed_at = next(iter(_claimed_tokens.items()))
-            if len(_claimed_tokens) > MAX_TRACKED_TOKENS or claimed_at < now - MAX_SIGNATURE_AGE_SECONDS:
-                _claimed_tokens.pop(oldest_token, None)
-            else:
-                break
-        if token in _claimed_tokens:
-            return False
-        _claimed_tokens[token] = now
-        return True
+    with engine.begin() as conn:
+        conn.execute(_PURGE_TOKENS, {"age": MAX_SIGNATURE_AGE_SECONDS})
+        claimed = conn.execute(_CLAIM_TOKEN, {"token_hash": _token_hash(token)}).first()
+    return claimed is not None
 
 
 def release_token(token: str) -> None:
-    with _lock:
-        _claimed_tokens.pop(token, None)
+    with engine.begin() as conn:
+        conn.execute(_RELEASE_TOKEN, {"token_hash": _token_hash(token)})

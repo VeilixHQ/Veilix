@@ -49,3 +49,106 @@ def _post_mailgun(data: dict, files: list | None = None):
     )
     if response.status_code not in (200, 202):
         raise MailgunError(f"HTTP {response.status_code}")
+
+
+PHASE_NAMES = {"private": "bêta privée", "public": "bêta publique"}
+SIGNATURE = "\n\nL'équipe Veilix"
+
+
+def _send_text(to_email: str, subject: str, text: str) -> None:
+    send_message({
+        "from":       f"Veilix <noreply@{MAILGUN_DOMAIN}>",
+        "to":         to_email,
+        "subject":    subject,
+        "text":       text + SIGNATURE,
+        "o:tracking": "no",
+    })
+
+
+def send_beta_code(to_email: str, phase: str, code: str, access_url: str, expires_on: str) -> None:
+    payment = (
+        "Après la création de votre clé, vous choisirez votre offre (Pro ou Pack de lancement) pour activer l'accès.\n\n"
+        if phase == "public" else
+        "Pendant la bêta privée, le Pack de lancement vous est offert, sans carte bancaire.\n\n"
+    )
+    _send_text(to_email, "Votre code d'accès à la bêta Veilix", (
+        "Bonjour,\n\n"
+        f"Bienvenue dans la {PHASE_NAMES[phase]} de Veilix. Voici votre code personnel :\n\n"
+        f"    {code}\n\n"
+        f"Il est valable jusqu'au {expires_on}. Saisissez-le ici pour créer votre clé :\n"
+        f"{access_url}\n\n"
+        f"{payment}"
+        "Ce code est strictement personnel : le partager, le vendre ou le publier entraîne sa révocation immédiate.\n"
+        "Pendant la bêta, un premier retour est attendu sous 7 jours après l'activation, puis à intervalles réguliers."
+    ))
+
+
+def send_beta_waitlist(to_email: str, phase: str, position: int) -> None:
+    _send_text(to_email, "Vous êtes sur la liste d'attente de la bêta Veilix", (
+        "Bonjour,\n\n"
+        f"Merci pour votre inscription à la {PHASE_NAMES[phase]} de Veilix. Toutes les places sont prises pour le moment.\n\n"
+        f"Vous êtes en position {position} sur la liste d'attente. Dès qu'une place se libère, "
+        "votre code personnel vous est envoyé automatiquement à cette adresse."
+    ))
+
+
+def send_beta_code_expired(to_email: str, signup_url: str) -> None:
+    _send_text(to_email, "Votre code d'accès Veilix a expiré", (
+        "Bonjour,\n\n"
+        "Votre code d'accès à la bêta n'a pas été utilisé à temps : il a expiré et votre place a été proposée à la personne suivante.\n\n"
+        f"Vous pouvez vous réinscrire ici pour reprendre une place dans la liste d'attente :\n{signup_url}"
+    ))
+
+
+def send_feedback_due(to_email: str, due_on: str, form_url: str, final: bool) -> None:
+    kind = "votre retour final" if final else "votre retour"
+    _send_text(to_email, f"C'est le moment d'envoyer {kind} sur la bêta Veilix", (
+        "Bonjour,\n\n"
+        f"{kind[0].upper()}{kind[1:]} sur la bêta est attendu au plus tard le {due_on}.\n\n"
+        f"Le formulaire prend quelques minutes. Ce lien l'ouvre directement dans votre tableau de bord :\n{form_url}\n\n"
+        "Sans retour à cette date, vous recevrez un rappel, puis l'accès à la bêta sera suspendu 48 heures plus tard."
+    ))
+
+
+def send_feedback_reminder(to_email: str, due_on: str, form_url: str) -> None:
+    _send_text(to_email, "Rappel : votre retour sur la bêta Veilix est attendu", (
+        "Bonjour,\n\n"
+        f"Votre retour sur la bêta était attendu le {due_on} et nous ne l'avons pas encore reçu.\n\n"
+        f"Il ne prend que quelques minutes. Ce lien ouvre directement le formulaire :\n{form_url}\n\n"
+        "Sans retour dans les 48 heures, votre accès à la bêta sera suspendu automatiquement. "
+        "Il sera réactivé dès réception de votre retour si la bêta est toujours en cours.\n\n"
+        "Un problème technique vous empêche de répondre ? Écrivez-nous en réponse à ce message."
+    ))
+
+
+def send_beta_suspended(to_email: str, form_url: str) -> None:
+    _send_text(to_email, "Votre accès à la bêta Veilix est suspendu", (
+        "Bonjour,\n\n"
+        "Nous n'avons pas reçu votre retour dans les 48 heures suivant le rappel : votre accès à la bêta est suspendu. "
+        "Vos alias et vos données sont conservés.\n\n"
+        f"Envoyez votre retour avec ce lien pour réactiver l'accès immédiatement :\n{form_url}"
+    ))
+
+
+def send_beta_reactivated(to_email: str) -> None:
+    _send_text(to_email, "Votre accès à la bêta Veilix est réactivé", (
+        "Bonjour,\n\n"
+        "Merci pour votre retour. Votre accès à la bêta est de nouveau actif."
+    ))
+
+
+def send_beta_closing(to_email: str, phase: str, launch_on: str | None = None) -> None:
+    launch = f"le {launch_on}" if launch_on else "prochainement"
+    next_step = (
+        f"Votre Pack de lancement reste actif jusqu'au lancement officiel, {launch}. Il continue ensuite avec 3 mois offerts : "
+        "il vous suffira d'enregistrer une carte bancaire, aucun prélèvement n'aura lieu pendant ces 3 mois. "
+        "Sans carte enregistrée, l'accès sera coupé."
+        if phase == "private" else
+        f"Votre abonnement continue normalement. Le lancement officiel de Veilix a lieu {launch}."
+    )
+    _send_text(to_email, f"Fin de la {PHASE_NAMES[phase]} Veilix", (
+        "Bonjour,\n\n"
+        f"La {PHASE_NAMES[phase]} de Veilix est terminée. Merci pour votre participation et vos retours.\n\n"
+        f"{next_step}\n\n"
+        "Vous pouvez à tout moment quitter Veilix et supprimer vos données depuis votre tableau de bord."
+    ))

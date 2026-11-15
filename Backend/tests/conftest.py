@@ -40,6 +40,13 @@ os.environ.update({
     "CORS_ORIGINS": "https://app.veilix.test",
     "ADMIN_KEY_IDS": "",
     "REPLY_DOMAIN": "mg.veilix-tests.fr",
+    "BETA_SCHEDULER_ENABLED": "false",
+    "BETA_PRIVATE_OPENS_AT": "",
+    "BETA_PRIVATE_SIGNUPS_CLOSE_AT": "",
+    "BETA_PRIVATE_ENDS_AT": "",
+    "BETA_PUBLIC_OPENS_AT": "",
+    "BETA_PUBLIC_SIGNUPS_CLOSE_AT": "",
+    "BETA_PUBLIC_ENDS_AT": "",
 })
 
 import pytest
@@ -69,15 +76,10 @@ def base_de_test():
 
 @pytest.fixture(autouse=True)
 def etat_propre(base_de_test):
-    from app.core import mailgun, rate_limit
-    from app.core.limiter import limiter
     from app.db.session import engine
 
     with engine.begin() as conn:
-        conn.execute(text("TRUNCATE destination_verifications, aliases, keys RESTART IDENTITY CASCADE"))
-    limiter.reset()
-    rate_limit._request_log.clear()
-    mailgun._claimed_tokens.clear()
+        conn.execute(text("TRUNCATE beta_feedback, access_codes, beta_signups, destination_verifications, aliases, keys, rate_limits, webhook_tokens RESTART IDENTITY CASCADE"))
     yield
 
 
@@ -117,13 +119,41 @@ def entetes(key_id: str) -> dict:
     return {"X-Veilix-Key-Id": key_id}
 
 
-def inscrire(client, key_id: str | None = None, recovery_email: str | None = None) -> str:
+def code_d_acces(phase: str = "private", jours: int = 30) -> str:
+    from app.db.session import SessionLocal
+    from app.services.access_service import generate_codes
+
+    session = SessionLocal()
+    try:
+        return generate_codes(session, phase, 1, jours)[0]
+    finally:
+        session.close()
+
+
+def corps_d_inscription(key_id: str, code: str, contact_email: str | None = None) -> dict:
+    return {
+        "key_id": key_id,
+        "access_code": code,
+        "contact_email": contact_email or f"contact-{secrets.token_hex(6)}@example.com",
+        "accept_terms": True,
+    }
+
+
+def inscrire(client, key_id: str | None = None, contact_email: str | None = None, phase: str = "private", plan: str | None = "pro") -> str:
+    from app.db.session import SessionLocal
+    from app.core.keys import stored_key_id
+    from app.models.key import Key
+
     key_id = key_id or nouvelle_cle()
-    body = {"key_id": key_id}
-    if recovery_email:
-        body["recovery_email"] = recovery_email
-    response = client.post("/key/register", json=body)
+    response = client.post("/key/register", json=corps_d_inscription(key_id, code_d_acces(phase), contact_email))
     assert response.status_code == 200, response.text
+    if plan is not None:
+        session = SessionLocal()
+        try:
+            session.query(Key).filter(Key.key_id == stored_key_id(key_id)).update({Key.plan: plan, Key.status: "active"})
+            session.commit()
+        finally:
+            session.close()
     return key_id
 
 

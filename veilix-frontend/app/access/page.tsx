@@ -13,10 +13,12 @@ import {
   saveIdentity,
   type VeilixIdentity,
 } from '@/lib/crypto'
-import { registerKey, verifyKey } from '@/lib/api'
+import { ApiError, BetaPhase, checkAccessCode, registerKey, verifyKey } from '@/lib/api'
 import { T, Lang } from '@/lib/translations'
+import { BETA_RHYTHM, BETA_RIGHTS, BETA_TERMS, EMAIL_PATTERN } from '@/lib/beta'
 
-type Step = 'choice' | 'generating' | 'reveal' | 'confirm' | 'recovery-email' | 'restore'
+type Step = 'choice' | 'code' | 'generating' | 'reveal' | 'confirm' | 'contact' | 'restore'
+
 
 function AccessContent() {
   const router = useRouter()
@@ -41,7 +43,12 @@ function AccessContent() {
   const [copiedSeed, setCopiedSeed] = useState(false)
   const [confirmWords, setConfirmWords] = useState<Record<number, string>>({})
   const [checkIndices, setCheckIndices] = useState<number[]>([])
-  const [recoveryEmail, setRecoveryEmail] = useState('')
+  const [contactEmail, setContactEmail] = useState('')
+  const [accessCode, setAccessCode] = useState('')
+  const [codePhase, setCodePhase] = useState<BetaPhase | null>(null)
+  const [needsContact, setNeedsContact] = useState(true)
+  const [termsAccepted, setTermsAccepted] = useState(false)
+  const [checkingCode, setCheckingCode] = useState(false)
   const [restoreWords, setRestoreWords] = useState<string[]>(Array(12).fill(''))
   const restoreInputRefs = useRef<(HTMLInputElement | null)[]>([])
   const [loading, setLoading] = useState(false)
@@ -76,20 +83,58 @@ function AccessContent() {
       showToast(lang === 'fr' ? 'Mots incorrects, vérifiez votre sauvegarde' : 'Incorrect words, check your backup', 'error')
       return
     }
-    setStep('recovery-email')
+    if (needsContact) {
+      setStep('contact')
+    } else {
+      handleFinalize()
+    }
   }
 
-  async function handleFinalize(skipEmail: boolean) {
-    if (!identity) return
+  async function handleCheckCode() {
+    if (!accessCode.trim() || !termsAccepted) return
+    setCheckingCode(true)
+    try {
+      const result = await checkAccessCode(accessCode.trim())
+      if (!result.valid || !result.phase) {
+        showToast(lang === 'fr' ? 'Code invalide, expiré ou déjà utilisé.' : 'Invalid, expired or already used code.', 'error')
+        return
+      }
+      setCodePhase(result.phase)
+      setNeedsContact(result.needs_contact)
+      await handleGenerate()
+    } catch (error) {
+      const tooMany = error instanceof ApiError && error.status === 429
+      showToast(
+        tooMany
+          ? (lang === 'fr' ? 'Trop de tentatives. Réessayez dans une heure.' : 'Too many attempts. Try again in an hour.')
+          : (lang === 'fr' ? 'Serveur inaccessible. Réessayez plus tard.' : 'Server unreachable. Try again later.'),
+        'error'
+      )
+    } finally {
+      setCheckingCode(false)
+    }
+  }
+
+  async function handleFinalize() {
+    if (!identity || (needsContact && !EMAIL_PATTERN.test(contactEmail.trim()))) return
     setLoading(true)
     try {
-      const finalIdentity = { ...identity, recoveryEmail: skipEmail ? undefined : recoveryEmail || undefined }
-      await registerKey(finalIdentity.keyId, finalIdentity.recoveryEmail)
-      await saveIdentity(finalIdentity)
+      await registerKey(identity.keyId, accessCode.trim(), needsContact ? contactEmail.trim() : undefined)
+      await saveIdentity({ keyId: identity.keyId, createdAt: identity.createdAt })
       showToast(lang === 'fr' ? 'Clé créée avec succès' : 'Key created successfully', 'success')
-      router.push('/pricing')
-    } catch {
-      showToast(lang === 'fr' ? 'Serveur inaccessible. Vérifiez que le backend est actif.' : 'Server unreachable. Check backend status.', 'error')
+      router.push(codePhase === 'public' ? '/pricing?paiement=requis' : '/dashboard')
+    } catch (error) {
+      if (error instanceof ApiError && error.status === 403) {
+        showToast(error.message, 'error')
+        setIdentity(null)
+        setRevealed(false)
+        setConfirmWords({})
+        setStep('code')
+      } else if (error instanceof ApiError && (error.status === 409 || error.status === 429 || error.status === 400)) {
+        showToast(error.message, 'error')
+      } else {
+        showToast(lang === 'fr' ? 'Serveur inaccessible. Réessayez plus tard.' : 'Server unreachable. Try again later.', 'error')
+      }
     } finally {
       setLoading(false)
     }
@@ -202,7 +247,7 @@ function AccessContent() {
               </p>
 
               <div style={{ background: '#0d0d10', border: '1px solid rgba(255,255,255,0.07)', borderRadius: 16, padding: 28, textAlign: 'left' }}>
-                <Button variant="primary" size="lg" onClick={handleGenerate} style={{ width: '100%', marginBottom: 12 }}>
+                <Button variant="primary" size="lg" onClick={() => setStep('code')} style={{ width: '100%', marginBottom: 12 }}>
                   {t.access.generateBtn}
                 </Button>
                 <Button variant="secondary" size="lg" onClick={() => setStep('restore')} style={{ width: '100%' }}>
@@ -216,6 +261,68 @@ function AccessContent() {
                       <span style={{ fontSize: 12, color: '#64748b', lineHeight: 1.6 }}>{txt}</span>
                     </div>
                   ))}
+                </div>
+              </div>
+            </div>
+          )}
+
+          {step === 'code' && (
+            <div className="step-enter">
+              <div style={{ textAlign: 'center', marginBottom: 28 }}>
+                <h1 style={{ fontSize: 'clamp(22px, 3.5vw, 28px)', fontWeight: 800, letterSpacing: '-0.8px', marginBottom: 10 }}>
+                  {lang === 'fr' ? "Code d'accès bêta" : 'Beta access code'}
+                </h1>
+                <p style={{ fontSize: 13, color: '#64748b', lineHeight: 1.7, maxWidth: 380, margin: '0 auto' }}>
+                  {lang === 'fr'
+                    ? 'Veilix est en bêta. Saisissez le code personnel reçu avec votre invitation.'
+                    : 'Veilix is in beta. Enter the personal code you received with your invitation.'}
+                </p>
+              </div>
+
+              <div style={{ background: '#0d0d10', border: '1px solid rgba(255,255,255,0.07)', borderRadius: 14, padding: 24, display: 'flex', flexDirection: 'column', gap: 18 }}>
+                <Input
+                  id="access-code"
+                  label={lang === 'fr' ? 'Code personnel' : 'Personal code'}
+                  value={accessCode}
+                  onChange={e => setAccessCode(e.target.value.toUpperCase().slice(0, 40))}
+                  placeholder="VEILIX-PRIV-XXXXX-XXXXX"
+                  autoComplete="off"
+                  spellCheck={false}
+                  style={{ fontFamily: 'monospace', letterSpacing: '0.5px' }}
+                />
+
+                <div>
+                  <p style={{ fontSize: 12, fontWeight: 600, color: '#94a3b8', marginBottom: 8 }}>
+                    {lang === 'fr' ? 'Conditions de participation à la bêta' : 'Beta participation terms'}
+                  </p>
+                  <div style={{ maxHeight: 168, overflowY: 'auto', padding: '12px 14px', borderRadius: 10, background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.06)', fontSize: 12, lineHeight: 1.65, color: '#94a3b8' }}>
+                    <p style={{ marginBottom: 10 }}>{BETA_TERMS}</p>
+                    <p style={{ marginBottom: 10 }}>{BETA_RHYTHM}</p>
+                    <p>{BETA_RIGHTS}</p>
+                  </div>
+                </div>
+
+                <label htmlFor="accept-terms" style={{ display: 'flex', alignItems: 'flex-start', gap: 10, cursor: 'pointer', fontSize: 13, color: '#cbd5e1', lineHeight: 1.5 }}>
+                  <input
+                    id="accept-terms"
+                    type="checkbox"
+                    checked={termsAccepted}
+                    onChange={e => setTermsAccepted(e.target.checked)}
+                    style={{ marginTop: 3, accentColor: '#7c3aed', width: 16, height: 16, flexShrink: 0 }}
+                  />
+                  {lang === 'fr' ? "J'accepte les conditions de participation à la bêta." : 'I accept the beta participation terms.'}
+                </label>
+
+                <p style={{ fontSize: 12, color: '#64748b', textAlign: 'center' }}>
+                  {lang === 'fr' ? 'Pas encore de code ? ' : 'No code yet? '}
+                  <a href="/beta" style={{ color: '#a78bfa', fontWeight: 600, textDecoration: 'none' }}>{lang === 'fr' ? 'Rejoindre la bêta' : 'Join the beta'}</a>
+                </p>
+
+                <div style={{ display: 'flex', gap: 10 }}>
+                  <Button variant="secondary" size="md" onClick={() => setStep('choice')} style={{ flex: 1 }}>{t.access.back}</Button>
+                  <Button variant="primary" size="md" loading={checkingCode} onClick={handleCheckCode} disabled={!accessCode.trim() || !termsAccepted} style={{ flex: 1 }}>
+                    {lang === 'fr' ? 'Continuer' : 'Continue'}
+                  </Button>
                 </div>
               </div>
             </div>
@@ -320,34 +427,50 @@ function AccessContent() {
 
                 <div style={{ display: 'flex', gap: 10 }}>
                   <Button variant="secondary" size="md" onClick={() => setStep('reveal')} style={{ flex: 1 }}>{t.access.back}</Button>
-                  <Button variant="primary" size="md" onClick={handleConfirmSubmit} style={{ flex: 1 }}>{t.access.confirmBtn}</Button>
+                  <Button variant="primary" size="md" loading={loading} onClick={handleConfirmSubmit} style={{ flex: 1 }}>{t.access.confirmBtn}</Button>
                 </div>
               </div>
             </div>
           )}
 
-          {step === 'recovery-email' && (
+          {step === 'contact' && (
             <div className="step-enter">
               <div style={{ textAlign: 'center', marginBottom: 28 }}>
                 <h1 style={{ fontSize: 'clamp(22px, 3.5vw, 28px)', fontWeight: 800, letterSpacing: '-0.8px', marginBottom: 10 }}>
-                  {t.access.recoveryTitle}
+                  {lang === 'fr' ? 'Adresse de contact' : 'Contact address'}
                 </h1>
                 <p style={{ fontSize: 13, color: '#64748b', lineHeight: 1.7, maxWidth: 380, margin: '0 auto' }}>
-                  {t.access.recoverySub}
+                  {lang === 'fr'
+                    ? 'Obligatoire pendant la bêta. Elle sert uniquement à vous écrire : rappels de retours, incidents et fin de bêta.'
+                    : 'Required during the beta. It is only used to write to you: feedback reminders, incidents and the end of the beta.'}
                 </p>
               </div>
 
-              <div style={{ background: '#0d0d10', border: '1px solid rgba(255,255,255,0.07)', borderRadius: 14, padding: 24 }}>
-                <Input type="email" value={recoveryEmail} onChange={e => setRecoveryEmail(e.target.value)} placeholder="you@example.com (optional)" style={{ marginBottom: 20 }} />
+              <div style={{ background: '#0d0d10', border: '1px solid rgba(255,255,255,0.07)', borderRadius: 14, padding: 24, display: 'flex', flexDirection: 'column', gap: 18 }}>
+                <Input
+                  id="contact-email"
+                  type="email"
+                  label={lang === 'fr' ? 'E-mail de contact' : 'Contact email'}
+                  value={contactEmail}
+                  onChange={e => setContactEmail(e.target.value)}
+                  placeholder="vous@exemple.fr"
+                  autoComplete="email"
+                />
 
-                <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
-                  <Button variant="primary" size="lg" loading={loading} onClick={() => handleFinalize(false)} disabled={!recoveryEmail} style={{ width: '100%' }}>
-                    {t.access.addAndContinue}
-                  </Button>
-                  <Button variant="ghost" size="md" onClick={() => handleFinalize(true)} style={{ width: '100%' }}>
-                    {t.access.skipStep}
-                  </Button>
+                <div style={{ padding: '12px 14px', borderRadius: 10, background: 'rgba(124,58,237,0.06)', border: '1px solid rgba(124,58,237,0.18)', fontSize: 12, lineHeight: 1.65, color: '#a5a3c4' }}>
+                  <p style={{ fontWeight: 600, color: '#c4b5fd', marginBottom: 6 }}>
+                    {lang === 'fr' ? 'Comment elle est protégée' : 'How it is protected'}
+                  </p>
+                  <p>
+                    {lang === 'fr'
+                      ? "Elle est chiffrée en AES-256-GCM avant d'être enregistrée, avec une clé conservée à part de la base de données. Une empreinte HMAC-SHA256 permet de vérifier qu'elle n'est pas déjà utilisée sans la lire. Le serveur la déchiffre uniquement pour vous envoyer un message. Elle n'est jamais gardée dans votre navigateur."
+                      : 'It is encrypted with AES-256-GCM before being stored, with a key kept apart from the database. An HMAC-SHA256 fingerprint checks it is not already in use without reading it. The server only decrypts it to send you a message. It is never kept in your browser.'}
+                  </p>
                 </div>
+
+                <Button variant="primary" size="lg" loading={loading} onClick={handleFinalize} disabled={!EMAIL_PATTERN.test(contactEmail.trim())} style={{ width: '100%' }}>
+                  {lang === 'fr' ? 'Créer ma clé' : 'Create my key'}
+                </Button>
               </div>
             </div>
           )}

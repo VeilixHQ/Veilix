@@ -62,7 +62,7 @@ async def inbound(request: Request, db: Session = Depends(get_db)):
     if not verify_signature(timestamp, token, signature):
         logger.warning("Signature Mailgun invalide.")
         raise HTTPException(status_code=403, detail="Signature invalide")
-    if not claim_token(token):
+    if not await run_in_threadpool(claim_token, token):
         logger.warning("Webhook Mailgun rejoue.")
         raise HTTPException(status_code=403, detail="Signature invalide")
 
@@ -80,6 +80,6 @@ async def inbound(request: Request, db: Session = Depends(get_db)):
     try:
         return await run_in_threadpool(inbound_service.process, db, message)
     except Exception as exc:
-        release_token(token)
+        await run_in_threadpool(release_token, token)
         logger.error("Echec du traitement du message : %s", type(exc).__name__)
         raise HTTPException(status_code=502, detail="Transfert impossible")

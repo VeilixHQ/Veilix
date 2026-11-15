@@ -2,7 +2,7 @@
 import { useState, useEffect, useCallback } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
-import { getAliases, getAccount, createAlias, disableAlias, enableAlias, deleteAlias, resendConfirmation, Account } from '@/lib/api'
+import { getAliases, getAccount, createAlias, disableAlias, enableAlias, deleteAlias, resendConfirmation, Account, ApiError } from '@/lib/api'
 import { getIdentity } from '@/lib/crypto'
 import { useAuth } from '@/hooks/useAuth'
 import { useInactivityTimeout } from '@/hooks/useInactivityTimeout'
@@ -13,6 +13,7 @@ import { UserMenu } from '@/components/UserMenu'
 import { InactivityWarning } from '@/components/InactivityWarning'
 import { SessionExpiredModal } from '@/components/SessionExpiredModal'
 import { UpgradeModal, UpgradeReason } from '@/components/UpgradeModal'
+import { BetaPanel, DeleteAccount } from '@/components/BetaPanel'
 import { Button } from '@/components/Button'
 import { Input } from '@/components/Input'
 import { T, Lang } from '@/lib/translations'
@@ -220,10 +221,11 @@ export default function Dashboard() {
   const fetchAccount = useCallback(async () => {
     try {
       setAccount(await getAccount())
-    } catch {
+    } catch (error) {
       setAccount(null)
+      if (error instanceof ApiError && error.status === 402) router.push('/pricing?paiement=requis')
     }
-  }, [])
+  }, [router])
 
   const fetchAliases = useCallback(async () => {
     try {
@@ -411,6 +413,7 @@ export default function Dashboard() {
               plan={planLabel(account?.plan)}
               keyIdShort={`K-${keyId.slice(0, 4).toUpperCase()}...${keyId.slice(-4).toUpperCase()}`}
               fullKeyId={keyId}
+              badges={account?.badges ?? []}
             />
           )
         }
@@ -428,6 +431,8 @@ export default function Dashboard() {
             <Button variant="primary" size="md" onClick={() => setShowModal(true)}>+ Nouvel alias</Button>
           </div>
         </div>
+
+        <BetaPanel onFeedbackSent={refresh} />
 
         <AccountCards
           account={account}
@@ -535,6 +540,7 @@ export default function Dashboard() {
             ))}
           </div>
         )}
+        <DeleteAccount />
       </div>
 
       <SiteFooter t={t} />
