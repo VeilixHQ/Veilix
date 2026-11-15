@@ -152,3 +152,20 @@ def test_verification_de_code_limitee_en_frequence(client):
     codes = [client.post("/key/check-code", json={"access_code": "VEILIX-PUB-AAAAA-AAAAA"}).status_code for _ in range(11)]
     assert codes[:10] == [200] * 10
     assert codes[10] == 429
+
+
+def test_cle_admin_s_inscrit_sans_code(client, db, monkeypatch):
+    from app import plans
+    from app.core.keys import stored_key_id
+
+    admin = nouvelle_cle()
+    monkeypatch.setattr(plans, "ADMIN_KEYS", {stored_key_id(admin)})
+    reponse = client.post("/key/register", json={"key_id": admin, "access_code": "-", "accept_terms": True})
+    assert reponse.status_code == 200
+    assert db.query(Key).one().is_admin is True
+    assert db.query(AccessCode).count() == 0
+    assert client.get("/key/me", headers=entetes(admin)).json()["plan"] == "admin"
+    assert client.post("/key/register", json={"key_id": admin, "access_code": "-", "accept_terms": True}).status_code == 409
+
+    autre = client.post("/key/register", json={"key_id": nouvelle_cle(), "access_code": "-", "accept_terms": True})
+    assert autre.status_code == 403

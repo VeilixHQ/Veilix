@@ -7,6 +7,7 @@ from fastapi import HTTPException
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
 
+from app import plans
 from app.core.config import HMAC_SECRET
 from app.core.encryption import decrypt, encrypt, hash_email
 from app.core.keys import stored_key_id
@@ -82,11 +83,34 @@ def _first_feedback_due(phase: str, now: datetime) -> datetime:
     return min(due, deadline) if deadline else due
 
 
+def _register_admin(db: Session, key_id: str) -> Key:
+    now = _now()
+    key = Key(
+        key_id=stored_key_id(key_id),
+        plan="pack",
+        status="active",
+        credits=0,
+        is_admin=True,
+        terms_version=BETA_TERMS_VERSION,
+        terms_accepted_at=now,
+    )
+    db.add(key)
+    try:
+        db.commit()
+    except IntegrityError:
+        db.rollback()
+        raise HTTPException(status_code=409, detail="Cette clé est déjà enregistrée.")
+    db.refresh(key)
+    return key
+
+
 def register_with_code(db: Session, key_id: str, code: str, contact_email: str | None, accept_terms: bool) -> Key:
     if not accept_terms:
         raise HTTPException(status_code=400, detail="Les conditions de participation doivent être acceptées.")
     if get_key_by_id(db, key_id):
         raise HTTPException(status_code=409, detail="Cette clé est déjà enregistrée.")
+    if stored_key_id(key_id) in plans.ADMIN_KEYS:
+        return _register_admin(db, key_id)
 
     access = (
         db.query(AccessCode)
