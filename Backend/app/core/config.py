@@ -18,6 +18,7 @@ HMAC_SECRET         = os.getenv("HMAC_SECRET")
 ADMIN_KEY_IDS       = os.getenv("ADMIN_KEY_IDS", "")
 APP_ENV             = os.getenv("APP_ENV", "development").strip().lower()
 IS_PRODUCTION       = APP_ENV == "production"
+CLIENT_IP_HEADER    = os.getenv("CLIENT_IP_HEADER", "").strip()
 CORS_ORIGINS        = [
     origin.strip()
     for origin in os.getenv("CORS_ORIGINS", "http://localhost:3000,http://127.0.0.1:3000").split(",")
@@ -26,3 +27,7 @@ CORS_ORIGINS        = [
 
 if not DATABASE_URL:
     raise RuntimeError("DATABASE_URL manquante dans les variables d'environnement (.env).")
+if DATABASE_URL.startswith("postgres://"):
+    DATABASE_URL = "postgresql://" + DATABASE_URL[len("postgres://"):]
+if IS_PRODUCTION and not all((ENCRYPTION_KEY, HMAC_SECRET, MAILGUN_SIGNING_KEY, MAILGUN_API_KEY, MAILGUN_DOMAIN)):
+    raise RuntimeError("Configuration de production incomplète : ENCRYPTION_KEY, HMAC_SECRET et les variables Mailgun sont obligatoires.")

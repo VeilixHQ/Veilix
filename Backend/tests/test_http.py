@@ -42,3 +42,34 @@ def test_en_production_documentation_masquee_et_hsts_actif():
     codes, hsts = resultat.stdout.strip().splitlines()
     assert codes == "404 404 404"
     assert hsts.startswith("max-age=")
+
+
+def test_ip_cliente_ignore_les_en_tetes_par_defaut(client):
+    from tests.conftest import nouvelle_cle
+
+    codes = [
+        client.post("/key/register", json={"key_id": nouvelle_cle()}, headers={"X-Real-IP": f"10.0.0.{i}", "X-Forwarded-For": f"10.0.1.{i}"}).status_code
+        for i in range(21)
+    ]
+    assert codes[20] == 429
+
+
+def test_ip_cliente_lue_depuis_l_en_tete_du_proxy_si_configure(monkeypatch):
+    from starlette.requests import Request
+
+    from app.core import limiter
+
+    requete = Request({"type": "http", "headers": [(b"x-real-ip", b"203.0.113.7")], "client": ("10.0.0.1", 1234)})
+    assert limiter.client_ip(requete) == "10.0.0.1"
+    monkeypatch.setattr(limiter, "CLIENT_IP_HEADER", "X-Real-IP")
+    assert limiter.client_ip(requete) == "203.0.113.7"
+    sans_entete = Request({"type": "http", "headers": [], "client": ("10.0.0.1", 1234)})
+    assert limiter.client_ip(sans_entete) == "10.0.0.1"
+
+
+def test_production_refuse_de_demarrer_sans_secrets():
+    env = {k: v for k, v in os.environ.items() if k not in ("HMAC_SECRET",)}
+    env.update(APP_ENV="production", HMAC_SECRET="")
+    resultat = subprocess.run([sys.executable, "-c", "import app.core.config"], cwd=BACKEND, env=env, capture_output=True, text=True, timeout=60)
+    assert resultat.returncode != 0
+    assert "Configuration de production incomplète" in resultat.stderr
