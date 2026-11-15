@@ -1,22 +1,26 @@
 ﻿import httpx
-from app.core.config import EMAIL_PROVIDER, MAILGUN_API_KEY, MAILGUN_API_URL, MAILGUN_DOMAIN, DOMAIN
+from app.core.config import EMAIL_PROVIDER, MAILGUN_API_KEY, MAILGUN_API_URL, MAILGUN_DOMAIN
 
-def forward_email(to_email: str, sender: str, subject: str, body: str):
-    if EMAIL_PROVIDER == "mailgun":
-        _send_mailgun(to_email, sender, subject, body)
-    else:
-        raise NotImplementedError("Provider non supporte")
 
-def send_destination_confirmation(to_email: str, confirm_url: str):
+class MailgunError(Exception):
+    pass
+
+
+def send_message(data: dict, files: list | None = None) -> None:
     if EMAIL_PROVIDER != "mailgun":
         raise NotImplementedError("Provider non supporte")
-    _post_mailgun({
+    _post_mailgun(data, files)
+
+
+def send_destination_confirmation(to_email: str, confirm_url: str):
+    send_message({
         "from":       f"Veilix <noreply@{MAILGUN_DOMAIN}>",
         "to":         to_email,
         "subject":    "Confirmez votre adresse de destination Veilix",
         "text":       _confirmation_text(confirm_url),
         "o:tracking": "no",
     })
+
 
 def _confirmation_text(confirm_url: str) -> str:
     return (
@@ -34,20 +38,14 @@ def _confirmation_text(confirm_url: str) -> str:
         "Veilix"
     )
 
-def _send_mailgun(to_email: str, sender: str, subject: str, body: str):
-    _post_mailgun({
-        "from":    f"Veilix <noreply@{DOMAIN}>",
-        "to":      to_email,
-        "subject": f"[Veilix] {subject}",
-        "text":    f"Email transfere depuis : {sender}\n\n{body}",
-    })
 
-def _post_mailgun(data: dict):
+def _post_mailgun(data: dict, files: list | None = None):
     response = httpx.post(
         f"{MAILGUN_API_URL}/v3/{MAILGUN_DOMAIN}/messages",
         auth=("api", MAILGUN_API_KEY),
         data=data,
-        timeout=httpx.Timeout(30.0, connect=10.0),
+        files=files or None,
+        timeout=httpx.Timeout(60.0, connect=10.0),
     )
     if response.status_code not in (200, 202):
-        raise Exception(f"Mailgun error: HTTP {response.status_code}")
+        raise MailgunError(f"HTTP {response.status_code}")

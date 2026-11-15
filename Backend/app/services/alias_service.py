@@ -3,7 +3,7 @@ from sqlalchemy.orm import Session
 from fastapi import HTTPException
 from app.models.alias import Alias
 from app.models.key import Key
-from app.core.config import DOMAIN
+from app.core.config import DOMAIN, INTERNAL_DOMAINS
 from app.core.encryption import encrypt, hash_email
 from app.plans import get_effective_plan, can_create_alias
 from app.services.key_service import get_key_by_id
@@ -49,9 +49,11 @@ def _generate_alias_email(db: Session) -> str:
 
 def create_alias(db: Session, key_arg, destination_email: str, label: str | None = None) -> Alias:
     key_obj = _resolve_key(db, key_arg)
+    destination = destination_email.strip()
+    if destination.rpartition("@")[2].lower() in INTERNAL_DOMAINS:
+        raise HTTPException(status_code=400, detail="Une adresse Veilix ne peut pas servir de destination.")
     _check_quota(db, key_obj)
 
-    destination = destination_email.strip()
     encrypted_dest, key_version = encrypt(destination)
     email_hmac = hash_email(destination)
 

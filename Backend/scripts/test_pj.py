@@ -1,25 +1,14 @@
+import argparse
 import hashlib
 import hmac
-import os
 import secrets
-import sys
 import time
 
 import httpx
-from dotenv import load_dotenv
 
-load_dotenv()
+from app.core.config import MAILGUN_SIGNING_KEY
 
-URL = sys.argv[1] if len(sys.argv) > 1 else "http://127.0.0.1:8001/webhook/inbound"
-CLE = os.environ["MAILGUN_SIGNING_KEY"]
-
-timestamp = str(int(time.time()))
-token = secrets.token_hex(16)
-signature = hmac.new(
-    CLE.encode(), f"{timestamp}{token}".encode(), hashlib.sha256
-).hexdigest()
-
-pdf = (
+PDF = (
     b"%PDF-1.1\n"
     b"1 0 obj<</Type/Catalog/Pages 2 0 R>>endobj\n"
     b"2 0 obj<</Type/Pages/Kids[3 0 R]/Count 1>>endobj\n"
@@ -27,20 +16,35 @@ pdf = (
     b"trailer<</Root 1 0 R>>\n%%EOF\n"
 )
 
-data = {
-    "timestamp": timestamp,
-    "token": token,
-    "signature": signature,
-    "recipient": "test@mg.veilix.fr",
-    "sender": "expediteur@example.com",
-    "from": "Expediteur Test <expediteur@example.com>",
-    "subject": "Test PJ locale",
-    "body-plain": "Bonjour, ceci est un test de pièce jointe en local.",
-    "body-html": "<p>Bonjour, ceci est un test de pièce jointe en local.</p>",
-    "attachment-count": "1",
-}
-files = {"attachment-1": ("test.pdf", pdf, "application/pdf")}
 
-r = httpx.post(URL, data=data, files=files, timeout=90)
-print("Code HTTP :", r.status_code)
-print("Réponse   :", r.text)
+def main() -> None:
+    parser = argparse.ArgumentParser(description="Simule un e-mail entrant signé avec une pièce jointe.")
+    parser.add_argument("destinataire", help="Alias ou adresse de réponse reply+...")
+    parser.add_argument("--expediteur", default="Expediteur Test <expediteur@example.com>")
+    parser.add_argument("--url", default="http://127.0.0.1:8000/email/inbound")
+    args = parser.parse_args()
+
+    if not MAILGUN_SIGNING_KEY:
+        raise SystemExit("MAILGUN_SIGNING_KEY manquante dans le .env")
+
+    timestamp = str(int(time.time()))
+    token = secrets.token_hex(25)
+    signature = hmac.new(MAILGUN_SIGNING_KEY.encode(), f"{timestamp}{token}".encode(), hashlib.sha256).hexdigest()
+    data = {
+        "timestamp": timestamp,
+        "token": token,
+        "signature": signature,
+        "recipient": args.destinataire,
+        "sender": "expediteur@example.com",
+        "from": args.expediteur,
+        "subject": "Test de pièce jointe",
+        "body-plain": "Bonjour, ceci est un test de pièce jointe.",
+        "body-html": "<p>Bonjour, ceci est un test de pièce jointe.</p>",
+    }
+    response = httpx.post(args.url, data=data, files={"attachment-1": ("test.pdf", PDF, "application/pdf")}, timeout=90)
+    print("Code HTTP :", response.status_code)
+    print("Réponse   :", response.text)
+
+
+if __name__ == "__main__":
+    main()

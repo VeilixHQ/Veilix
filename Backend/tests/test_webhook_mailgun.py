@@ -87,7 +87,7 @@ def test_alias_desactive_ne_recoit_rien(client, emails, alias_actif):
 
 
 def test_alias_inexistant_ignore(client, emails, alias_actif):
-    reponse = client.post("/email/inbound", data=message("inconnu@alias.veilix.test", **signature_mailgun()))
+    reponse = client.post("/email/inbound", data=message("inconnu@alias.veilix-tests.fr", **signature_mailgun()))
     assert reponse.json() == {"status": "ignored"}
     assert emails == []
 
@@ -95,14 +95,14 @@ def test_alias_inexistant_ignore(client, emails, alias_actif):
 def test_echec_d_envoi_libere_le_jeton_pour_la_nouvelle_tentative(client, emails, alias_actif, monkeypatch):
     from app.services import email_service
 
-    def panne(data):
-        raise RuntimeError("Mailgun indisponible")
+    def panne(data, files=None):
+        raise email_service.MailgunError("HTTP 500")
 
     signature = signature_mailgun()
     monkeypatch.setattr(email_service, "_post_mailgun", panne)
     assert client.post("/email/inbound", data=message(alias_actif["alias_email"], **signature)).status_code == 502
 
-    monkeypatch.setattr(email_service, "_post_mailgun", lambda data: emails.append(dict(data)))
+    monkeypatch.setattr(email_service, "_post_mailgun", lambda data, files=None: emails.append(dict(data)))
     assert client.post("/email/inbound", data=message(alias_actif["alias_email"], **signature)).json() == {"status": "forwarded"}
     assert len(emails) == 1
 

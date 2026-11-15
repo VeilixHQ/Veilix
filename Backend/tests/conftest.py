@@ -32,15 +32,14 @@ os.environ.update({
     "HMAC_SECRET": secrets.token_hex(32),
     "MAILGUN_SIGNING_KEY": TEST_SIGNING_KEY,
     "MAILGUN_API_KEY": "cle-de-test",
-    "MAILGUN_DOMAIN": "mg.veilix.test",
+    "MAILGUN_DOMAIN": "mg.veilix-tests.fr",
     "MAILGUN_API_URL": "https://mailgun.invalid",
     "EMAIL_PROVIDER": "mailgun",
-    "DOMAIN": "alias.veilix.test",
+    "DOMAIN": "alias.veilix-tests.fr",
     "FRONTEND_URL": "https://app.veilix.test",
     "CORS_ORIGINS": "https://app.veilix.test",
     "ADMIN_KEY_IDS": "",
-    "FORWARD_TO": "",
-    "REPLY_DOMAIN": "mg.veilix.test",
+    "REPLY_DOMAIN": "mg.veilix-tests.fr",
 })
 
 import pytest
@@ -87,7 +86,10 @@ def emails(monkeypatch):
     envoyes: list[dict] = []
     from app.services import email_service
 
-    monkeypatch.setattr(email_service, "_post_mailgun", lambda data: envoyes.append(dict(data)))
+    def capturer(data, files=None):
+        envoyes.append({**data, "_files": list(files or [])})
+
+    monkeypatch.setattr(email_service, "_post_mailgun", capturer)
     return envoyes
 
 

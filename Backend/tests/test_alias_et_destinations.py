@@ -32,7 +32,7 @@ def test_alias_aleatoire_sur_le_domaine(client):
     premier = creer_alias(client, cle)["alias_email"]
     second = creer_alias(client, cle)["alias_email"]
     assert premier != second
-    assert premier.endswith("@alias.veilix.test")
+    assert premier.endswith("@alias.veilix-tests.fr")
     assert "alice" not in premier
 
 
@@ -113,7 +113,7 @@ def test_quota_du_plan_pro(client, db):
     proprietaire = db.query(Key).one()
     chiffre, version = encrypt("alice@example.com")
     db.add_all([
-        Alias(key_id=proprietaire.id, alias_email=f"a{i}@alias.veilix.test", destination_email=chiffre,
+        Alias(key_id=proprietaire.id, alias_email=f"a{i}@alias.veilix-tests.fr", destination_email=chiffre,
               key_version=version, email_hmac=hash_email("alice@example.com"), status="active")
         for i in range(100)
     ])
