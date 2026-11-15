@@ -1,3 +1,5 @@
+import logging
+
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from slowapi import _rate_limit_exceeded_handler
@@ -5,6 +7,8 @@ from slowapi.errors import RateLimitExceeded
 from app.routes import key, alias, email, destination
 from app.core.config import CORS_ORIGINS, IS_PRODUCTION
 from app.core.limiter import limiter
+
+logging.getLogger("uvicorn.access").disabled = True
 
 app = FastAPI(
     title="Veilix API",

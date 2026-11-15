@@ -73,3 +73,11 @@ def test_production_refuse_de_demarrer_sans_secrets():
     resultat = subprocess.run([sys.executable, "-c", "import app.core.config"], cwd=BACKEND, env=env, capture_output=True, text=True, timeout=60)
     assert resultat.returncode != 0
     assert "Configuration de production incomplète" in resultat.stderr
+
+
+def test_aucun_journal_d_acces_avec_les_ip():
+    import logging
+
+    import app.main
+
+    assert logging.getLogger("uvicorn.access").disabled is True
