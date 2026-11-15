@@ -4,8 +4,6 @@ from dotenv import load_dotenv
 load_dotenv(encoding="utf-8-sig")
 
 DATABASE_URL        = os.getenv("DATABASE_URL")
-JWT_SECRET          = os.getenv("JWT_SECRET")
-JWT_ALGORITHM       = os.getenv("JWT_ALGORITHM", "HS256")
 DOMAIN              = os.getenv("DOMAIN", "veilix.fr")
 EMAIL_PROVIDER      = os.getenv("EMAIL_PROVIDER", "mailgun")
 MAILGUN_API_KEY     = os.getenv("MAILGUN_API_KEY")
@@ -18,9 +16,6 @@ HMAC_SECRET         = os.getenv("HMAC_SECRET")
 ADMIN_KEY_IDS       = os.getenv("ADMIN_KEY_IDS", "")
 APP_ENV             = os.getenv("APP_ENV", "development").strip().lower()
 IS_PRODUCTION       = APP_ENV == "production"
-AWS_ACCESS_KEY      = os.getenv("AWS_ACCESS_KEY")
-AWS_SECRET_KEY      = os.getenv("AWS_SECRET_KEY")
-AWS_REGION          = os.getenv("AWS_REGION", "eu-west-1")
 CORS_ORIGINS        = [
     origin.strip()
     for origin in os.getenv("CORS_ORIGINS", "http://localhost:3000,http://127.0.0.1:3000").split(",")
