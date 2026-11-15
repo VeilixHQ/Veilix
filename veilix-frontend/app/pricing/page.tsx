@@ -307,7 +307,7 @@ export default function Pricing() {
         </div>
       </section>
 
-      <section style={{ padding: '0 24px 96px' }}>
+      <section id="credits" style={{ padding: '0 24px 96px', scrollMarginTop: 96 }}>
         <div style={{ maxWidth: 1000, margin: '0 auto', background: '#0d0d10', border: '1px solid rgba(255,255,255,0.06)', borderRadius: 16, padding: '36px 32px' }}>
           <div className="credits-row" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 32, flexWrap: 'wrap' }}>
             <div style={{ maxWidth: 380 }}>

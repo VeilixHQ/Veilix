@@ -58,6 +58,23 @@ export async function verifyKey(keyId: string) {
   return res.json()
 }
 
+export type Account = {
+  plan: string
+  status: string
+  credits: number
+  aliases_used: number
+  alias_quota: number | null
+  created_at: string | null
+}
+
+export async function getAccount(): Promise<Account> {
+  const res = await fetchWithAuth('/key/me')
+  if (!res.ok) {
+    throw new Error('Compte indisponible')
+  }
+  return res.json()
+}
+
 export async function getAliases() {
   const res = await fetchWithAuth('/alias')
   return res.json()

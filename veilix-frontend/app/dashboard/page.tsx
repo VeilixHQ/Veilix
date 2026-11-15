@@ -1,7 +1,8 @@
 'use client'
 import { useState, useEffect, useCallback } from 'react'
 import { useRouter } from 'next/navigation'
-import { getAliases, createAlias, disableAlias, enableAlias, deleteAlias, resendConfirmation, verifyKey } from '@/lib/api'
+import Link from 'next/link'
+import { getAliases, getAccount, createAlias, disableAlias, enableAlias, deleteAlias, resendConfirmation, Account } from '@/lib/api'
 import { getIdentity } from '@/lib/crypto'
 import { useAuth } from '@/hooks/useAuth'
 import { useInactivityTimeout } from '@/hooks/useInactivityTimeout'
@@ -11,7 +12,7 @@ import { SiteFooter } from '@/components/landing/SiteFooter'
 import { UserMenu } from '@/components/UserMenu'
 import { InactivityWarning } from '@/components/InactivityWarning'
 import { SessionExpiredModal } from '@/components/SessionExpiredModal'
-import { UpgradeModal } from '@/components/UpgradeModal'
+import { UpgradeModal, UpgradeReason } from '@/components/UpgradeModal'
 import { Button } from '@/components/Button'
 import { Input } from '@/components/Input'
 import { T, Lang } from '@/lib/translations'
@@ -29,9 +30,82 @@ const TAG_MAX_LENGTH = 24
 const TAG_STYLE = { color: '#a78bfa', bg: 'rgba(124,58,237,0.1)', border: 'rgba(124,58,237,0.28)' }
 
 const PLAN_LABELS: Record<string, string> = {
+  credits: 'Sans abonnement',
   pro: 'Pro',
   pack: 'Pack de lancement',
+  premium: 'Premium',
   admin: 'Admin',
+}
+
+const UPGRADE_REASONS: Record<string, UpgradeReason> = {
+  NO_CREDITS: 'credits',
+  LIMIT_REACHED_PRO: 'quota',
+  LIMIT_REACHED: 'quota',
+}
+
+const CARD_STYLE: React.CSSProperties = {
+  background: '#0d0d10',
+  border: '1px solid rgba(255,255,255,0.06)',
+  borderRadius: 12,
+  padding: '18px 20px',
+  minWidth: 0,
+}
+
+function planLabel(plan: string | undefined) {
+  return (plan && PLAN_LABELS[plan]) || 'Pro'
+}
+
+function AccountCards({ account, active, inactive }: { account: Account | null; active: number; inactive: number }) {
+  const used = account?.aliases_used ?? active + inactive
+  const quota = account?.alias_quota ?? null
+  const ratio = quota ? Math.min(used / quota, 1) : 0
+  const barColor = ratio >= 1 ? '#f87171' : ratio >= 0.9 ? '#fbbf24' : '#7c3aed'
+
+  return (
+    <div className="account-cards">
+      <div className="account-card-aliases" style={CARD_STYLE}>
+        <div style={{ display: 'flex', alignItems: 'baseline', gap: 6, marginBottom: 2 }}>
+          <span style={{ fontSize: 26, fontWeight: 800, letterSpacing: '-1px', color: '#f1f5f9' }}>{used}</span>
+          {quota !== 0 && (
+            <span style={{ fontSize: 14, fontWeight: 600, color: '#475569' }}>{quota === null ? '/ illimité' : `/ ${quota}`}</span>
+          )}
+        </div>
+        <div style={{ fontSize: 12, color: '#64748b', fontWeight: 500 }}>
+          {quota === 0 ? 'Alias utilisés, 1 crédit par nouvel alias' : 'Alias utilisés'}
+        </div>
+        {quota !== null && quota > 0 && (
+          <div
+            role="progressbar"
+            aria-valuemin={0}
+            aria-valuemax={quota}
+            aria-valuenow={used}
+            aria-label="Alias utilisés sur le quota du plan"
+            style={{ height: 4, borderRadius: 4, background: 'rgba(255,255,255,0.06)', margin: '12px 0 10px', overflow: 'hidden' }}
+          >
+            <div style={{ width: `${ratio * 100}%`, height: '100%', background: barColor, borderRadius: 4, transition: 'width .3s' }} />
+          </div>
+        )}
+        <div style={{ fontSize: 11.5, color: '#475569', marginTop: quota !== null && quota > 0 ? 0 : 10 }}>
+          <span style={{ color: '#4ade80' }}>{active} actif{active > 1 ? 's' : ''}</span>
+          <span> · {inactive} inactif{inactive > 1 ? 's' : ''}</span>
+        </div>
+      </div>
+
+      <Link href="/pricing#credits" className="account-card-link" style={{ ...CARD_STYLE, textDecoration: 'none', color: 'inherit', display: 'block' }}>
+        <div style={{ fontSize: 26, fontWeight: 800, letterSpacing: '-1px', marginBottom: 2, color: '#f1f5f9' }}>{account ? account.credits : '-'}</div>
+        <div style={{ fontSize: 12, color: '#64748b', fontWeight: 500 }}>Crédit{account && account.credits > 1 ? 's' : ''}</div>
+        <div style={{ fontSize: 11.5, color: '#a78bfa', fontWeight: 600, marginTop: 10 }}>Acheter des crédits</div>
+      </Link>
+
+      <Link href="/pricing" className="account-card-link" style={{ ...CARD_STYLE, textDecoration: 'none', color: 'inherit', display: 'block' }}>
+        <div style={{ fontSize: 18, fontWeight: 800, letterSpacing: '-0.4px', lineHeight: 1.25, minHeight: 31, display: 'flex', alignItems: 'center', marginBottom: 2, color: '#f1f5f9' }}>
+          {account ? planLabel(account.plan) : '-'}
+        </div>
+        <div style={{ fontSize: 12, color: '#64748b', fontWeight: 500 }}>Plan</div>
+        <div style={{ fontSize: 11.5, color: '#a78bfa', fontWeight: 600, marginTop: 10 }}>Voir les offres</div>
+      </Link>
+    </div>
+  )
 }
 
 function tagStyle(_name: string) {
@@ -118,11 +192,12 @@ export default function Dashboard() {
   const [lang, setLang] = useState<Lang>('fr')
   const t = T[lang]
 
-  const [identity, setIdentity] = useState<{ keyId: string; plan?: string } | null>(null)
+  const [keyId, setKeyId] = useState<string | null>(null)
+  const [account, setAccount] = useState<Account | null>(null)
   const [aliases, setAliases] = useState<Alias[]>([])
   const [loading, setLoading] = useState(true)
   const [showModal, setShowModal] = useState(false)
-  const [showUpgradeModal, setShowUpgradeModal] = useState(false)
+  const [upgradeReason, setUpgradeReason] = useState<UpgradeReason | null>(null)
   const [newDest, setNewDest] = useState('')
   const [newLabel, setNewLabel] = useState('')
   const [creating, setCreating] = useState(false)
@@ -136,24 +211,21 @@ export default function Dashboard() {
 
   useEffect(() => {
     if (!authLoading && user) {
-      getIdentity().then(async id => {
-        if (id) {
-          let detectedPlan = 'pro'
-          try {
-            const res = await verifyKey(id.keyId)
-            if (res && res.plan) {
-              detectedPlan = res.plan
-            }
-          } catch {
-          }
-          setIdentity({ keyId: id.keyId, plan: detectedPlan })
-        }
+      getIdentity().then(id => {
+        if (id) setKeyId(id.keyId)
       })
     }
   }, [authLoading, user])
 
+  const fetchAccount = useCallback(async () => {
+    try {
+      setAccount(await getAccount())
+    } catch {
+      setAccount(null)
+    }
+  }, [])
+
   const fetchAliases = useCallback(async () => {
-    setLoading(true)
     try {
       const data = await getAliases()
       if (Array.isArray(data)) setAliases(data)
@@ -164,9 +236,14 @@ export default function Dashboard() {
     }
   }, [])
 
+  const refresh = useCallback(() => {
+    fetchAliases()
+    fetchAccount()
+  }, [fetchAliases, fetchAccount])
+
   useEffect(() => {
-    if (!authLoading && user) fetchAliases()
-  }, [authLoading, user, fetchAliases])
+    if (!authLoading && user) refresh()
+  }, [authLoading, user, refresh])
 
   async function handleCreate(e: React.FormEvent) {
     e.preventDefault()
@@ -175,12 +252,14 @@ export default function Dashboard() {
       const result = await createAlias(newDest, normalizeTag(newLabel))
       
       if (result.detail) {
-        if (result.detail === 'LIMIT_REACHED_PRO') {
+        const reason = typeof result.detail === 'string' ? UPGRADE_REASONS[result.detail] : undefined
+        if (reason) {
           setShowModal(false)
-          setShowUpgradeModal(true)
+          setUpgradeReason(reason)
+          fetchAccount()
           return
         }
-        showToast(result.detail, 'error')
+        showToast(typeof result.detail === 'string' ? result.detail : 'Erreur lors de la création', 'error')
         return
       }
 
@@ -197,7 +276,7 @@ export default function Dashboard() {
       } else {
         showToast('Alias créé', 'success')
       }
-      fetchAliases()
+      refresh()
     } catch {
       showToast('Erreur lors de la création', 'error')
     } finally {
@@ -242,7 +321,7 @@ export default function Dashboard() {
     try {
       await deleteAlias(id)
       showToast('Alias supprimé', 'info')
-      fetchAliases()
+      refresh()
     } catch {
       showToast('Erreur', 'error')
     }
@@ -293,22 +372,32 @@ export default function Dashboard() {
     <div style={{ minHeight: '100vh', background: '#060608', color: '#f1f5f9', fontFamily: 'Inter, sans-serif' }}>
       <style>{`
         @keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
-        .alias-row{display:grid;grid-template-columns:1fr 170px 110px 220px;gap:24px;align-items:center;padding:14px 18px;background:#0d0d10;border:1px solid rgba(255,255,255,0.06);border-radius:12px;transition:border-color .15s}
+        .account-cards{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:12px;margin-bottom:28px}
+        .account-card-link{transition:border-color .15s}
+        .account-card-link:hover{border-color:rgba(124,58,237,0.3)!important}
+        .alias-row{display:grid;grid-template-columns:minmax(0,1fr) 180px 110px 210px;gap:20px;align-items:center;min-height:68px;padding:12px 18px;background:#0d0d10;border:1px solid rgba(255,255,255,0.06);border-radius:12px;transition:border-color .15s}
         .alias-row:hover{border-color:rgba(124,58,237,0.2)}
+        .alias-dest{font-size:12px;color:#64748b;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0}
         .alias-status{display:flex;align-items:center;justify-content:center;min-width:0}
-        .alias-row-actions{display:flex;gap:14px;justify-content:center}
-        .dashboard-table-header{display:grid;grid-template-columns:1fr 170px 110px 220px;gap:24px}
+        .alias-row-actions{display:grid;grid-template-columns:100px 94px;gap:10px;justify-content:center}
+        .alias-row-actions button{width:100%}
+        .dashboard-table-header{display:grid;grid-template-columns:minmax(0,1fr) 180px 110px 210px;gap:20px}
         @media(max-width:900px){
-          .alias-row{grid-template-columns:1fr;gap:10px;align-items:flex-start}
-          .alias-row-actions{width:100%;justify-content:flex-start!important}
-          .alias-status{justify-content:flex-start}
+          .alias-row{grid-template-columns:minmax(0,1fr) auto;gap:10px 12px;align-items:center}
+          .alias-row>:first-child{grid-column:1/-1}
+          .alias-row-actions{grid-column:1/-1;justify-content:start}
+          .alias-status{justify-content:flex-end}
           .dashboard-table-header{display:none!important}
+        }
+        @media(max-width:640px){
+          .account-cards{grid-template-columns:1fr 1fr}
+          .account-card-aliases{grid-column:1/-1}
         }
       `}</style>
 
       {showWarning && <InactivityWarning countdown={countdown} onStay={stayConnected} />}
       {sessionExpired && <SessionExpiredModal onClose={() => setSessionExpired(false)} />}
-      {showUpgradeModal && <UpgradeModal onClose={() => setShowUpgradeModal(false)} />}
+      {upgradeReason && <UpgradeModal reason={upgradeReason} onClose={() => setUpgradeReason(null)} />}
       {toast && <Toast message={toast.message} type={toast.type} onClose={hideToast} />}
 
       <SiteNav
@@ -317,11 +406,11 @@ export default function Dashboard() {
         setLang={setLang}
         mode="app"
         rightSlot={
-          identity && (
+          keyId && (
             <UserMenu
-              plan={PLAN_LABELS[identity.plan || 'pro'] || 'Pro'}
-              keyIdShort={`K-${identity.keyId.slice(0, 4).toUpperCase()}...${identity.keyId.slice(-4).toUpperCase()}`}
-              fullKeyId={identity.keyId}
+              plan={planLabel(account?.plan)}
+              keyIdShort={`K-${keyId.slice(0, 4).toUpperCase()}...${keyId.slice(-4).toUpperCase()}`}
+              fullKeyId={keyId}
             />
           )
         }
@@ -340,18 +429,11 @@ export default function Dashboard() {
           </div>
         </div>
 
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 12, marginBottom: 28 }}>
-          {[
-            { label: 'Total', value: aliases.length, color: undefined as string | undefined },
-            { label: 'Actifs', value: aliases.filter(a => a.status === 'active').length, color: '#4ade80' },
-            { label: 'Inactifs', value: aliases.filter(a => a.status !== 'active').length, color: '#64748b' },
-          ].map((s, i) => (
-            <div key={i} style={{ background: '#0d0d10', border: '1px solid rgba(255,255,255,0.06)', borderRadius: 12, padding: '18px 20px' }}>
-              <div style={{ fontSize: 26, fontWeight: 800, letterSpacing: '-1px', marginBottom: 2, color: s.color || '#f1f5f9' }}>{s.value}</div>
-              <div style={{ fontSize: 12, color: '#64748b', fontWeight: 500 }}>{s.label}</div>
-            </div>
-          ))}
-        </div>
+        <AccountCards
+          account={account}
+          active={aliases.filter(a => a.status === 'active').length}
+          inactive={aliases.filter(a => a.status !== 'active').length}
+        />
 
         {aliases.length > 2 && (
           <div style={{ marginBottom: 18 }}>
@@ -417,7 +499,7 @@ export default function Dashboard() {
                   )}
                 </div>
 
-                <span style={{ fontSize: 12, color: '#64748b', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{alias.destination_email}</span>
+                <span className="alias-dest" title={alias.destination_email}>{alias.destination_email}</span>
 
                 <div className="alias-status">
                   <StatusBadge status={alias.status} />

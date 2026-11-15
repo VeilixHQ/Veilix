@@ -2,13 +2,42 @@
 import Link from 'next/link'
 import { Button } from '@/components/Button'
 
+export type UpgradeReason = 'quota' | 'credits'
+
 interface UpgradeModalProps {
+  reason: UpgradeReason
   onClose: () => void
 }
 
-export function UpgradeModal({ onClose }: UpgradeModalProps) {
+const CONTENT: Record<UpgradeReason, { title: string; text: React.ReactNode; primary: { href: string; label: string }; secondary: { href: string; label: string } }> = {
+  quota: {
+    title: 'Limite de 100 alias atteinte',
+    text: (
+      <>
+        Votre plan Pro inclut 100 alias, désactivés compris. Utilisez des crédits pour en créer d&apos;autres, ou passez au <strong style={{ color: '#a78bfa' }}>Pack de lancement</strong> pour des alias illimités.
+      </>
+    ),
+    primary: { href: '/pricing', label: 'Découvrir le Pack de lancement' },
+    secondary: { href: '/pricing#credits', label: 'Acheter des crédits' },
+  },
+  credits: {
+    title: 'Plus de crédits disponibles',
+    text: (
+      <>
+        Chaque alias consomme 1 crédit, qui n&apos;est pas rendu à la suppression. Rachetez des crédits, ou passez à un <strong style={{ color: '#a78bfa' }}>abonnement</strong> pour créer vos alias sans compter.
+      </>
+    ),
+    primary: { href: '/pricing#credits', label: 'Acheter des crédits' },
+    secondary: { href: '/pricing', label: 'Voir les abonnements' },
+  },
+}
+
+export function UpgradeModal({ reason, onClose }: UpgradeModalProps) {
+  const content = CONTENT[reason]
   return (
     <div
+      role="dialog"
+      aria-modal="true"
       style={{
         position: 'fixed',
         inset: 0,
@@ -74,21 +103,23 @@ export function UpgradeModal({ onClose }: UpgradeModalProps) {
         </div>
 
         <h3 style={{ fontSize: 19, fontWeight: 800, marginBottom: 8, letterSpacing: '-0.4px', color: '#f1f5f9' }}>
-          Limite de 100 alias atteinte
+          {content.title}
         </h3>
         <p style={{ fontSize: 13.5, color: '#94a3b8', lineHeight: 1.6, marginBottom: 24 }}>
-          Votre plan Pro est limité à 100 alias actifs. Passez au <strong style={{ color: '#a78bfa' }}>Pack de lancement</strong> pour profiter des alias illimités à vie.
+          {content.text}
         </p>
 
         <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
-          <Link href="/pricing" style={{ textDecoration: 'none' }}>
+          <Link href={content.primary.href} style={{ textDecoration: 'none' }}>
             <Button variant="primary" size="md" style={{ width: '100%' }}>
-              Découvrir le Pack de lancement
+              {content.primary.label}
             </Button>
           </Link>
-          <Button variant="secondary" size="md" onClick={onClose} style={{ width: '100%' }}>
-            Fermer
-          </Button>
+          <Link href={content.secondary.href} style={{ textDecoration: 'none' }}>
+            <Button variant="secondary" size="md" style={{ width: '100%' }}>
+              {content.secondary.label}
+            </Button>
+          </Link>
         </div>
       </div>
     </div>
