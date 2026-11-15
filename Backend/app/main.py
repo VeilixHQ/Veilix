@@ -5,10 +5,7 @@ from slowapi.errors import RateLimitExceeded
 from app.routes import key, alias, email, destination
 from app.core.config import CORS_ORIGINS, IS_PRODUCTION
 from app.core.limiter import limiter
-from app.db.base import Base
-from app.db.session import engine
 
-Base.metadata.create_all(bind=engine)
 app = FastAPI(
     title="Veilix API",
     version="1.0.0",
