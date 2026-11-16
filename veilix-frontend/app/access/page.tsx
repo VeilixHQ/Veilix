@@ -13,9 +13,9 @@ import {
   saveIdentity,
   type VeilixIdentity,
 } from '@/lib/crypto'
-import { ApiError, BetaPhase, checkAccessCode, registerKey, verifyKey } from '@/lib/api'
+import { ApiError, BetaPhase, checkAccessCode, getBetaStatus, registerKey, verifyKey } from '@/lib/api'
 import { T, Lang } from '@/lib/translations'
-import { BETA_RHYTHM, BETA_RIGHTS, BETA_TERMS, EMAIL_PATTERN } from '@/lib/beta'
+import { BETA_RIGHTS, BETA_TERMS, EMAIL_PATTERN, betaRhythm } from '@/lib/beta'
 
 type Step = 'choice' | 'code' | 'generating' | 'reveal' | 'confirm' | 'contact' | 'restore'
 
@@ -52,6 +52,12 @@ function AccessContent() {
   const [restoreWords, setRestoreWords] = useState<string[]>(Array(12).fill(''))
   const restoreInputRefs = useRef<(HTMLInputElement | null)[]>([])
   const [loading, setLoading] = useState(false)
+  const [publicBetaOpen, setPublicBetaOpen] = useState(false)
+  const termsPhase = publicBetaOpen || accessCode.startsWith('VEILIX-PUB') ? 'public' : 'private'
+
+  useEffect(() => {
+    getBetaStatus().then(status => setPublicBetaOpen(status.public.open)).catch(() => {})
+  }, [])
 
   useEffect(() => {
     if (mode === 'restore') {
@@ -297,7 +303,7 @@ function AccessContent() {
                   </p>
                   <div style={{ maxHeight: 168, overflowY: 'auto', padding: '12px 14px', borderRadius: 10, background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.06)', fontSize: 12, lineHeight: 1.65, color: '#94a3b8' }}>
                     <p style={{ marginBottom: 10 }}>{BETA_TERMS}</p>
-                    <p style={{ marginBottom: 10 }}>{BETA_RHYTHM}</p>
+                    <p style={{ marginBottom: 10 }}>{betaRhythm(termsPhase)}</p>
                     <p>{BETA_RIGHTS}</p>
                   </div>
                 </div>
@@ -315,7 +321,9 @@ function AccessContent() {
 
                 <p style={{ fontSize: 12, color: '#64748b', textAlign: 'center' }}>
                   {lang === 'fr' ? 'Pas encore de code ? ' : 'No code yet? '}
-                  <a href="/beta" style={{ color: '#a78bfa', fontWeight: 600, textDecoration: 'none' }}>{lang === 'fr' ? 'Rejoindre la bêta' : 'Join the beta'}</a>
+                  {publicBetaOpen
+                    ? <a href="/beta" style={{ color: '#a78bfa', fontWeight: 600, textDecoration: 'none' }}>{lang === 'fr' ? 'Rejoindre la bêta' : 'Join the beta'}</a>
+                    : (lang === 'fr' ? "La bêta est sur invitation : utilisez le lien reçu avec votre invitation." : 'The beta is invitation-only: use the link you received with your invitation.')}
                 </p>
 
                 <div style={{ display: 'flex', gap: 10 }}>
