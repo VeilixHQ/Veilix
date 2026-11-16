@@ -391,3 +391,19 @@ def test_arrivee_tardive_garde_trois_jours_d_utilisation():
 
         retour_tardif = limite - timedelta(days=2)
         assert beta_service.feedback_due_after("private", retour_tardif, beta_service.FEEDBACK_PERIOD["private"]) == retour_tardif + timedelta(days=3)
+
+
+def test_inscriptions_effacees_a_la_fin_de_la_phase(client, beta, emails, db):
+    fin = beta_service.now_utc() + timedelta(days=10)
+    beta.setattr(config, "BETA_PRIVATE_ENDS_AT", fin)
+    for adresse in ("a@example.com", "b@example.com", "c@example.com"):
+        postuler(client, adresse)
+    cle = activer(client, code_recu(emails, "a@example.com"))
+    assert db.query(BetaSignup).count() == 3
+
+    assert beta_service.tick(db, fin - timedelta(minutes=1))["purged_signups"] == 0
+    assert beta_service.tick(db, fin + timedelta(minutes=1))["purged_signups"] == 3
+    db.expire_all()
+    assert db.query(BetaSignup).count() == 0
+    assert db.query(AccessCode).filter(AccessCode.signup_id.isnot(None)).count() == 0
+    assert cle_en_base(db, cle).contact_email

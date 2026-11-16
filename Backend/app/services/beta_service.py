@@ -471,6 +471,15 @@ def notify_closing(db: Session, now: datetime) -> int:
     return notified
 
 
+def purge_finished_signups(db: Session, now: datetime) -> int:
+    finished = [phase for phase in PHASES if not phase_running(phase, now)]
+    if not finished:
+        return 0
+    purged = db.query(BetaSignup).filter(BetaSignup.phase.in_(finished)).delete(synchronize_session=False)
+    db.commit()
+    return purged
+
+
 def tick(db: Session, now: datetime | None = None) -> dict:
     now = now or now_utc()
     report = {
@@ -481,5 +490,6 @@ def tick(db: Session, now: datetime | None = None) -> dict:
         "suspended": suspend_overdue(db, now),
         "closing": notify_closing(db, now),
     }
+    report["purged_signups"] = purge_finished_signups(db, now)
     report["invited"] = sum(process_queue(db, phase, now) for phase in PHASES)
     return report

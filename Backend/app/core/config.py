@@ -33,6 +33,16 @@ if IS_PRODUCTION and not all((ENCRYPTION_KEY, HMAC_SECRET, MAILGUN_SIGNING_KEY, 
     raise RuntimeError("Configuration de production incomplète : ENCRYPTION_KEY, HMAC_SECRET et les variables Mailgun sont obligatoires.")
 
 
+def _public_https(url: str) -> bool:
+    return url.startswith("https://") and not any(host in url for host in ("localhost", "127.0.0.1", "[::1]"))
+
+
+if IS_PRODUCTION and not (_public_https(FRONTEND_URL) and CORS_ORIGINS and all(_public_https(origin) for origin in CORS_ORIGINS)):
+    raise RuntimeError("Configuration de production incomplète : FRONTEND_URL et CORS_ORIGINS doivent être des adresses https publiques.")
+if IS_PRODUCTION and not CLIENT_IP_HEADER:
+    raise RuntimeError("Configuration de production incomplète : CLIENT_IP_HEADER est obligatoire derrière le proxy de l'hébergeur.")
+
+
 def _env_datetime(name: str, default: str = ""):
     from datetime import datetime, timezone
     raw = os.getenv(name)
