@@ -13,14 +13,18 @@ function toDate(value: string) {
   return new Date(value.endsWith('Z') ? value : `${value}Z`)
 }
 
+function frenchDay(date: Date) {
+  return date.toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'Europe/Paris' }).replace(/^1 /, '1er ')
+}
+
 export function formatDate(value: string | null) {
   if (!value) return ''
-  return toDate(value).toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'Europe/Paris' })
+  return frenchDay(toDate(value))
 }
 
 export function formatLastDay(value: string | null) {
   if (!value) return ''
-  return new Date(toDate(value).getTime() - 60_000).toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'Europe/Paris' })
+  return frenchDay(new Date(toDate(value).getTime() - 60_000))
 }
 
 export function isPast(value: string | null) {

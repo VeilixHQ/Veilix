@@ -108,6 +108,16 @@ export default function BetaPage() {
             )}
           </div>
 
+          {shown === 'private' && (view === 'form' || view === 'upcoming') && (
+            <div style={{ padding: '16px 18px', borderRadius: 14, background: 'rgba(124,58,237,0.08)', border: '1px solid rgba(124,58,237,0.25)' }}>
+              <p style={{ fontSize: 14, fontWeight: 700, color: '#c4b5fd', marginBottom: 6 }}>Après la bêta : 3 mois offerts</p>
+              <p style={{ fontSize: 13, color: '#a5a3c4', lineHeight: 1.65 }}>
+                {status?.launch_at ? `Au lancement officiel de Veilix, le ${formatDate(status.launch_at)}, ` : 'Au lancement officiel de Veilix, '}
+                vous gardez le Pack de lancement avec 3 mois offerts. Une carte bancaire vous sera demandée à ce moment-là, sans aucun prélèvement pendant ces 3 mois, et vous pouvez résilier avant la fin de l&apos;offre.
+              </p>
+            </div>
+          )}
+
           {sent ? (
             <div style={{ ...CARD, textAlign: 'center' }} role="status">
               <p style={{ fontSize: 16, fontWeight: 700, marginBottom: 8 }}>C&apos;est noté.</p>

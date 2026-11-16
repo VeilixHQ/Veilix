@@ -120,6 +120,10 @@ const TEXT = {
     monthly: 'Mensuel',
     yearlyLabel: 'Annuel',
     payment: 'Moyen de paiement requis',
+    buyCredits: (amount: string, price: string) => `Acheter ${amount} pour ${price}`,
+    creditsSoonTitle: (amount: string, price: string) => `${amount} pour ${price}`,
+    creditsSoonText: "Le paiement en ligne ouvre avec la bêta publique, le 1er février 2027 : vous pourrez alors acheter vos crédits ici en quelques secondes, par carte, Google Pay ou Apple Pay. Pendant la bêta privée, le Pack de lancement inclut des alias illimités : aucun crédit n'est nécessaire.",
+    close: 'Compris',
   },
   en: {
     left: (n: number) => `${n} of ${PACK_TOTAL} packs left`,
@@ -127,6 +131,10 @@ const TEXT = {
     monthly: 'Monthly',
     yearlyLabel: 'Yearly',
     payment: 'Payment method required',
+    buyCredits: (amount: string, price: string) => `Buy ${amount} for ${price}`,
+    creditsSoonTitle: (amount: string, price: string) => `${amount} for ${price}`,
+    creditsSoonText: 'Online payment opens with the public beta on February 1, 2027: you will then be able to buy credits here in a few seconds, by card, Google Pay or Apple Pay. During the private beta, the Launch pack includes unlimited aliases, so no credits are needed.',
+    close: 'Got it',
   },
 }
 
@@ -188,6 +196,7 @@ const FAQS: Record<'fr' | 'en', { q: string; a: string }[]> = {
 export default function Pricing() {
   const [lang, setLang] = useState<Lang>('fr')
   const [proYearly, setProYearly] = useState(true)
+  const [creditPack, setCreditPack] = useState<{ amount: string; price: string } | null>(null)
   const t = T[lang]
   const pt = PT[lang].pricing
   const plans = (PLANS as Record<string, PlanData[]>)[lang] ?? PLANS.fr
@@ -201,6 +210,7 @@ export default function Pricing() {
         .plan-card{transition:transform .25s, border-color .2s}
         .plan-card:hover{transform:translateY(-4px)}
         @media(max-width:860px){ .plans-grid{grid-template-columns:1fr!important} .credits-row{flex-direction:column!important} }
+        .credit-pack:hover, .credit-pack:focus-visible { border-color: rgba(124,58,237,0.45)!important; background: rgba(124,58,237,0.08)!important; outline: none }
       `}</style>
 
       <SiteNav t={t} lang={lang} setLang={setLang} mode="public" />
@@ -316,10 +326,17 @@ export default function Pricing() {
             </div>
             <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }}>
               {pt.creditsPacks.map((pack, i) => (
-                <div key={i} style={{ textAlign: 'center', padding: '14px 18px', borderRadius: 10, background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.06)', minWidth: 100 }}>
+                <button
+                  key={i}
+                  type="button"
+                  className="credit-pack"
+                  onClick={() => setCreditPack(pack)}
+                  aria-label={tx.buyCredits(pack.amount, pack.price)}
+                  style={{ textAlign: 'center', padding: '14px 18px', borderRadius: 10, background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.06)', minWidth: 100, cursor: 'pointer', color: 'inherit', fontFamily: 'Inter, sans-serif', transition: 'border-color .15s, background .15s' }}
+                >
                   <div style={{ fontSize: 16, fontWeight: 800, marginBottom: 2 }}>{pack.price}</div>
                   <div style={{ fontSize: 11, color: '#475569' }}>{pack.amount}</div>
-                </div>
+                </button>
               ))}
             </div>
           </div>
@@ -334,6 +351,25 @@ export default function Pricing() {
           </div>
         </div>
       </section>
+
+      {creditPack && (
+        <div
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="credits-soon-title"
+          onClick={() => setCreditPack(null)}
+          style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.8)', zIndex: 250, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 24 }}
+        >
+          <div
+            onClick={e => e.stopPropagation()}
+            style={{ background: '#0d0d10', border: '1px solid rgba(124,58,237,0.3)', borderRadius: 16, padding: 28, width: '100%', maxWidth: 420, textAlign: 'center' }}
+          >
+            <h3 id="credits-soon-title" style={{ fontSize: 18, fontWeight: 800, marginBottom: 10 }}>{tx.creditsSoonTitle(creditPack.amount, creditPack.price)}</h3>
+            <p style={{ fontSize: 13, color: '#94a3b8', lineHeight: 1.7, marginBottom: 22 }}>{tx.creditsSoonText}</p>
+            <Button variant="primary" size="md" onClick={() => setCreditPack(null)} style={{ width: '100%' }} autoFocus>{tx.close}</Button>
+          </div>
+        </div>
+      )}
 
       <SiteFooter t={t} />
     </div>
