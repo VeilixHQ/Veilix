@@ -79,8 +79,24 @@ def etat_propre(base_de_test):
     from app.db.session import engine
 
     with engine.begin() as conn:
-        conn.execute(text("TRUNCATE beta_feedback, access_codes, beta_signups, destination_verifications, aliases, keys, rate_limits, webhook_tokens RESTART IDENTITY CASCADE"))
+        conn.execute(text("TRUNCATE beta_feedback, access_codes, beta_signups, destination_verifications, aliases, keys, rate_limits, webhook_tokens, inbound_messages, destination_health RESTART IDENTITY CASCADE"))
     yield
+
+
+@pytest.fixture(autouse=True)
+def dns_hors_ligne(monkeypatch):
+    from app.core import dmarc
+
+    politiques: dict[str, str] = {}
+
+    def repondre(nom):
+        domaine = nom.removeprefix("_dmarc.")
+        return [f"v=DMARC1; p={politiques[domaine]}"] if domaine in politiques else []
+
+    monkeypatch.setattr(dmarc, "_query", repondre)
+    dmarc.clear_cache()
+    yield politiques
+    dmarc.clear_cache()
 
 
 @pytest.fixture
@@ -92,6 +108,7 @@ def emails(monkeypatch):
         envoyes.append({**data, "_files": list(files or [])})
 
     monkeypatch.setattr(email_service, "_post_mailgun", capturer)
+    monkeypatch.setattr(email_service, "_delete_mailgun", lambda chemin: None)
     return envoyes
 
 
@@ -172,3 +189,21 @@ def signature_mailgun(timestamp: str | None = None, token: str | None = None, cl
     token = token or secrets.token_hex(25)
     signature = hmac.new(cle.encode(), f"{timestamp}{token}".encode(), hashlib.sha256).hexdigest()
     return {"timestamp": timestamp, "token": token, "signature": signature}
+
+
+@pytest.fixture
+def mailgun(monkeypatch):
+    from app.services import email_service
+    from tests.outils_email import FauxMailgun
+
+    faux = FauxMailgun()
+    monkeypatch.setattr(email_service.httpx, "post", faux.post)
+    monkeypatch.setattr(email_service.httpx, "delete", faux.delete)
+    return faux
+
+
+@pytest.fixture
+def client_reel(mailgun):
+    from app.main import app
+
+    return TestClient(app)

@@ -10,6 +10,7 @@ from sqlalchemy.orm import Session
 
 from app.core.config import FRONTEND_URL
 from app.models.alias import Alias
+from app.models.delivery import DestinationHealth
 from app.models.destination import DestinationVerification
 from app.services import email_service
 
@@ -48,6 +49,15 @@ def mark_verified(db: Session, key_id: int, email_hmac: str) -> int:
     record.verified_at = now
     record.token_hash = None
     record.token_expires_at = None
+    db.query(DestinationHealth).filter(DestinationHealth.email_hmac == email_hmac).update(
+        {
+            DestinationHealth.state: "healthy",
+            DestinationHealth.reason: None,
+            DestinationHealth.soft_failures: 0,
+            DestinationHealth.first_soft_failure_at: None,
+        },
+        synchronize_session=False,
+    )
     activated = (
         db.query(Alias)
         .filter(Alias.key_id == key_id, Alias.email_hmac == email_hmac, Alias.status == "pending")
@@ -98,6 +108,10 @@ def request_confirmation(db: Session, key_id: int, destination_email: str, email
     )
     if sent_to_destination >= MAX_SENDS_PER_DESTINATION:
         raise HTTPException(status_code=429, detail="Trop d'e-mails de confirmation envoyés à cette adresse. Réessayez demain.")
+
+    health = db.query(DestinationHealth).filter(DestinationHealth.email_hmac == email_hmac).first()
+    if health and health.state == "suspended":
+        email_service.clear_suppression(destination_email)
 
     token = secrets.token_urlsafe(32)
     try:

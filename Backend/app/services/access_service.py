@@ -67,7 +67,12 @@ def generate_codes(db: Session, phase: str, count: int, valid_days: int) -> list
 
 
 def _usable(access: AccessCode | None) -> bool:
-    return access is not None and access.status == "unused" and access.expires_at > _now()
+    from app.services.beta_service import phase_running
+
+    now = _now()
+    if access is None or access.status != "unused" or access.expires_at <= now:
+        return False
+    return phase_running(access.phase, now)
 
 
 def check_code(db: Session, code: str) -> AccessCode | None:

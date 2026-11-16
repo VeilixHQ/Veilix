@@ -32,6 +32,24 @@ def now_utc() -> datetime:
     return datetime.now(timezone.utc).replace(tzinfo=None)
 
 
+PLUS_ADDRESSING_DOMAINS = (
+    "gmail.com", "googlemail.com", "outlook.com", "outlook.fr", "hotmail.com", "hotmail.fr", "live.com", "live.fr",
+    "proton.me", "protonmail.com", "pm.me", "icloud.com", "me.com", "fastmail.com",
+)
+DOTLESS_DOMAINS = ("gmail.com",)
+DOMAIN_SYNONYMS = {"googlemail.com": "gmail.com", "protonmail.com": "proton.me", "pm.me": "proton.me", "me.com": "icloud.com"}
+
+
+def seat_identity(address: str) -> str:
+    local, _, domain = address.strip().lower().rpartition("@")
+    if domain in PLUS_ADDRESSING_DOMAINS:
+        local = local.split("+", 1)[0]
+    domain = DOMAIN_SYNONYMS.get(domain, domain)
+    if domain in DOTLESS_DOMAINS:
+        local = local.replace(".", "")
+    return f"{local}@{domain}"
+
+
 MONTHS_FR = ("janvier", "février", "mars", "avril", "mai", "juin", "juillet", "août", "septembre", "octobre", "novembre", "décembre")
 
 
@@ -180,7 +198,7 @@ def signup(db: Session, phase: str, email: str, consent: bool, invite_token: str
         raise HTTPException(status_code=409, detail="Les inscriptions à cette bêta ne sont pas ouvertes.")
 
     address = email.strip()
-    digest = hash_email(address)
+    digest = hash_email(seat_identity(address))
     record = db.query(BetaSignup).filter(BetaSignup.email_hmac == digest).first()
     if record and record.status != "expired":
         return

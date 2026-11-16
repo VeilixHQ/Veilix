@@ -29,6 +29,10 @@ def _token_hash(token: str) -> str:
     return hashlib.sha256(token.encode()).hexdigest()
 
 
+def route_hash(alias_id: int, sender: str) -> str:
+    return _token_hash(_token(alias_id, sender))
+
+
 def reply_address(db: Session, alias: Alias, sender: str) -> str:
     token = _token(alias.id, sender)
     token_hash = _token_hash(token)

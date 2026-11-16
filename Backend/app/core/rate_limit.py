@@ -28,6 +28,9 @@ _HIT = text(
     """
 )
 _PURGE = text("DELETE FROM rate_limits WHERE window_start < now() - make_interval(secs => :age)")
+_PEEK = text(
+    "SELECT hits FROM rate_limits WHERE bucket = :bucket AND window_start > now() - make_interval(secs => :window)"
+)
 
 
 def _bucket(scope: str, identifier: str) -> str:
@@ -35,11 +38,26 @@ def _bucket(scope: str, identifier: str) -> str:
     return f"{scope}:{digest[:40]}"
 
 
-def hit(scope: str, identifier: str, limit: int, window_seconds: int, detail: str) -> None:
+def _record(scope: str, identifier: str, window_seconds: int) -> tuple[int, float]:
     with engine.begin() as conn:
         hits, remaining = conn.execute(_HIT, {"bucket": _bucket(scope, identifier), "window": window_seconds}).one()
         if secrets.randbelow(PURGE_ONE_IN) == 0:
             conn.execute(_PURGE, {"age": PURGE_AFTER_SECONDS})
+    return hits, float(remaining)
+
+
+def allow(scope: str, identifier: str, limit: int, window_seconds: int) -> bool:
+    return _record(scope, identifier, window_seconds)[0] <= limit
+
+
+def blocked(scope: str, identifier: str, limit: int, window_seconds: int) -> bool:
+    with engine.connect() as conn:
+        hits = conn.execute(_PEEK, {"bucket": _bucket(scope, identifier), "window": window_seconds}).scalar()
+    return hits is not None and hits >= limit
+
+
+def hit(scope: str, identifier: str, limit: int, window_seconds: int, detail: str) -> None:
+    hits, remaining = _record(scope, identifier, window_seconds)
     if hits > limit:
         raise HTTPException(
             status_code=429,

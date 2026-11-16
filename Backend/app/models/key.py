@@ -36,3 +36,5 @@ class Key(Base):
     feedback_reminded_at = Column(DateTime, nullable=True)
     final_feedback_at = Column(DateTime, nullable=True)
     beta_closed_notified_at = Column(DateTime, nullable=True)
+    reply_complaints = Column(Integer, default=0, server_default="0", nullable=False)
+    reply_complaints_since = Column(DateTime, nullable=True)

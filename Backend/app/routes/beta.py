@@ -1,6 +1,8 @@
-from fastapi import APIRouter, Depends, Header, HTTPException, Response
+from fastapi import APIRouter, Depends, Header, HTTPException, Request, Response
 from sqlalchemy.orm import Session
 
+from app.core import rate_limit
+from app.core.limiter import client_ip
 from app.core.rate_limit import ip_limit
 from app.core.security import KEY_ID_HEADER, KEY_ID_LENGTH
 from app.db.session import get_db
@@ -55,9 +57,12 @@ def public_status():
 
 
 @router.post("/beta/signup", status_code=202, dependencies=[Depends(ip_limit("beta-signup", 5, 3600))])
-def signup(body: SignupRequest, db: Session = Depends(get_db)):
+def signup(body: SignupRequest, request: Request, db: Session = Depends(get_db)):
     if body.website:
         return {"status": "ok"}
+    limits = beta_service.config
+    rate_limit.hit("beta-signup-day", client_ip(request), limits.BETA_SIGNUP_PER_IP_PER_DAY, 24 * 3600, "Trop de requêtes. Réessayez plus tard.")
+    rate_limit.hit("beta-signup-global", "all", limits.BETA_SIGNUP_GLOBAL_PER_HOUR, 3600, "Trop de demandes en ce moment. Réessayez dans une heure.")
     phase = "private" if body.invitation else "public"
     beta_service.signup(db, phase, str(body.email), body.consent, body.invitation)
     return {"status": "ok"}

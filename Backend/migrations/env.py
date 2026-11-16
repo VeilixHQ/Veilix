@@ -5,7 +5,7 @@ from sqlalchemy import create_engine, pool
 
 from app.core.config import DATABASE_URL
 from app.db.base import Base
-from app.models import access_code, alias, beta, destination, key, reply_route
+from app.models import access_code, alias, beta, delivery, destination, key, reply_route
 
 config = context.config
 

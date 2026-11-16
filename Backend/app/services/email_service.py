@@ -1,8 +1,20 @@
-﻿import httpx
+﻿import logging
+from urllib.parse import quote
+
+import httpx
 from app.core.config import EMAIL_PROVIDER, MAILGUN_API_KEY, MAILGUN_API_URL, MAILGUN_DOMAIN
+
+logger = logging.getLogger("veilix.mailgun")
+
+REJECTED_STATUS = (400, 413)
+SUPPRESSION_LISTS = ("bounces", "complaints", "unsubscribes")
 
 
 class MailgunError(Exception):
+    pass
+
+
+class MailgunRejected(MailgunError):
     pass
 
 
@@ -47,8 +59,29 @@ def _post_mailgun(data: dict, files: list | None = None):
         files=files or None,
         timeout=httpx.Timeout(60.0, connect=10.0),
     )
-    if response.status_code not in (200, 202):
+    if response.status_code in (200, 202):
+        return
+    if response.status_code in REJECTED_STATUS:
+        raise MailgunRejected(f"HTTP {response.status_code}")
+    raise MailgunError(f"HTTP {response.status_code}")
+
+
+def _delete_mailgun(path: str) -> None:
+    response = httpx.delete(
+        f"{MAILGUN_API_URL}/v3/{MAILGUN_DOMAIN}/{path}",
+        auth=("api", MAILGUN_API_KEY),
+        timeout=httpx.Timeout(10.0, connect=5.0),
+    )
+    if response.status_code not in (200, 404):
         raise MailgunError(f"HTTP {response.status_code}")
+
+
+def clear_suppression(address: str, lists: tuple[str, ...] = SUPPRESSION_LISTS) -> None:
+    for name in lists:
+        try:
+            _delete_mailgun(f"{name}/{quote(address, safe='')}")
+        except Exception as exc:
+            logger.error("Retrait de la liste de suppression impossible : %s", type(exc).__name__)
 
 
 PHASE_NAMES = {"private": "bêta privée", "public": "bêta publique"}
@@ -151,4 +184,31 @@ def send_beta_closing(to_email: str, phase: str, launch_on: str | None = None) -
         f"La {PHASE_NAMES[phase]} de Veilix est terminée. Merci pour votre participation et vos retours.\n\n"
         f"{next_step}\n\n"
         "Vous pouvez à tout moment quitter Veilix et supprimer vos données depuis votre tableau de bord."
+    ))
+
+
+def send_reply_undelivered(to_email: str, alias_email: str, correspondent: str) -> None:
+    _send_text(to_email, "Votre réponse via Veilix n'a pas pu être remise", (
+        "Bonjour,\n\n"
+        f"La réponse envoyée depuis votre alias {alias_email} à {correspondent} n'a pas pu être remise : "
+        "le serveur du destinataire l'a refusée.\n\n"
+        "Vérifiez l'adresse de votre correspondant. Votre adresse personnelle ne lui a pas été communiquée.\n\n"
+        "--\n\n"
+        f"Your reply sent from your alias {alias_email} to {correspondent} could not be delivered: "
+        "the recipient's server refused it. Your personal address was not disclosed."
+    ))
+
+
+def send_alias_disabled_after_complaint(to_email: str, alias_email: str, dashboard_url: str) -> None:
+    _send_text(to_email, "Un alias Veilix a été désactivé après un signalement", (
+        "Bonjour,\n\n"
+        f"Un message transféré par votre alias {alias_email} a été signalé comme indésirable depuis votre messagerie. "
+        "Pour protéger la remise de vos autres messages, cet alias a été désactivé.\n\n"
+        "Pour ne plus recevoir un expéditeur, désactivez l'alias concerné plutôt que de signaler le message : "
+        "un signalement pénalise tous vos alias.\n\n"
+        f"Vous pouvez réactiver l'alias depuis votre tableau de bord :\n{dashboard_url}\n\n"
+        "--\n\n"
+        f"A message forwarded by your alias {alias_email} was reported as spam from your mailbox, so this alias has been disabled. "
+        "To stop a sender, disable the alias instead of reporting the message. "
+        f"You can re-enable it from your dashboard:\n{dashboard_url}"
     ))
