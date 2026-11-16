@@ -25,6 +25,8 @@ FEEDBACK_PERIOD = {"private": timedelta(days=7), "public": timedelta(days=14)}
 REMINDER_GRACE = timedelta(hours=48)
 FINAL_FEEDBACK_NOTICE = timedelta(hours=48)
 DUE_NOTICE = timedelta(hours=24)
+FIRST_FEEDBACK_DELAY = timedelta(days=7)
+MIN_USAGE_BEFORE_FEEDBACK = timedelta(days=3)
 FEEDBACK_FORM_PATH = "/dashboard?retour=1"
 
 
@@ -236,9 +238,26 @@ def final_deadline(phase: str) -> datetime | None:
     return ends - FINAL_FEEDBACK_NOTICE if ends else None
 
 
-def in_final_window(phase: str, now: datetime) -> bool:
+def in_final_window(phase: str, now: datetime, active_since: datetime | None = None) -> bool:
     deadline = final_deadline(phase)
-    return deadline is not None and now >= deadline - FEEDBACK_PERIOD[phase]
+    if deadline is None or now < deadline - FEEDBACK_PERIOD[phase]:
+        return False
+    return active_since is None or now >= deadline or now >= active_since + MIN_USAGE_BEFORE_FEEDBACK
+
+
+def feedback_due_after(phase: str, start: datetime, delay: timedelta) -> datetime | None:
+    due = start + delay
+    deadline = final_deadline(phase)
+    if deadline:
+        due = min(due, max(deadline, start + MIN_USAGE_BEFORE_FEEDBACK))
+    ends = phase_ends_at(phase)
+    if ends and due > ends:
+        return None
+    return due
+
+
+def first_feedback_due(phase: str, activated_at: datetime) -> datetime | None:
+    return feedback_due_after(phase, activated_at, FIRST_FEEDBACK_DELAY)
 
 
 def status_for(db: Session, key: Key, now: datetime | None = None) -> dict:
@@ -252,7 +271,7 @@ def status_for(db: Session, key: Key, now: datetime | None = None) -> dict:
         "feedback_due_at": key.feedback_due_at,
         "overdue": bool(key.feedback_due_at and key.feedback_due_at < now),
         "reminded": key.feedback_reminded_at is not None,
-        "final_window": in_final_window(phase, now),
+        "final_window": in_final_window(phase, now, key.created_at),
         "final_sent": key.final_feedback_at is not None,
         "suspended_for_feedback": key.status == "suspended" and key.suspension_reason == "feedback",
         "feedback_count": db.query(BetaFeedback).filter(BetaFeedback.key_id == key.id).count(),
@@ -264,15 +283,13 @@ def submit_feedback(db: Session, key: Key, answers: dict, now: datetime | None =
     phase = phase_of_key(db, key)
     if not phase:
         raise HTTPException(status_code=404, detail="Cette clé ne participe pas à la bêta.")
-    is_final = in_final_window(phase, now)
+    is_final = in_final_window(phase, now, key.created_at)
     db.add(BetaFeedback(key_id=key.id, submitted_at=now, is_final=is_final, answers=encrypt(json.dumps(answers, ensure_ascii=False))[0]))
     if is_final:
         key.final_feedback_at = now
         key.feedback_due_at = None
     else:
-        due = now + FEEDBACK_PERIOD[phase]
-        deadline = final_deadline(phase)
-        key.feedback_due_at = min(due, deadline) if deadline else due
+        key.feedback_due_at = feedback_due_after(phase, now, FEEDBACK_PERIOD[phase])
     key.feedback_reminded_at = None
     key.feedback_notified_at = None
     reactivated = False
@@ -367,7 +384,7 @@ def notify_due(db: Session, now: datetime) -> int:
         if not address:
             continue
         phase = phase_of_key(db, key)
-        final = bool(phase and in_final_window(phase, now))
+        final = bool(phase and in_final_window(phase, now, key.created_at))
         try:
             email_service.send_feedback_due(address, _date_fr(key.feedback_due_at), _frontend(FEEDBACK_FORM_PATH), final)
         except Exception as exc:

@@ -204,7 +204,10 @@ def test_retour_final_et_cloture(client, beta, emails, db):
     postuler(client, "f@example.com")
     cle = activer(client, code_recu(emails, "f@example.com"))
     assert cle_en_base(db, cle).feedback_due_at <= fin
+    assert client.get("/beta/me", headers=entetes(cle)).json()["final_window"] is False
 
+    cle_en_base(db, cle).created_at = beta_service.now_utc() - timedelta(days=4)
+    db.commit()
     statut = client.post("/beta/feedback", headers=entetes(cle), json=RETOUR).json()
     assert statut["final_window"] is True
     assert statut["final_sent"] is True
@@ -345,3 +348,46 @@ def test_cloture_annonce_la_date_de_lancement(client, beta, emails, db):
     texte = envoyes_a(emails, "l@example.com")[-1]["text"]
     assert "le 1er mars 2027" in texte
     assert "3 mois offerts" in texte
+
+
+def test_premier_retour_compte_a_partir_de_la_creation_de_la_cle(client, beta, emails, db):
+    beta.setattr(config, "BETA_PRIVATE_ENDS_AT", beta_service.now_utc() + timedelta(days=40))
+    postuler(client, "tot@example.com")
+    postuler(client, "tard@example.com")
+    tot = activer(client, code_recu(emails, "tot@example.com"))
+    cle_en_base(db, tot).created_at = beta_service.now_utc() - timedelta(days=5)
+    db.commit()
+    tard = activer(client, code_recu(emails, "tard@example.com"))
+
+    maintenant = beta_service.now_utc()
+    echeance = cle_en_base(db, tard).feedback_due_at
+    assert maintenant + timedelta(days=6, hours=23) < echeance <= maintenant + timedelta(days=7)
+    assert client.get("/beta/me", headers=entetes(tard)).json()["overdue"] is False
+    assert beta_service.tick(db, maintenant + timedelta(days=5))["reminders"] == 0
+
+
+def test_arrivee_tardive_garde_trois_jours_d_utilisation():
+    from unittest.mock import patch
+
+    fin = beta_service.now_utc() + timedelta(days=30)
+    limite = fin - beta_service.FINAL_FEEDBACK_NOTICE
+    with patch.object(config, "BETA_PRIVATE_ENDS_AT", fin):
+        loin = fin - timedelta(days=20)
+        assert beta_service.first_feedback_due("private", loin) == loin + timedelta(days=7)
+
+        proche = limite - timedelta(days=4)
+        assert beta_service.first_feedback_due("private", proche) == limite
+
+        tres_proche = limite - timedelta(days=1)
+        assert beta_service.first_feedback_due("private", tres_proche) == tres_proche + timedelta(days=3)
+
+        derniere_minute = fin - timedelta(days=2)
+        assert beta_service.first_feedback_due("private", derniere_minute) is None
+
+        assert beta_service.in_final_window("private", limite - timedelta(days=1), limite - timedelta(days=2)) is False
+        assert beta_service.in_final_window("private", limite - timedelta(days=1), limite - timedelta(days=5)) is True
+        assert beta_service.in_final_window("private", limite + timedelta(hours=1), limite - timedelta(hours=1)) is True
+        assert beta_service.in_final_window("private", limite - timedelta(days=8), None) is False
+
+        retour_tardif = limite - timedelta(days=2)
+        assert beta_service.feedback_due_after("private", retour_tardif, beta_service.FEEDBACK_PERIOD["private"]) == retour_tardif + timedelta(days=3)

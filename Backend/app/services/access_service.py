@@ -24,7 +24,6 @@ PHASE_ACCESS = {"private": ("pack", "active"), "public": ("pro", "pending_paymen
 PHASE_BADGES = {"private": "pionnier", "public": "eclaireur"}
 BETA_TERMS_VERSION = "beta-2026-11-15"
 MAX_CODE_LENGTH = 40
-FIRST_FEEDBACK_DELAY = timedelta(days=7)
 
 INVALID_CODE = "Code d'accès invalide, expiré ou déjà utilisé."
 
@@ -80,12 +79,10 @@ def check_code(db: Session, code: str) -> AccessCode | None:
     return access if _usable(access) else None
 
 
-def _first_feedback_due(phase: str, now: datetime) -> datetime:
-    from app.services.beta_service import final_deadline
+def _first_feedback_due(phase: str, now: datetime) -> datetime | None:
+    from app.services.beta_service import first_feedback_due
 
-    due = now + FIRST_FEEDBACK_DELAY
-    deadline = final_deadline(phase)
-    return min(due, deadline) if deadline else due
+    return first_feedback_due(phase, now)
 
 
 def _register_admin(db: Session, key_id: str) -> Key:
