@@ -44,7 +44,7 @@ export default function SettingsPage() {
 
         getAliases().then(aliases => {
           if (Array.isArray(aliases)) {
-            const active = aliases.filter((a: any) => a.active !== false).length
+            const active = aliases.filter((a: { active?: boolean }) => a.active !== false).length
             setActiveAliasesCount(active)
           }
         }).catch(() => {})
@@ -206,7 +206,7 @@ export default function SettingsPage() {
                   </span>
                   <p style={{ fontSize: 13, color: '#94a3b8', marginTop: 8 }}>
                     {plan === 'pack'
-                      ? 'Alias illimités, domaine personnalisé (jusqu à 3), chiffrement PGP et prix bloqué à vie.'
+                      ? 'Alias illimités, domaine personnalisé (jusqu à 3), chiffrement PGP et prix garanti tant que l’abonnement reste actif.'
                       : '100 alias actifs, pièces jointes, tags personnalisés et 3 boîtes de destination.'}
                   </p>
                 </div>
@@ -239,7 +239,7 @@ export default function SettingsPage() {
                   Automatisez Veilix avec notre API REST
                 </h2>
                 <p style={{ fontSize: 13, color: '#94a3b8', maxWidth: 460, margin: '0 auto 20px', lineHeight: 1.6 }}>
-                  L'accès à votre clé API et aux endpoints programmatiques est réservé aux membres du Pack de lancement. Débloquez l'API, les alias illimités et le chiffrement PGP à vie.
+                  L&apos;accès à votre clé API et aux endpoints programmatiques est réservé aux membres du Pack de lancement. Débloquez l&apos;API, les alias illimités et le chiffrement PGP.
                 </p>
                 <Button variant="primary" size="sm" onClick={handleGoToPricing} style={{ background: '#8b5cf6', borderColor: '#8b5cf6' }}>
                   Passer au Pack de lancement
@@ -296,9 +296,9 @@ export default function SettingsPage() {
 
                 <div style={{ marginTop: 20, paddingTop: 16, borderTop: '1px solid rgba(255,255,255,0.06)', fontSize: 12, color: '#94a3b8', lineHeight: 1.8 }}>
                   <div><strong style={{ color: '#e2e8f0' }}>Endpoints disponibles :</strong></div>
-                  <div><code style={{ color: '#8b5cf6' }}>POST /key/verify</code> — Vérifier la validité de la clé et le plan actif</div>
-                  <div><code style={{ color: '#8b5cf6' }}>GET /alias</code> — Lister l ensemble de vos alias</div>
-                  <div><code style={{ color: '#8b5cf6' }}>POST /alias</code> — Générer un nouvel alias à la volée</div>
+                  <div><code style={{ color: '#8b5cf6' }}>POST /key/verify</code> : Vérifier la validité de la clé et le plan actif</div>
+                  <div><code style={{ color: '#8b5cf6' }}>GET /alias</code> : Lister l ensemble de vos alias</div>
+                  <div><code style={{ color: '#8b5cf6' }}>POST /alias</code> : Générer un nouvel alias à la volée</div>
                 </div>
               </div>
             )}
@@ -515,7 +515,7 @@ export default function SettingsPage() {
                 <div style={{ background: 'rgba(239,68,68,0.08)', border: '1px solid rgba(239,68,68,0.25)', borderRadius: 10, padding: 14, marginBottom: 16 }}>
                   {plan === 'pack' ? (
                     <p style={{ fontSize: 13, color: '#fca5a5', lineHeight: 1.5 }}>
-                      <strong>Perte définitive du Pack de lancement :</strong> Cette offre collector est limitée à 100 exemplaires. En résiliant, vous perdez définitivement vos <strong>alias illimités</strong>, vos domaines personnalisés (jusqu à 3), vos alertes de fuite en temps réel, le chiffrement PGP et surtout votre <strong>prix bloqué à vie</strong>. Vous ne pourrez plus jamais y souscrire.
+                      <strong>Perte définitive du Pack de lancement :</strong> Cette offre collector est limitée à 100 exemplaires. En résiliant, vous perdez définitivement vos <strong>alias illimités</strong>, vos domaines personnalisés (jusqu à 3), vos alertes de fuite en temps réel, le chiffrement PGP et surtout votre <strong>prix garanti tant que l’abonnement reste actif</strong>. Vous ne pourrez plus jamais y souscrire.
                     </p>
                   ) : (
                     <p style={{ fontSize: 13, color: '#fca5a5', lineHeight: 1.5 }}>

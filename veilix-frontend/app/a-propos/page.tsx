@@ -33,9 +33,9 @@ export default function APropos() {
             <p style={{ fontSize: 14, color: '#64748b', lineHeight: 1.8, marginBottom: 16 }}>{pt.philosophy.content}</p>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
               {[
-                { label: lang === 'fr' ? 'No Account — Aucune inscription requise' : 'No Account — No sign-up required', color: '#000091' },
-                { label: lang === 'fr' ? 'No Logs — Vos emails ne sont jamais lus ni stockés' : 'No Logs — Your emails are never read or stored', color: '#FFFFFF' },
-                { label: lang === 'fr' ? 'Open Source — Code entièrement auditable publiquement' : 'Open Source — Code entirely publicly auditable', color: '#E1000F' },
+                { label: lang === 'fr' ? 'No Account : Aucune inscription requise' : 'No Account: No sign-up required', color: '#000091' },
+                { label: lang === 'fr' ? 'No Logs : Vos emails ne sont jamais lus ni stockés' : 'No Logs: Your emails are never read or stored', color: '#FFFFFF' },
+                { label: lang === 'fr' ? 'Open Source : Code entièrement auditable publiquement' : 'Open Source: Code entirely publicly auditable', color: '#E1000F' },
               ].map((item, i) => (
                 <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
                   <span style={{ width: 6, height: 6, borderRadius: '50%', background: item.color, flexShrink: 0 }} />

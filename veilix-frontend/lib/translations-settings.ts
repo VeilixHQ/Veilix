@@ -18,7 +18,7 @@ const fr = {
     planPack: 'Pack de lancement',
     planAdmin: 'Admin',
     descPro: '100 alias actifs, pièces jointes, tags personnalisés et 3 boîtes de destination.',
-    descPack: 'Alias illimités, domaine personnalisé (jusqu’à 3), chiffrement PGP et prix bloqué à vie.',
+    descPack: 'Alias illimités, domaine personnalisé (jusqu’à 3), chiffrement PGP et prix garanti tant que l’abonnement reste actif.',
     descAdmin: 'Accès complet : alias illimités et toutes les fonctionnalités, sans restriction de paiement.',
     changePlan: 'Changer de plan',
     cancelTitle: 'Résiliation / Désactivation',
@@ -29,7 +29,7 @@ const fr = {
     exclusive: 'Exclusivité Pack de lancement',
     lockedTitle: 'Automatisez Veilix avec notre API REST',
     lockedDesc:
-      'L’accès à votre clé API et aux endpoints programmatiques est réservé aux membres du Pack de lancement. Débloquez l’API, les alias illimités et le chiffrement PGP à vie.',
+      'L’accès à votre clé API et aux endpoints programmatiques est réservé aux membres du Pack de lancement. Débloquez l’API, les alias illimités et le chiffrement PGP.',
     lockedCta: 'Passer au Pack de lancement',
     apiKeyTitle: 'Clé d’accès API',
     apiKeyDesc: 'Utilisez cet identifiant dans le header :',
@@ -96,7 +96,7 @@ const fr = {
     s3Title: 'Attention : ce que vous allez perdre',
     lossPackLead: 'Perte définitive du Pack de lancement :',
     lossPackBody:
-      ' cette offre collector est limitée à 100 exemplaires. En résiliant, vous perdez définitivement vos alias illimités, vos domaines personnalisés (jusqu’à 3), vos alertes de fuite en temps réel, le chiffrement PGP et surtout votre prix bloqué à vie. Vous ne pourrez plus jamais y souscrire.',
+      ' cette offre collector est limitée à 100 exemplaires. En résiliant, vous perdez définitivement vos alias illimités, vos domaines personnalisés (jusqu’à 3), vos alertes de fuite en temps réel, le chiffrement PGP et surtout votre prix garanti tant que l’abonnement reste actif. Vous ne pourrez plus jamais y souscrire.',
     lossProLead: 'Perte des avantages de l’Offre Pro :',
     lossProBody:
       ' en résiliant, vous perdez vos 100 alias actifs, la capacité de répondre depuis vos alias, l’accès aux pièces jointes, aux tags personnalisés et à vos boîtes de destination.',
@@ -128,7 +128,7 @@ const en: typeof fr = {
     planPack: 'Launch pack',
     planAdmin: 'Admin',
     descPro: '100 active aliases, attachments, custom tags and 3 destination mailboxes.',
-    descPack: 'Unlimited aliases, custom domain (up to 3), PGP encryption and price locked for life.',
+    descPack: 'Unlimited aliases, custom domain (up to 3), PGP encryption and a price locked while your subscription is active.',
     descAdmin: 'Full access: unlimited aliases and every feature, with no payment restrictions.',
     changePlan: 'Change plan',
     cancelTitle: 'Cancellation / Deactivation',
@@ -139,7 +139,7 @@ const en: typeof fr = {
     exclusive: 'Launch pack exclusive',
     lockedTitle: 'Automate Veilix with our REST API',
     lockedDesc:
-      'Access to your API key and programmatic endpoints is reserved for Launch pack members. Unlock the API, unlimited aliases and lifetime PGP encryption.',
+      'Access to your API key and programmatic endpoints is reserved for Launch pack members. Unlock the API, unlimited aliases and PGP encryption.',
     lockedCta: 'Get the Launch pack',
     apiKeyTitle: 'API access key',
     apiKeyDesc: 'Use this identifier in the header:',
@@ -206,7 +206,7 @@ const en: typeof fr = {
     s3Title: 'Warning: what you are about to lose',
     lossPackLead: 'Permanent loss of the Launch pack:',
     lossPackBody:
-      ' this collector offer is limited to 100 copies. By cancelling, you permanently lose your unlimited aliases, custom domains (up to 3), real-time leak alerts, PGP encryption and above all your price locked for life. You will never be able to subscribe to it again.',
+      ' this collector offer is limited to 100 copies. By cancelling, you permanently lose your unlimited aliases, custom domains (up to 3), real-time leak alerts, PGP encryption and above all your locked price. You will never be able to subscribe to it again.',
     lossProLead: 'Loss of Pro plan benefits:',
     lossProBody:
       ' by cancelling, you lose your 100 active aliases, the ability to reply from your aliases, access to attachments, custom tags and your destination mailboxes.',

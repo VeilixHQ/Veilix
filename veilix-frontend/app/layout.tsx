@@ -3,7 +3,7 @@ import { connection } from 'next/server'
 import './globals.css'
 
 export const metadata: Metadata = {
-  title: 'Veilix — Protégez votre identité numérique',
+  title: 'Veilix, protégez votre identité numérique',
   description: 'Alias email instantanés pour protéger votre vraie adresse.',
 }
 

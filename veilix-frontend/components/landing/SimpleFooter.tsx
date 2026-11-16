@@ -22,7 +22,7 @@ export function SimpleFooter({ lang }: Props) {
         <span style={{ fontSize: 12, color: '#334155' }}>{t.copy}</span>
         <div style={{ display: 'flex', gap: 20 }}>
           <Link href="/confidentialite" className="footer-link">{t.confidentialite}</Link>
-          <Link href="/cgu" className="footer-link">{t.cgu}</Link>
+          <Link href="/conditions-utilisation" className="footer-link">{t.cgu}</Link>
           <Link href="/contact" className="footer-link">{t.contact}</Link>
         </div>
       </div>

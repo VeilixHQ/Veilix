@@ -6,18 +6,18 @@ import { T, Lang } from '@/lib/translations'
 
 const EDITOR_INFO = {
   fr: {
-    name: '[Ton prénom NOM]',
-    status: '[Statut : ex. Entrepreneur individuel / Auto-entrepreneur — à préciser une fois le statut créé]',
-    address: '[Ville, Pays]',
+    name: "[Prénom NOM de l'éditeur]",
+    status: '[Statut : entrepreneur individuel (micro-entreprise)]',
+    address: '[Adresse de domiciliation]',
     email: 'contact@veilix.fr',
-    siret: '[Numéro SIRET — à ajouter une fois le statut créé]',
+    siret: '[Numéro SIRET]',
   },
   en: {
-    name: '[Your First Name LAST NAME]',
-    status: '[Status: e.g. Sole Trader — to be added once registered]',
-    address: '[City, Country]',
+    name: '[Publisher first name and LAST NAME]',
+    status: '[Status: sole trader (micro-enterprise)]',
+    address: '[Registered address]',
     email: 'contact@veilix.fr',
-    siret: '[Business registration number — to be added once registered]',
+    siret: '[SIRET number]',
   },
 }
 
@@ -40,7 +40,7 @@ export default function MentionsLegales() {
             {isFr ? 'Mentions légales' : 'Legal Notice'}
           </h1>
           <p style={{ fontSize: 13, color: '#475569' }}>
-            {isFr ? 'Dernière mise à jour : juillet 2026' : 'Last updated: July 2026'}
+            {isFr ? 'Dernière mise à jour : 16 novembre 2026' : 'Last updated: November 16, 2026'}
           </p>
         </div>
 
@@ -82,9 +82,14 @@ export default function MentionsLegales() {
                 <a href="https://vercel.com" target="_blank" rel="noopener noreferrer" style={{ color: '#a78bfa' }}>vercel.com</a>
               </p>
               <p>
-                <strong style={{ color: '#94a3b8' }}>{isFr ? 'Hébergement des données (backend)' : 'Data hosting (backend)'} :</strong><br />
-                Railway Corp.<br />
-                <a href="https://railway.app" target="_blank" rel="noopener noreferrer" style={{ color: '#a78bfa' }}>railway.app</a>
+                <strong style={{ color: '#94a3b8' }}>{isFr ? "Hébergement de l'API et des données (backend)" : 'API and data hosting (backend)'} :</strong><br />
+                Railway Corporation, {isFr ? 'serveurs situés à Amsterdam (Union européenne)' : 'servers located in Amsterdam (European Union)'}<br />
+                <a href="https://railway.com" target="_blank" rel="noopener noreferrer" style={{ color: '#a78bfa' }}>railway.com</a>
+              </p>
+              <p style={{ marginTop: 12 }}>
+                <strong style={{ color: '#94a3b8' }}>{isFr ? 'Acheminement des e-mails' : 'Email routing'} :</strong><br />
+                Mailgun Technologies, Inc., {isFr ? 'région européenne' : 'European region'}<br />
+                <a href="https://www.mailgun.com" target="_blank" rel="noopener noreferrer" style={{ color: '#a78bfa' }}>mailgun.com</a>
               </p>
             </div>
           </div>
@@ -106,8 +111,8 @@ export default function MentionsLegales() {
             </h2>
             <p style={{ fontSize: 14, color: '#64748b', lineHeight: 1.8 }}>
               {isFr
-                ? 'Pour toute question relative à ces mentions légales, contactez-nous via notre page Contact.'
-                : 'For any question regarding this legal notice, contact us via our Contact page.'}
+                ? 'Pour toute question relative à ces mentions légales : contact@veilix.fr.'
+                : 'For any question regarding this legal notice: contact@veilix.fr.'}
             </p>
           </div>
         </div>

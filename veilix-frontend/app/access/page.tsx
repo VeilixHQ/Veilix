@@ -59,11 +59,11 @@ function AccessContent() {
     getBetaStatus().then(status => setPublicBetaOpen(status.public.open)).catch(() => {})
   }, [])
 
-  useEffect(() => {
-    if (mode === 'restore') {
-      setStep('restore')
-    }
-  }, [mode])
+  const [seenMode, setSeenMode] = useState(mode)
+  if (mode !== seenMode) {
+    setSeenMode(mode)
+    if (mode === 'restore') setStep('restore')
+  }
 
   async function handleGenerate() {
     setStep('generating')
@@ -316,7 +316,10 @@ function AccessContent() {
                     onChange={e => setTermsAccepted(e.target.checked)}
                     style={{ marginTop: 3, accentColor: '#7c3aed', width: 16, height: 16, flexShrink: 0 }}
                   />
-                  {lang === 'fr' ? "J'accepte les conditions de participation à la bêta." : 'I accept the beta participation terms.'}
+                  <span>
+                    {lang === 'fr' ? "J'accepte les " : 'I accept the '}
+                    <a href="/conditions-utilisation#beta" target="_blank" rel="noopener" style={{ color: '#a78bfa' }}>{lang === 'fr' ? 'conditions de participation à la bêta' : 'beta participation terms'}</a>.
+                  </span>
                 </label>
 
                 <p style={{ fontSize: 12, color: '#64748b', textAlign: 'center' }}>

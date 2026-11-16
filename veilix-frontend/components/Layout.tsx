@@ -76,7 +76,7 @@ export function Footer() {
       <div style={S.footer}>
         <span style={{ fontSize: 13, color: '#334155' }}>© 2026 Veilix</span>
         <div style={{ display: 'flex', gap: 28 }}>
-          {[['Confidentialité', '/confidentialite'], ['CGU', '/cgu'], ['Contact', '/contact']].map(([l, h]) => (
+          {[['Confidentialité', '/confidentialite'], ['CGU', '/conditions-utilisation'], ['Contact', '/contact']].map(([l, h]) => (
             <Link key={h} href={h} style={S.footerLink}>{l}</Link>
           ))}
         </div>

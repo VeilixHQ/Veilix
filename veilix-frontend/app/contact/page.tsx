@@ -36,15 +36,15 @@ export default function Contact() {
           <p style={{ fontSize: 14, color: '#64748b', lineHeight: 1.7 }}>{pt.sub}</p>
         </div>
 
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12, marginBottom: 40 }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: 12, marginBottom: 40 }}>
           {[
-            { icon: '📧', label: pt.email, value: 'contact@veilix.fr', href: 'mailto:contact@veilix.fr' },
-            { icon: '💬', label: pt.discord, value: pt.discordValue, href: '#' },
+            { icon: <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#a78bfa" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><rect x="2" y="4" width="20" height="16" rx="2" /><path d="m22 7-10 6L2 7" /></svg>, label: pt.email, value: 'contact@veilix.fr', href: 'mailto:contact@veilix.fr', external: false },
+            { icon: <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#a78bfa" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" /></svg>, label: pt.discord, value: pt.discordValue, href: 'https://discord.gg/Cfze5qmvhV', external: true },
           ].map((c, i) => (
-            <a key={i} href={c.href} style={{ display: 'flex', alignItems: 'center', gap: 12, padding: '16px 18px', background: '#0d0d10', border: '1px solid rgba(255,255,255,0.07)', borderRadius: 12, textDecoration: 'none', transition: 'border-color .2s' }}
+            <a key={i} href={c.href} {...(c.external ? { target: '_blank', rel: 'noopener noreferrer' } : {})} style={{ display: 'flex', alignItems: 'center', gap: 12, padding: '16px 18px', background: '#0d0d10', border: '1px solid rgba(255,255,255,0.07)', borderRadius: 12, textDecoration: 'none', transition: 'border-color .2s' }}
               onMouseEnter={e => (e.currentTarget.style.borderColor = 'rgba(124,58,237,0.3)')}
               onMouseLeave={e => (e.currentTarget.style.borderColor = 'rgba(255,255,255,0.07)')}>
-              <span style={{ fontSize: 20 }}>{c.icon}</span>
+              <span style={{ display: 'flex', flexShrink: 0 }}>{c.icon}</span>
               <div>
                 <div style={{ fontSize: 12, fontWeight: 700, color: '#e2e8f0' }}>{c.label}</div>
                 <div style={{ fontSize: 11, color: '#475569' }}>{c.value}</div>
@@ -70,7 +70,7 @@ export default function Contact() {
           </div>
         ) : (
           <div style={{ background: 'rgba(34,197,94,0.05)', border: '1px solid rgba(34,197,94,0.2)', borderRadius: 14, padding: 28, textAlign: 'center' }}>
-            <div style={{ fontSize: 32, marginBottom: 12 }}>✅</div>
+            <div style={{ display: 'flex', justifyContent: 'center', marginBottom: 12 }}><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#4ade80" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12" /></svg></div>
             <div style={{ fontSize: 15, fontWeight: 700, color: '#4ade80', marginBottom: 8 }}>{pt.sentTitle}</div>
             <div style={{ fontSize: 13, color: '#64748b' }}>{pt.sentDesc}</div>
           </div>

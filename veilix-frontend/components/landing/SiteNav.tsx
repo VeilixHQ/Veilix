@@ -88,7 +88,7 @@ const LOGO_SIZE = 48
 
 export function SiteNav({ t, lang, setLang, mode = 'public', hideNavLinks = false, rightSlot }: SiteNavProps) {
   return (
-    <nav style={{ position: 'fixed', top: 0, left: 0, right: 0, zIndex: 100, display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '0 40px', height: 64, background: 'rgba(6,6,8,0.92)', backdropFilter: 'blur(16px)', borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
+    <nav className="site-nav" style={{ position: 'fixed', top: 0, left: 0, right: 0, zIndex: 100, display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '0 40px', height: 64, background: 'rgba(6,6,8,0.92)', backdropFilter: 'blur(16px)', borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
       <div style={{ display: 'flex', alignItems: 'center', gap: 28 }}>
         <Link href="/" style={{ display: 'flex', alignItems: 'center', gap: 7, textDecoration: 'none', flexShrink: 0 }}>
           <Image src="/vlx-white.svg" alt="Veilix" width={LOGO_SIZE} height={LOGO_SIZE} style={{ objectFit: 'contain', flexShrink: 0, display: 'block' }} />
@@ -106,7 +106,7 @@ export function SiteNav({ t, lang, setLang, mode = 'public', hideNavLinks = fals
         <LangSwitcher lang={lang} setLang={setLang} />
         {mode === 'public' && (
           <>
-            <div style={{ width: 1, height: 20, background: 'rgba(255,255,255,0.06)' }} />
+            <div className="nav-divider" style={{ width: 1, height: 20, background: 'rgba(255,255,255,0.06)' }} />
             <Link href="/access?mode=restore" className="btn-access" style={{ padding: '8px 14px', borderRadius: 8, fontSize: 13, fontWeight: 600, color: '#94a3b8', textDecoration: 'none', transition: 'color .15s' }}>
               {t.nav.login}
             </Link>

@@ -194,7 +194,9 @@ export default function BetaPage() {
 
               <label htmlFor="beta-accept" style={{ display: 'flex', alignItems: 'flex-start', gap: 10, cursor: 'pointer', fontSize: 13, color: '#cbd5e1', lineHeight: 1.5 }}>
                 <input id="beta-accept" type="checkbox" checked={accepted} onChange={e => setAccepted(e.target.checked)} style={{ marginTop: 3, accentColor: '#7c3aed', width: 16, height: 16, flexShrink: 0 }} />
-                J&apos;accepte les conditions de participation à la bêta.
+                <span>
+                  J&apos;accepte les <a href="/conditions-utilisation#beta" target="_blank" rel="noopener" style={{ color: '#a78bfa' }}>conditions de participation à la bêta</a>.
+                </span>
               </label>
 
               {!isPrivate && status?.public.wave === 1 && status.public.wave2_opens_at && (
