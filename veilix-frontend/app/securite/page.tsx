@@ -113,8 +113,8 @@ export default function Securite() {
 
             <Block id="report" icon={Mail} title={s.report.title}>
               <p style={TEXT}>{s.report.body}</p>
-              <p style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: 8, marginTop: 12, fontSize: 12, color: 'var(--c-fbbf24)' }}>
-                <span style={{ padding: '2px 9px', borderRadius: 100, background: 'rgba(251,191,36,0.1)', border: '1px solid rgba(251,191,36,0.3)', fontWeight: 600 }}>{s.toFill}</span>
+              <p style={{ display: 'flex', alignItems: 'flex-start', gap: 8, marginTop: 12, fontSize: 13, color: 'var(--c-4ade80)', lineHeight: 1.6 }}>
+                <span aria-hidden style={{ width: 6, height: 6, borderRadius: '50%', background: 'var(--c-4ade80)', flexShrink: 0, marginTop: 7 }} />
                 {s.report.pending}
               </p>
               <a href="mailto:security@veilix.fr" style={{ display: 'inline-block', marginTop: 18, padding: '9px 18px', borderRadius: 8, fontSize: 13, fontWeight: 600, color: 'var(--c-e2e8f0)', border: '1px solid rgba(var(--ink),0.1)', textDecoration: 'none' }}>{s.report.cta}</a>
