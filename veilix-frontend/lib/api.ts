@@ -96,6 +96,8 @@ export type Account = {
   credits: number
   aliases_used: number
   alias_quota: number | null
+  destinations_used?: number
+  destination_limit?: number | null
   created_at: string | null
   badges: { id: 'pionnier' | 'eclaireur' | 'fondateur'; number: number | null }[]
 }
@@ -113,10 +115,13 @@ export async function getAliases() {
   return res.json()
 }
 
-export async function createAlias(destination_email: string, label: string) {
+export async function createAlias(destination_email: string, label: string, options: { domain_id?: number | null; local_part?: string } = {}) {
+  const body: Record<string, unknown> = { destination_email, label }
+  if (options.domain_id) body.domain_id = options.domain_id
+  if (options.domain_id && options.local_part) body.local_part = options.local_part
   const res = await fetchWithAuth('/alias', {
     method: 'POST',
-    body: JSON.stringify({ destination_email, label }),
+    body: JSON.stringify(body),
   })
   return res.json()
 }
@@ -225,4 +230,107 @@ export const adminBeta = {
   revoke: (codeId: number) => adminRequest(`/codes/${codeId}/revoke`, 'POST'),
   reactivate: (keyId: number) => adminRequest(`/keys/${keyId}/reactivate`, 'POST'),
   tick: () => adminRequest('/tick', 'POST'),
+}
+
+
+async function jsonOrThrow<T>(res: Response, fallback: string): Promise<T> {
+  if (!res.ok) throw new ApiError(res.status, await errorDetail(res, fallback))
+  return res.json()
+}
+
+export type BlockedSender = { id: number; sender: string; blocked_count: number; created_at: string }
+
+export async function getBlockedSenders(aliasId: number): Promise<BlockedSender[]> {
+  return jsonOrThrow(await fetchWithAuth(`/alias/${aliasId}/blocked-senders`), 'Liste indisponible')
+}
+
+export async function blockSender(aliasId: number, sender: string): Promise<BlockedSender> {
+  return jsonOrThrow(await fetchWithAuth(`/alias/${aliasId}/blocked-senders`, { method: 'POST', body: JSON.stringify({ sender }) }), 'Blocage impossible')
+}
+
+export async function unblockSender(aliasId: number, blockId: number): Promise<void> {
+  await jsonOrThrow(await fetchWithAuth(`/alias/${aliasId}/blocked-senders/${blockId}`, { method: 'DELETE' }), 'Déblocage impossible')
+}
+
+export async function dismissLeak(aliasId: number) {
+  return jsonOrThrow(await fetchWithAuth(`/alias/${aliasId}/leak/dismiss`, { method: 'POST' }), 'Action impossible')
+}
+
+export type DnsRecord = { type: string; name: string; value: string; priority?: number | null; purpose: 'ownership' | 'receiving' | 'sending' }
+
+export type CustomDomain = {
+  id: number
+  domain: string
+  verified: boolean
+  verified_at: string | null
+  last_checked_at: string | null
+  catch_all: boolean
+  catch_all_destination: string | null
+  aliases: number
+  records: DnsRecord[]
+  ownership?: boolean
+  receiving?: boolean
+  lookup_failed?: boolean
+}
+
+export async function getDomains(): Promise<CustomDomain[]> {
+  return jsonOrThrow(await fetchWithAuth('/domains'), 'Domaines indisponibles')
+}
+
+export async function addDomain(domain: string): Promise<CustomDomain> {
+  return jsonOrThrow(await fetchWithAuth('/domains', { method: 'POST', body: JSON.stringify({ domain }) }), 'Ajout impossible')
+}
+
+export async function verifyDomain(id: number): Promise<CustomDomain> {
+  return jsonOrThrow(await fetchWithAuth(`/domains/${id}/verify`, { method: 'POST' }), 'Vérification impossible')
+}
+
+export async function setCatchAll(id: number, enabled: boolean, destination_email?: string): Promise<CustomDomain> {
+  return jsonOrThrow(await fetchWithAuth(`/domains/${id}/catch-all`, { method: 'PATCH', body: JSON.stringify({ enabled, destination_email: destination_email || null }) }), 'Catch-all impossible')
+}
+
+export async function deleteDomain(id: number): Promise<void> {
+  await jsonOrThrow(await fetchWithAuth(`/domains/${id}`, { method: 'DELETE' }), 'Suppression impossible')
+}
+
+export type PgpStatus = { configured: boolean; enabled: boolean; fingerprint: string | null; user_ids: string[]; expires_at: string | null }
+
+export async function getPgp(): Promise<PgpStatus> {
+  return jsonOrThrow(await fetchWithAuth('/pgp'), 'PGP indisponible')
+}
+
+export async function savePgpKey(public_key: string): Promise<PgpStatus> {
+  return jsonOrThrow(await fetchWithAuth('/pgp', { method: 'PUT', body: JSON.stringify({ public_key }) }), 'Clé refusée')
+}
+
+export async function togglePgp(enabled: boolean): Promise<PgpStatus> {
+  return jsonOrThrow(await fetchWithAuth('/pgp', { method: 'PATCH', body: JSON.stringify({ enabled }) }), 'Action impossible')
+}
+
+export async function deletePgp(): Promise<PgpStatus> {
+  return jsonOrThrow(await fetchWithAuth('/pgp', { method: 'DELETE' }), 'Suppression impossible')
+}
+
+export type Preferences = { leak_alerts: boolean; weekly_digest: boolean; digest_sent_at: string | null }
+
+export async function getPreferences(): Promise<Preferences> {
+  return jsonOrThrow(await fetchWithAuth('/preferences'), 'Préférences indisponibles')
+}
+
+export async function savePreferences(preferences: Partial<Pick<Preferences, 'leak_alerts' | 'weekly_digest'>>): Promise<Preferences> {
+  return jsonOrThrow(await fetchWithAuth('/preferences', { method: 'PATCH', body: JSON.stringify(preferences) }), 'Enregistrement impossible')
+}
+
+export type ApiToken = { id: number; name: string; prefix: string; created_at: string }
+
+export async function getApiTokens(): Promise<ApiToken[]> {
+  return jsonOrThrow(await fetchWithAuth('/api-tokens'), 'Clés indisponibles')
+}
+
+export async function createApiToken(name: string): Promise<ApiToken & { token: string }> {
+  return jsonOrThrow(await fetchWithAuth('/api-tokens', { method: 'POST', body: JSON.stringify({ name }) }), 'Création impossible')
+}
+
+export async function revokeApiToken(id: number): Promise<void> {
+  await jsonOrThrow(await fetchWithAuth(`/api-tokens/${id}`, { method: 'DELETE' }), 'Révocation impossible')
 }

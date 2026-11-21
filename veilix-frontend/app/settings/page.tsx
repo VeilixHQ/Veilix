@@ -8,8 +8,13 @@ import { SiteFooter } from '@/components/landing/SiteFooter'
 import { Button } from '@/components/Button'
 import { Toast, useToast } from '@/components/Toast'
 import { T, Lang } from '@/lib/translations'
+import { FT } from '@/lib/translations-features'
+import { DomainsPanel } from '@/components/settings/DomainsPanel'
+import { PgpPanel } from '@/components/settings/PgpPanel'
+import { ApiTokensPanel } from '@/components/settings/ApiTokensPanel'
+import { NotificationsPanel } from '@/components/settings/NotificationsPanel'
 
-type TabType = 'billing' | 'security' | 'privacy'
+type TabType = 'billing' | 'domains' | 'pgp' | 'security' | 'privacy'
 type CancelReason = 'expensive' | 'unused' | 'missing_feature' | 'other' | null
 
 export default function SettingsPage() {
@@ -28,8 +33,6 @@ export default function SettingsPage() {
   const [cancelReason, setCancelReason] = useState<CancelReason>(null)
   const [discountApplied, setDiscountApplied] = useState(false)
 
-  const [leakAlerts, setLeakAlerts] = useState(true)
-  const [weeklyDigest, setWeeklyDigest] = useState(false)
 
   useEffect(() => {
     getIdentity().then(id => {
@@ -98,11 +101,6 @@ export default function SettingsPage() {
     }
   }
 
-  function handleSaveNotifications(e: React.FormEvent) {
-    e.preventDefault()
-    showToast('Préférences de notification enregistrées avec succès', 'success')
-  }
-
   function handleGoToPricing() {
     router.push('/pricing')
   }
@@ -157,6 +155,8 @@ export default function SettingsPage() {
         <div style={{ display: 'flex', gap: 8, borderBottom: '1px solid rgba(var(--ink),0.08)', marginBottom: 28, overflowX: 'auto' }}>
           {[
             { id: 'billing', label: 'Abonnement & Facturation' },
+            { id: 'domains', label: FT[lang].settings.domainsTab },
+            { id: 'pgp', label: FT[lang].settings.pgpTab },
             { id: 'security', label: 'Développeurs & API' },
             { id: 'privacy', label: 'Confidentialité & Données' }
           ].map(tab => (
@@ -229,119 +229,20 @@ export default function SettingsPage() {
         )}
 
         {activeTab === 'security' && (
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
-            {plan !== 'pack' ? (
-              <div style={{ background: 'var(--c-0d0d10)', border: '1px solid rgba(139,92,246,0.25)', borderRadius: 14, padding: 28, textAlign: 'center' }}>
-                <span style={{ fontSize: 11, fontWeight: 700, textTransform: 'uppercase', letterSpacing: 1, color: 'var(--c-c4b5fd)', background: 'rgba(139,92,246,0.15)', padding: '4px 10px', borderRadius: 6 }}>
-                  Exclusivité Pack de lancement
-                </span>
-                <h2 style={{ fontSize: 18, fontWeight: 700, marginTop: 14, marginBottom: 8 }}>
-                  Automatisez Veilix avec notre API REST
-                </h2>
-                <p style={{ fontSize: 13, color: 'var(--c-94a3b8)', maxWidth: 460, margin: '0 auto 20px', lineHeight: 1.6 }}>
-                  L&apos;accès à votre clé API et aux endpoints programmatiques est réservé aux membres du Pack de lancement. Débloquez l&apos;API, les alias illimités et le chiffrement PGP.
-                </p>
-                <Button variant="primary" size="sm" onClick={handleGoToPricing} style={{ background: 'var(--c-8b5cf6)', borderColor: 'var(--c-8b5cf6)' }}>
-                  Passer au Pack de lancement
-                </Button>
-              </div>
-            ) : (
-              <div style={{ background: 'var(--c-0d0d10)', border: '1px solid rgba(var(--ink),0.06)', borderRadius: 14, padding: 24 }}>
-                <h2 style={{ fontSize: 16, fontWeight: 700, marginBottom: 8 }}>Clé d accès API</h2>
-                <p style={{ fontSize: 13, color: 'var(--c-64748b)', marginBottom: 16, lineHeight: 1.6 }}>
-                  Utilisez cet identifiant dans le header :<br />
-                  <code style={{ color: 'var(--c-8b5cf6)', display: 'inline-block', marginTop: 4, fontWeight: 600 }}>X-Veilix-Key-Id</code>
-                </p>
+          <ApiTokensPanel lang={lang} plan={plan} apiUrl={apiUrl} onToast={showToast} />
+        )}
 
-                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 12, background: 'rgba(var(--ink),0.02)', padding: '12px 16px', borderRadius: 10, border: '1px solid rgba(var(--ink),0.08)', marginBottom: 20, flexWrap: 'wrap' }}>
-                  <code style={{ fontSize: 13, fontFamily: 'monospace', color: 'var(--c-f1f5f9)', wordBreak: 'break-all' }}>
-                    {identity.keyId}
-                  </code>
-                  <Button
-                    variant="secondary"
-                    size="sm"
-                    onClick={() => {
-                      navigator.clipboard.writeText(identity.keyId)
-                      showToast('Clé API copiée dans le presse-papiers', 'success')
-                    }}
-                  >
-                    Copier la clé
-                  </Button>
-                </div>
+        {activeTab === 'domains' && (
+          <DomainsPanel lang={lang} plan={plan} onToast={showToast} />
+        )}
 
-                <h3 style={{ fontSize: 14, fontWeight: 700, color: 'var(--c-e2e8f0)', marginBottom: 8 }}>Exemple de requête (cURL)</h3>
-                <p style={{ fontSize: 12, color: 'var(--c-64748b)', marginBottom: 12 }}>
-                  Testez la récupération de vos alias actifs directement depuis votre terminal :
-                </p>
-
-                <div style={{ background: 'var(--c-070709)', padding: 16, borderRadius: 10, border: '1px solid rgba(139,92,246,0.2)', fontSize: 12, fontFamily: 'monospace', color: 'var(--c-cbd5e1)', lineHeight: 1.6, overflowX: 'auto' }}>
-                  <pre style={{ margin: 0 }}>
-{`curl -X GET "${apiUrl}/alias" \\
-  -H "X-Veilix-Key-Id: ${identity.keyId}"`}
-                  </pre>
-                  <div style={{ marginTop: 12, display: 'flex', justifyContent: 'flex-end' }}>
-                    <Button
-                      variant="secondary"
-                      size="sm"
-                      onClick={() => {
-                        const cmd = `curl -X GET "${apiUrl}/alias" -H "X-Veilix-Key-Id: ${identity.keyId}"`
-                        navigator.clipboard.writeText(cmd)
-                        showToast('Commande cURL copiée', 'success')
-                      }}
-                    >
-                      Copier la commande
-                    </Button>
-                  </div>
-                </div>
-
-                <div style={{ marginTop: 20, paddingTop: 16, borderTop: '1px solid rgba(var(--ink),0.06)', fontSize: 12, color: 'var(--c-94a3b8)', lineHeight: 1.8 }}>
-                  <div><strong style={{ color: 'var(--c-e2e8f0)' }}>Endpoints disponibles :</strong></div>
-                  <div><code style={{ color: 'var(--c-8b5cf6)' }}>POST /key/verify</code> : Vérifier la validité de la clé et le plan actif</div>
-                  <div><code style={{ color: 'var(--c-8b5cf6)' }}>GET /alias</code> : Lister l ensemble de vos alias</div>
-                  <div><code style={{ color: 'var(--c-8b5cf6)' }}>POST /alias</code> : Générer un nouvel alias à la volée</div>
-                </div>
-              </div>
-            )}
-          </div>
+        {activeTab === 'pgp' && (
+          <PgpPanel lang={lang} plan={plan} onToast={showToast} />
         )}
 
         {activeTab === 'privacy' && (
           <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
-            <form onSubmit={handleSaveNotifications} style={{ background: 'var(--c-0d0d10)', border: '1px solid rgba(var(--ink),0.06)', borderRadius: 14, padding: 24 }}>
-              <h2 style={{ fontSize: 16, fontWeight: 700, marginBottom: 16 }}>Notifications</h2>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: 14, marginBottom: 20 }}>
-                <label style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 12, cursor: plan === 'pack' ? 'pointer' : 'not-allowed', fontSize: 13, opacity: plan === 'pack' ? 1 : 0.65 }}>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-                    <input
-                      type="checkbox"
-                      checked={plan === 'pack' ? leakAlerts : false}
-                      disabled={plan !== 'pack'}
-                      onChange={(e) => setLeakAlerts(e.target.checked)}
-                    />
-                    <span>Alerte en temps réel en cas de fuite de données détectée</span>
-                  </div>
-                  {plan !== 'pack' && (
-                    <span
-                      onClick={(e) => {
-                        e.preventDefault()
-                        handleGoToPricing()
-                      }}
-                      style={{ fontSize: 11, fontWeight: 700, color: '#ffff', background: 'var(--c-8b5cf6)', border: '1px solid var(--c-a78bfa)', padding: '5px 12px', borderRadius: 6, cursor: 'pointer', whiteSpace: 'nowrap', boxShadow: '0 2px 8px rgba(139,92,246,0.4)', transition: 'all 0.2s ease' }}
-                    >
-                      Pack de lancement
-                    </span>
-                  )}
-                </label>
-
-                <label style={{ display: 'flex', alignItems: 'center', gap: 12, cursor: 'pointer', fontSize: 13 }}>
-                  <input type="checkbox" checked={weeklyDigest} onChange={(e) => setWeeklyDigest(e.target.checked)} />
-                  <span>Recevoir le rapport hebdomadaire des spams bloqués</span>
-                </label>
-              </div>
-              <Button type="submit" variant="secondary" size="sm">
-                Enregistrer les préférences
-              </Button>
-            </form>
+            <NotificationsPanel lang={lang} plan={plan} onToast={showToast} />
 
             <div style={{ background: 'var(--c-0d0d10)', border: '1px solid rgba(var(--ink),0.06)', borderRadius: 14, padding: 24 }}>
               <h2 style={{ fontSize: 16, fontWeight: 700, marginBottom: 6 }}>Portabilité des données (RGPD)</h2>

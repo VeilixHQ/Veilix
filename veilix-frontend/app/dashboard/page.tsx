@@ -2,7 +2,9 @@
 import { useState, useEffect, useCallback } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
-import { getAliases, getAccount, createAlias, disableAlias, enableAlias, deleteAlias, resendConfirmation, Account, ApiError } from '@/lib/api'
+import { getAliases, getAccount, createAlias, disableAlias, enableAlias, deleteAlias, resendConfirmation, dismissLeak, getDomains, Account, ApiError, CustomDomain } from '@/lib/api'
+import { BlockedSendersModal } from '@/components/BlockedSendersModal'
+import { FT, errorMessage } from '@/lib/translations-features'
 import { getIdentity } from '@/lib/crypto'
 import { useAuth } from '@/hooks/useAuth'
 import { useInactivityTimeout } from '@/hooks/useInactivityTimeout'
@@ -24,6 +26,10 @@ type Alias = {
   destination_email: string
   label: string | null
   status: string
+  domain_id?: number | null
+  forwarded_count?: number
+  blocked_count?: number
+  leak_detected_at?: string | null
 }
 
 const LABELS = ['shopping', 'gaming', 'travail', 'newsletter', 'social', 'autre']
@@ -56,7 +62,7 @@ function planLabel(plan: string | undefined) {
   return (plan && PLAN_LABELS[plan]) || 'Pro'
 }
 
-function AccountCards({ account, active, inactive }: { account: Account | null; active: number; inactive: number }) {
+function AccountCards({ account, active, inactive, destinationsLabel }: { account: Account | null; active: number; inactive: number; destinationsLabel: (used: number, limit: number | null | undefined) => string }) {
   const used = account?.aliases_used ?? active + inactive
   const quota = account?.alias_quota ?? null
   const ratio = quota ? Math.min(used / quota, 1) : 0
@@ -90,6 +96,9 @@ function AccountCards({ account, active, inactive }: { account: Account | null; 
           <span style={{ color: 'var(--c-4ade80)' }}>{active} actif{active > 1 ? 's' : ''}</span>
           <span> · {inactive} inactif{inactive > 1 ? 's' : ''}</span>
         </div>
+        {account && account.destinations_used !== undefined && (
+          <div style={{ fontSize: 11.5, color: 'var(--c-475569)', marginTop: 4 }}>{destinationsLabel(account.destinations_used, account.destination_limit)}</div>
+        )}
       </div>
 
       <Link href="/pricing#credits" className="account-card-link" style={{ ...CARD_STYLE, textDecoration: 'none', color: 'inherit', display: 'block' }}>
@@ -192,6 +201,11 @@ export default function Dashboard() {
   const { toast, showToast, hideToast } = useToast()
   const [lang, setLang] = useState<Lang>('fr')
   const t = T[lang]
+  const ft = FT[lang]
+  const [domains, setDomains] = useState<CustomDomain[]>([])
+  const [newDomainId, setNewDomainId] = useState<number | null>(null)
+  const [newLocalPart, setNewLocalPart] = useState('')
+  const [sendersFor, setSendersFor] = useState<Alias | null>(null)
 
   const [keyId, setKeyId] = useState<string | null>(null)
   const [account, setAccount] = useState<Account | null>(null)
@@ -247,12 +261,18 @@ export default function Dashboard() {
     if (!authLoading && user) refresh()
   }, [authLoading, user, refresh])
 
+  useEffect(() => {
+    if (!authLoading && user && account && ['pack', 'premium', 'admin'].includes(account.plan)) {
+      getDomains().then(setDomains).catch(() => setDomains([]))
+    }
+  }, [authLoading, user, account])
+
   async function handleCreate(e: React.FormEvent) {
     e.preventDefault()
     setCreating(true)
     try {
-      const result = await createAlias(newDest, normalizeTag(newLabel))
-      
+      const result = await createAlias(newDest, normalizeTag(newLabel), { domain_id: newDomainId, local_part: newLocalPart.trim() })
+
       if (result.detail) {
         const reason = typeof result.detail === 'string' ? UPGRADE_REASONS[result.detail] : undefined
         if (reason) {
@@ -261,9 +281,10 @@ export default function Dashboard() {
           fetchAccount()
           return
         }
-        showToast(typeof result.detail === 'string' ? result.detail : 'Erreur lors de la création', 'error')
+        showToast(errorMessage(lang, result.detail, 'Erreur lors de la création'), 'error')
         return
       }
+      setNewLocalPart('')
 
       setShowModal(false)
       setNewDest('')
@@ -329,6 +350,15 @@ export default function Dashboard() {
     }
   }
 
+  async function handleDismissLeak(alias: Alias) {
+    try {
+      await dismissLeak(alias.id)
+      fetchAliases()
+    } catch {
+      showToast(ft.settings.error, 'error')
+    }
+  }
+
   async function handleCopy(alias: Alias) {
     try {
       await navigator.clipboard.writeText(alias.alias_email)
@@ -377,13 +407,13 @@ export default function Dashboard() {
         .account-cards{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:12px;margin-bottom:28px}
         .account-card-link{transition:border-color .15s}
         .account-card-link:hover{border-color:rgba(124,58,237,0.3)!important}
-        .alias-row{display:grid;grid-template-columns:minmax(0,1fr) 180px 110px 210px;gap:20px;align-items:center;min-height:68px;padding:12px 18px;background:var(--c-0d0d10);border:1px solid rgba(var(--ink),0.06);border-radius:12px;transition:border-color .15s}
+        .alias-row{display:grid;grid-template-columns:minmax(0,1fr) 170px 100px 306px;gap:20px;align-items:center;min-height:68px;padding:12px 18px;background:var(--c-0d0d10);border:1px solid rgba(var(--ink),0.06);border-radius:12px;transition:border-color .15s}
         .alias-row:hover{border-color:rgba(124,58,237,0.2)}
         .alias-dest{font-size:12px;color:var(--c-64748b);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0}
         .alias-status{display:flex;align-items:center;justify-content:center;min-width:0}
-        .alias-row-actions{display:grid;grid-template-columns:100px 94px;gap:10px;justify-content:center}
+        .alias-row-actions{display:grid;grid-template-columns:100px 96px 94px;gap:8px;justify-content:center}
         .alias-row-actions button{width:100%}
-        .dashboard-table-header{display:grid;grid-template-columns:minmax(0,1fr) 180px 110px 210px;gap:20px}
+        .dashboard-table-header{display:grid;grid-template-columns:minmax(0,1fr) 170px 100px 306px;gap:20px}
         @media(max-width:900px){
           .alias-row{grid-template-columns:minmax(0,1fr) auto;gap:10px 12px;align-items:center}
           .alias-row>:first-child{grid-column:1/-1}
@@ -419,7 +449,7 @@ export default function Dashboard() {
         }
       />
 
-      <div style={{ maxWidth: 880, margin: '0 auto', padding: '96px 24px 64px' }}>
+      <div style={{ maxWidth: 1000, margin: '0 auto', padding: '96px 24px 64px' }}>
         <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', marginBottom: 28, flexWrap: 'wrap', gap: 16 }}>
           <div>
             <h1 style={{ fontSize: 24, fontWeight: 800, letterSpacing: '-0.6px', color: 'var(--c-f1f5f9)', marginBottom: 4 }}>Alias email</h1>
@@ -435,6 +465,7 @@ export default function Dashboard() {
         <BetaPanel onFeedbackSent={refresh} />
 
         <AccountCards
+          destinationsLabel={ft.dashboard.destinations}
           account={account}
           active={aliases.filter(a => a.status === 'active').length}
           inactive={aliases.filter(a => a.status !== 'active').length}
@@ -499,8 +530,17 @@ export default function Dashboard() {
                       {copied === alias.id ? '✓ Copié' : 'Copier'}
                     </button>
                   </div>
-                  {alias.label && (
-                    <TagChip name={alias.label} onClick={() => setActiveTag(effectiveTag === alias.label!.toLowerCase() ? null : alias.label!.toLowerCase())} />
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap' }}>
+                    {alias.label && (
+                      <TagChip name={alias.label} onClick={() => setActiveTag(effectiveTag === alias.label!.toLowerCase() ? null : alias.label!.toLowerCase())} />
+                    )}
+                    <span style={{ fontSize: 11, color: 'var(--c-64748b)', fontVariantNumeric: 'tabular-nums' }}>{ft.dashboard.stats(alias.forwarded_count ?? 0, alias.blocked_count ?? 0)}</span>
+                  </div>
+                  {alias.leak_detected_at && (
+                    <div title={ft.dashboard.leakTitle} style={{ display: 'flex', alignItems: 'center', gap: 8, marginTop: 6, flexWrap: 'wrap' }}>
+                      <span style={{ fontSize: 11, fontWeight: 600, color: 'var(--c-f87171)', background: 'rgba(239,68,68,0.08)', border: '1px solid rgba(239,68,68,0.25)', borderRadius: 6, padding: '2px 8px' }}>{ft.dashboard.leak}</span>
+                      <button type="button" onClick={() => handleDismissLeak(alias)} style={{ background: 'none', border: 'none', color: 'var(--c-64748b)', fontSize: 11, fontWeight: 600, cursor: 'pointer', padding: 0, fontFamily: 'Inter, sans-serif', textDecoration: 'underline' }}>{ft.dashboard.dismiss}</button>
+                    </div>
                   )}
                 </div>
 
@@ -534,6 +574,7 @@ export default function Dashboard() {
                       {alias.status === 'active' ? 'Désactiver' : 'Activer'}
                     </Button>
                   )}
+                  <Button variant="secondary" size="sm" onClick={() => setSendersFor(alias)}>{ft.dashboard.senders}</Button>
                   <Button variant="danger" size="sm" onClick={() => handleDelete(alias.id)}>Supprimer</Button>
                 </div>
               </div>
@@ -544,6 +585,10 @@ export default function Dashboard() {
       </div>
 
       <SiteFooter t={t} />
+
+      {sendersFor && (
+        <BlockedSendersModal lang={lang} aliasId={sendersFor.id} aliasEmail={sendersFor.alias_email} onClose={() => { setSendersFor(null); fetchAliases() }} onToast={showToast} />
+      )}
 
       {showModal && (
         <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.75)', zIndex: 200, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 24 }} onClick={() => setShowModal(false)}>
@@ -564,6 +609,26 @@ export default function Dashboard() {
             <p style={{ fontSize: 13, color: 'var(--c-64748b)', marginBottom: 24 }}>Un alias unique sera généré automatiquement.</p>
             <form onSubmit={handleCreate} style={{ display: 'flex', flexDirection: 'column', gap: 18 }}>
               <Input label="Email de destination" type="email" value={newDest} onChange={e => setNewDest(e.target.value)} placeholder="votre@email.com" required />
+              {domains.some(d => d.verified) && (
+                <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+                  <label htmlFor="new-alias-domain" style={{ fontSize: 13, fontWeight: 500, color: 'var(--c-94a3b8)' }}>{ft.dashboard.domainLabel}</label>
+                  <select
+                    id="new-alias-domain"
+                    value={newDomainId ?? ''}
+                    onChange={e => setNewDomainId(e.target.value ? Number(e.target.value) : null)}
+                    style={{ width: '100%', padding: '10px 14px', background: 'var(--c-0d0d0d)', border: '1px solid rgba(var(--ink),0.08)', borderRadius: 8, fontSize: 14, color: 'var(--c-f1f5f9)', fontFamily: 'Inter, sans-serif' }}
+                  >
+                    <option value="">{ft.dashboard.defaultDomain}</option>
+                    {domains.filter(d => d.verified).map(d => <option key={d.id} value={d.id}>@{d.domain}</option>)}
+                  </select>
+                  {newDomainId && (
+                    <div>
+                      <Input label={ft.dashboard.localPart} value={newLocalPart} onChange={e => setNewLocalPart(e.target.value.slice(0, 64))} placeholder="boutique" style={{ fontFamily: 'ui-monospace, Menlo, Consolas, monospace' }} />
+                      <p style={{ fontSize: 12, color: 'var(--c-64748b)', marginTop: 6 }}>{ft.dashboard.localPartHint}</p>
+                    </div>
+                  )}
+                </div>
+              )}
               <div>
                 <label style={{ display: 'block', fontSize: 13, fontWeight: 500, color: 'var(--c-94a3b8)', marginBottom: 8 }}>
                   Label <span style={{ color: 'var(--c-334155)', fontWeight: 400 }}>(optionnel)</span>
