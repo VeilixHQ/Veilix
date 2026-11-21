@@ -1,5 +1,5 @@
 'use client'
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState, useSyncExternalStore } from 'react'
 import { createPortal } from 'react-dom'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
@@ -141,10 +141,12 @@ export function UserMenu({ plan, keyIdShort, fullKeyId, badges = [] }: Props) {
   )
 }
 
-function Modal({ children, onClose }: { children: React.ReactNode; onClose: () => void }) {
-  const [mounted, setMounted] = useState(false)
+function subscribeNothing() {
+  return () => {}
+}
 
-  useEffect(() => setMounted(true), [])
+function Modal({ children, onClose }: { children: React.ReactNode; onClose: () => void }) {
+  const mounted = useSyncExternalStore(subscribeNothing, () => true, () => false)
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') onClose() }

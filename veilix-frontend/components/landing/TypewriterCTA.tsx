@@ -10,11 +10,13 @@ export function TypewriterCTA({ t }: { t: Translations }) {
   const visible = useOnScreen(ref)
   const [displayed, setDisplayed] = useState('')
   const [done, setDone] = useState(false)
+  const [title, setTitle] = useState(t.ctaTitle)
 
-  useEffect(() => {
+  if (title !== t.ctaTitle) {
+    setTitle(t.ctaTitle)
     setDisplayed('')
     setDone(false)
-  }, [t.ctaTitle])
+  }
 
   useEffect(() => {
     if (!visible || done) return

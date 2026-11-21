@@ -5,6 +5,10 @@ import nextTs from "eslint-config-next/typescript";
 const eslintConfig = defineConfig([
   ...nextVitals,
   ...nextTs,
+  {
+    files: ["app/layout.tsx"],
+    rules: { "@next/next/no-page-custom-font": "off" },
+  },
   globalIgnores([
     ".next/**",
     "out/**",

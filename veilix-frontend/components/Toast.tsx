@@ -1,5 +1,5 @@
 'use client'
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 
 type ToastType = 'success' | 'error' | 'info'
 
@@ -33,7 +33,7 @@ export function Toast({ message, type, onClose }: { message: string; type: Toast
 
 export function useToast() {
   const [toast, setToast] = useState<{ message: string; type: ToastType } | null>(null)
-  const showToast = (message: string, type: ToastType = 'success') => setToast({ message, type })
-  const hideToast = () => setToast(null)
+  const showToast = useCallback((message: string, type: ToastType = 'success') => setToast({ message, type }), [])
+  const hideToast = useCallback(() => setToast(null), [])
   return { toast, showToast, hideToast }
 }

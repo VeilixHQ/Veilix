@@ -118,10 +118,6 @@ function AccountCards({ account, active, inactive, destinationsLabel }: { accoun
   )
 }
 
-function tagStyle(_name: string) {
-  return TAG_STYLE
-}
-
 function normalizeTag(raw: string) {
   return raw.trim().replace(/\s+/g, ' ').toLowerCase().slice(0, TAG_MAX_LENGTH)
 }
@@ -133,7 +129,7 @@ function TagChip({ name, count, active, onClick, size = 'sm' }: {
   onClick?: () => void
   size?: 'sm' | 'md'
 }) {
-  const c = tagStyle(name)
+  const c = TAG_STYLE
   const style: React.CSSProperties = {
     display: 'inline-flex',
     alignItems: 'center',
@@ -232,25 +228,17 @@ export default function Dashboard() {
     }
   }, [authLoading, user])
 
-  const fetchAccount = useCallback(async () => {
-    try {
-      setAccount(await getAccount())
-    } catch (error) {
+  const fetchAccount = useCallback(() => getAccount()
+    .then(setAccount)
+    .catch(error => {
       setAccount(null)
       if (error instanceof ApiError && error.status === 402) router.push('/pricing?paiement=requis')
-    }
-  }, [router])
+    }), [router])
 
-  const fetchAliases = useCallback(async () => {
-    try {
-      const data = await getAliases()
-      if (Array.isArray(data)) setAliases(data)
-    } catch {
-      showToast('Erreur lors du chargement', 'error')
-    } finally {
-      setLoading(false)
-    }
-  }, [])
+  const fetchAliases = useCallback(() => getAliases()
+    .then(data => { if (Array.isArray(data)) setAliases(data) })
+    .catch(() => showToast('Erreur lors du chargement', 'error'))
+    .finally(() => setLoading(false)), [showToast])
 
   const refresh = useCallback(() => {
     fetchAliases()
@@ -635,7 +623,7 @@ export default function Dashboard() {
                 <Input value={newLabel} onChange={e => setNewLabel(e.target.value.slice(0, TAG_MAX_LENGTH))} placeholder="Choisissez ou créez un tag..." />
                 {isNewTag && (
                   <p style={{ fontSize: 12, color: 'var(--c-64748b)', margin: '8px 0 0' }}>
-                    Nouveau tag : <span style={{ color: tagStyle(currentTag).color, fontWeight: 600 }}>{currentTag}</span>
+                    Nouveau tag : <span style={{ color: TAG_STYLE.color, fontWeight: 600 }}>{currentTag}</span>
                   </p>
                 )}
                 <div style={{ display: 'flex', gap: 6, marginTop: 10, flexWrap: 'wrap' }}>
