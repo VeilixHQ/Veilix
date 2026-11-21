@@ -104,8 +104,8 @@ def emails(monkeypatch):
     envoyes: list[dict] = []
     from app.services import email_service
 
-    def capturer(data, files=None):
-        envoyes.append({**data, "_files": list(files or [])})
+    def capturer(data, files=None, domain=None):
+        envoyes.append({**data, "_files": list(files or []), "_domain": domain})
 
     monkeypatch.setattr(email_service, "_post_mailgun", capturer)
     monkeypatch.setattr(email_service, "_delete_mailgun", lambda chemin: None)

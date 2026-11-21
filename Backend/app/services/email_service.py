@@ -1,4 +1,4 @@
-﻿import logging
+import logging
 from urllib.parse import quote
 
 import httpx
@@ -18,10 +18,34 @@ class MailgunRejected(MailgunError):
     pass
 
 
-def send_message(data: dict, files: list | None = None) -> None:
+def send_message(data: dict, files: list | None = None, domain: str | None = None) -> None:
     if EMAIL_PROVIDER != "mailgun":
         raise NotImplementedError("Provider non supporte")
-    _post_mailgun(data, files)
+    if domain:
+        _post_mailgun(data, files, domain=domain)
+    else:
+        _post_mailgun(data, files)
+
+
+def send_mime(to: str, mime: bytes, domain: str | None = None) -> None:
+    if EMAIL_PROVIDER != "mailgun":
+        raise NotImplementedError("Provider non supporte")
+    _post_mailgun_mime(to, mime, domain)
+
+
+def _post_mailgun_mime(to: str, mime: bytes, domain: str | None = None) -> None:
+    response = httpx.post(
+        f"{MAILGUN_API_URL}/v3/{domain or MAILGUN_DOMAIN}/messages.mime",
+        auth=("api", MAILGUN_API_KEY),
+        data={"to": to, "o:tracking": "no"},
+        files={"message": ("message.mime", mime, "message/rfc822")},
+        timeout=httpx.Timeout(60.0, connect=10.0),
+    )
+    if response.status_code in (200, 202):
+        return
+    if response.status_code in REJECTED_STATUS:
+        raise MailgunRejected(f"HTTP {response.status_code}")
+    raise MailgunError(f"HTTP {response.status_code}")
 
 
 def send_destination_confirmation(to_email: str, confirm_url: str):
@@ -51,9 +75,9 @@ def _confirmation_text(confirm_url: str) -> str:
     )
 
 
-def _post_mailgun(data: dict, files: list | None = None):
+def _post_mailgun(data: dict, files: list | None = None, domain: str | None = None):
     response = httpx.post(
-        f"{MAILGUN_API_URL}/v3/{MAILGUN_DOMAIN}/messages",
+        f"{MAILGUN_API_URL}/v3/{domain or MAILGUN_DOMAIN}/messages",
         auth=("api", MAILGUN_API_KEY),
         data=data,
         files=files or None,

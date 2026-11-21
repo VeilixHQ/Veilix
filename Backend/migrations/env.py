@@ -5,12 +5,12 @@ from sqlalchemy import create_engine, pool
 
 from app.core.config import DATABASE_URL
 from app.db.base import Base
-from app.models import access_code, alias, beta, delivery, destination, key, reply_route
+from app.models import access_code, alias, alias_sender, api_token, beta, blocked_sender, custom_domain, delivery, destination, key, reply_route
 
 config = context.config
 
 if config.config_file_name is not None:
-    fileConfig(config.config_file_name)
+    fileConfig(config.config_file_name, disable_existing_loggers=False)
 
 target_metadata = Base.metadata
 

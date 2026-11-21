@@ -5,7 +5,7 @@ from app.core.rate_limit import ip_limit
 from app.core.security import get_current_key
 from app.db.session import get_db
 from app.models.key import Key
-from app.plans import alias_quota, get_effective_plan
+from app.plans import alias_quota, destination_limit, get_effective_plan
 from app.schemas.key import (
     Badge,
     CheckCodeRequest,
@@ -17,7 +17,7 @@ from app.schemas.key import (
     VerifyKeyResponse,
 )
 from app.services.access_service import badges_for, check_code, register_with_code
-from app.services.alias_service import count_aliases
+from app.services.alias_service import count_aliases, destinations_in_use
 from app.services.key_service import get_key_by_id
 
 router = APIRouter(tags=["Key"])
@@ -56,6 +56,8 @@ def me(key: Key = Depends(get_current_key), db: Session = Depends(get_db)):
         credits=key.credits,
         aliases_used=count_aliases(db, key),
         alias_quota=alias_quota(plan),
+        destinations_used=len(destinations_in_use(db, key)),
+        destination_limit=destination_limit(plan),
         created_at=key.created_at,
         badges=[Badge(**badge) for badge in badges_for(db, key)],
     )

@@ -36,6 +36,8 @@ class KeyAccountResponse(BaseModel):
     credits: int
     aliases_used: int
     alias_quota: Optional[int] = None
+    destinations_used: int = 0
+    destination_limit: Optional[int] = None
     created_at: Optional[datetime] = None
     badges: list[Badge] = []
 

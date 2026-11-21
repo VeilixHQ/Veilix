@@ -1,6 +1,6 @@
 from datetime import datetime, timezone
 
-from sqlalchemy import Column, Integer, String, DateTime, Boolean, CheckConstraint, false
+from sqlalchemy import Column, Integer, String, DateTime, Boolean, CheckConstraint, Text, false, true
 from app.db.base import Base
 
 
@@ -38,3 +38,11 @@ class Key(Base):
     beta_closed_notified_at = Column(DateTime, nullable=True)
     reply_complaints = Column(Integer, default=0, server_default="0", nullable=False)
     reply_complaints_since = Column(DateTime, nullable=True)
+    pgp_public_key = Column(Text, nullable=True)
+    pgp_fingerprint = Column(String(64), nullable=True)
+    pgp_enabled = Column(Boolean, default=False, server_default=false(), nullable=False)
+    leak_alerts = Column(Boolean, default=True, server_default=true(), nullable=False)
+    weekly_digest = Column(Boolean, default=False, server_default=false(), nullable=False)
+    digest_sent_at = Column(DateTime, nullable=True)
+    digest_forwarded_base = Column(Integer, default=0, server_default="0", nullable=False)
+    digest_blocked_base = Column(Integer, default=0, server_default="0", nullable=False)
