@@ -55,7 +55,7 @@ def normalize_domain(raw: str) -> str:
 
 
 def is_internal_domain(domain: str) -> bool:
-    return any(domain == internal or domain.endswith(f".{internal}") for internal in config.INTERNAL_DOMAINS)
+    return any(domain == internal or domain.endswith(f".{internal}") for internal in (*config.INTERNAL_DOMAINS, config.BRAND_DOMAIN) if internal)
 
 
 def pack_active(key: Key) -> bool:
@@ -163,6 +163,8 @@ def get_domain(db: Session, key: Key, domain_id: int) -> CustomDomain:
 
 def add_domain(db: Session, key: Key, raw: str) -> CustomDomain:
     _require_pack(key)
+    if not config.CUSTOM_DOMAINS_ENABLED:
+        raise HTTPException(status_code=503, detail="CUSTOM_DOMAINS_UNAVAILABLE")
     name = normalize_domain(raw)
     if is_internal_domain(name):
         raise HTTPException(status_code=400, detail="INVALID_DOMAIN")

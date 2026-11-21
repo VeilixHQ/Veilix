@@ -208,7 +208,7 @@ export default function SettingsPage() {
                   </span>
                   <p style={{ fontSize: 13, color: 'var(--c-94a3b8)', marginTop: 8 }}>
                     {plan === 'pack'
-                      ? 'Alias illimités, domaine personnalisé (jusqu à 3), chiffrement PGP et prix garanti tant que l’abonnement reste actif.'
+                      ? 'Alias illimités, chiffrement PGP, domaines personnalisés bientôt disponibles (jusqu’à 3) et prix garanti tant que l’abonnement reste actif.'
                       : '100 alias actifs, pièces jointes, tags personnalisés et 3 boîtes de destination.'}
                   </p>
                 </div>
@@ -425,7 +425,7 @@ export default function SettingsPage() {
                 <div style={{ background: 'rgba(239,68,68,0.08)', border: '1px solid rgba(239,68,68,0.25)', borderRadius: 10, padding: 14, marginBottom: 16 }}>
                   {plan === 'pack' ? (
                     <p style={{ fontSize: 13, color: 'var(--c-fca5a5)', lineHeight: 1.5 }}>
-                      <strong>Perte définitive du Pack de lancement :</strong> Cette offre collector est limitée à 100 exemplaires. En résiliant, vous perdez définitivement vos <strong>alias illimités</strong>, vos domaines personnalisés (jusqu à 3), vos alertes de fuite en temps réel, le chiffrement PGP et surtout votre <strong>prix garanti tant que l’abonnement reste actif</strong>. Vous ne pourrez plus jamais y souscrire.
+                      <strong>Perte définitive du Pack de lancement :</strong> Cette offre collector est limitée à 100 exemplaires. En résiliant, vous perdez définitivement vos <strong>alias illimités</strong>, vos alertes de fuite en temps réel, le chiffrement PGP et surtout votre <strong>prix garanti tant que l’abonnement reste actif</strong>. Vous ne pourrez plus jamais y souscrire.
                     </p>
                   ) : (
                     <p style={{ fontSize: 13, color: 'var(--c-fca5a5)', lineHeight: 1.5 }}>

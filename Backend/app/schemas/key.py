@@ -40,6 +40,7 @@ class KeyAccountResponse(BaseModel):
     destination_limit: Optional[int] = None
     created_at: Optional[datetime] = None
     badges: list[Badge] = []
+    custom_domains_available: bool = False
 
 class KeyResponse(BaseModel):
     model_config = ConfigDict(from_attributes=True)

@@ -1,5 +1,6 @@
 import pytest
 
+from app.core import config
 from app.models.alias import Alias
 from app.models.custom_domain import CustomDomain
 from app.services import domain_service
@@ -16,6 +17,7 @@ def dns(monkeypatch):
 
 @pytest.fixture
 def mailgun_domaines(monkeypatch):
+    monkeypatch.setattr(config, "CUSTOM_DOMAINS_ENABLED", True)
     appels = []
 
     def repondre(methode, chemin, data=None):
@@ -80,7 +82,7 @@ def test_verification_exige_txt_et_mx(client, dns, mailgun_domaines):
     assert succes["verified"] is True and succes["receiving"] is True
 
 
-@pytest.mark.parametrize("nom", ["alias.veilix-tests.fr", "x.mg.veilix-tests.fr", "pas un domaine", "localhost", "-a.fr"])
+@pytest.mark.parametrize("nom", ["alias.veilix-tests.fr", "x.mg.veilix-tests.fr", "veilix.fr", "contact.veilix.fr", "pas un domaine", "localhost", "-a.fr"])
 def test_domaines_interdits(client, dns, mailgun_domaines, nom):
     cle = inscrire(client, plan="pack")
     assert ajouter(client, cle, nom).status_code == 400
@@ -194,3 +196,20 @@ def test_retour_au_pack_retablit_les_domaines(client, emails, dns, mailgun_domai
     db.query(Key).update({Key.plan: "pack"})
     db.commit()
     assert recevoir(client, alias["alias_email"]).json() == {"status": "forwarded"}
+
+
+def test_domaines_indisponibles_tant_que_non_actives(client, dns, monkeypatch):
+    monkeypatch.setattr(config, "CUSTOM_DOMAINS_ENABLED", False)
+    appels = []
+    monkeypatch.setattr(domain_service, "_mailgun_request", lambda *a, **k: appels.append(a))
+    cle = inscrire(client, plan="pack")
+    reponse = ajouter(client, cle)
+    assert reponse.status_code == 503
+    assert reponse.json()["detail"] == "CUSTOM_DOMAINS_UNAVAILABLE"
+    assert appels == []
+    assert client.get("/key/me", headers=entetes(cle)).json()["custom_domains_available"] is False
+
+
+def test_disponibilite_annoncee_quand_activee(client, mailgun_domaines):
+    cle = inscrire(client, plan="pack")
+    assert client.get("/key/me", headers=entetes(cle)).json()["custom_domains_available"] is True

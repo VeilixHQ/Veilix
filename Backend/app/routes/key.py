@@ -1,6 +1,7 @@
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 
+from app.core import config
 from app.core.rate_limit import ip_limit
 from app.core.security import get_current_key
 from app.db.session import get_db
@@ -60,4 +61,5 @@ def me(key: Key = Depends(get_current_key), db: Session = Depends(get_db)):
         destination_limit=destination_limit(plan),
         created_at=key.created_at,
         badges=[Badge(**badge) for badge in badges_for(db, key)],
+        custom_domains_available=config.CUSTOM_DOMAINS_ENABLED,
     )

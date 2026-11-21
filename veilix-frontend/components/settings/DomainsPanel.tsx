@@ -1,6 +1,6 @@
 'use client'
 import { useCallback, useEffect, useState } from 'react'
-import { ApiError, CustomDomain, addDomain, deleteDomain, getAliases, getDomains, setCatchAll, verifyDomain } from '@/lib/api'
+import { ApiError, CustomDomain, addDomain, deleteDomain, getAccount, getAliases, getDomains, setCatchAll, verifyDomain } from '@/lib/api'
 import { FT, errorMessage } from '@/lib/translations-features'
 import type { Lang } from '@/lib/translations'
 import { CARD, CopyButton, INPUT, MONO, PackUpsell, buttonStyle, isPack } from './shared'
@@ -14,6 +14,7 @@ export function DomainsPanel({ lang, plan, onToast }: { lang: Lang; plan: string
   const [name, setName] = useState('')
   const [busy, setBusy] = useState<string | null>(null)
   const [choice, setChoice] = useState<Record<number, string>>({})
+  const [available, setAvailable] = useState<boolean | null>(null)
 
   const fail = useCallback((error: unknown) => {
     onToast(errorMessage(lang, error instanceof ApiError ? error.message : null, t.error), 'error')
@@ -22,7 +23,12 @@ export function DomainsPanel({ lang, plan, onToast }: { lang: Lang; plan: string
   useEffect(() => {
     if (!isPack(plan)) return
     let alive = true
-    getDomains().then(list => { if (alive) setDomains(list) }).catch(() => { if (alive) setDomains([]) })
+    getAccount().then(account => {
+      if (!alive) return
+      const enabled = Boolean(account.custom_domains_available)
+      setAvailable(enabled)
+      if (enabled) getDomains().then(list => { if (alive) setDomains(list) }).catch(() => { if (alive) setDomains([]) })
+    }).catch(() => { if (alive) setAvailable(false) })
     getAliases().then((list: { destination_email: string }[]) => {
       if (alive && Array.isArray(list)) setDestinations(Array.from(new Set(list.map(a => a.destination_email))))
     }).catch(() => {})
@@ -30,6 +36,18 @@ export function DomainsPanel({ lang, plan, onToast }: { lang: Lang; plan: string
   }, [plan])
 
   if (!isPack(plan)) return <PackUpsell lang={lang} title={t.domainsTitle} desc={t.domainsDesc} />
+
+  if (available === null) return <p style={{ fontSize: 13, color: 'var(--c-64748b)' }}>{t.loading}</p>
+
+  if (!available) {
+    return (
+      <div style={{ ...CARD, textAlign: 'center', padding: 28 }}>
+        <span style={{ fontSize: 11, fontWeight: 700, color: 'var(--c-a78bfa)', background: 'rgba(124,58,237,0.12)', padding: '4px 10px', borderRadius: 6 }}>{t.soonBadge}</span>
+        <h2 style={{ fontSize: 18, fontWeight: 700, marginTop: 14, marginBottom: 8, color: 'var(--c-f1f5f9)' }}>{t.domainsTitle}</h2>
+        <p style={{ fontSize: 13, color: 'var(--c-94a3b8)', maxWidth: 480, margin: '0 auto', lineHeight: 1.6 }}>{t.soonDesc}</p>
+      </div>
+    )
+  }
 
   function replace(updated: CustomDomain) {
     setDomains(prev => (prev || []).map(d => (d.id === updated.id ? updated : d)))

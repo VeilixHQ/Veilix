@@ -100,6 +100,7 @@ export type Account = {
   destination_limit?: number | null
   created_at: string | null
   badges: { id: 'pionnier' | 'eclaireur' | 'fondateur'; number: number | null }[]
+  custom_domains_available?: boolean
 }
 
 export async function getAccount(): Promise<Account> {

@@ -55,11 +55,12 @@ const PLANS: Record<'fr' | 'en', PlanData[]> = {
       yearly: { price: '69 €', period: '/ an', sub: 'soit 5,75 € / mois' },
       features: [
         'Alias illimités',
-        `Domaine personnalisé (jusqu'à 3)`,
+        `Domaines personnalisés (jusqu'à 3) : bientôt disponibles`,
         'Alerte de fuite en temps réel',
         `API et clés d'accès`,
         'Chiffrement PGP',
-        'Catch-all et 10 boîtes de destination',
+        '10 boîtes de destination',
+        'Catch-all : bientôt disponible',
         'Support prioritaire sous 24 h',
         'Accès anticipé aux nouveautés',
         "Prix garanti tant que l'abonnement est actif",
@@ -98,11 +99,12 @@ const PLANS: Record<'fr' | 'en', PlanData[]> = {
       yearly: { price: '€69', period: '/ year', sub: 'that is €5.75 / month' },
       features: [
         'Unlimited aliases',
-        'Custom domain (up to 3)',
+        'Custom domains (up to 3): coming soon',
         'Real-time breach alerts',
         'API and access keys',
         'PGP encryption',
-        'Catch-all and 10 destination mailboxes',
+        '10 destination mailboxes',
+        'Catch-all: coming soon',
         'Priority support within 24 h',
         'Early access to new features',
         'Price locked while subscribed',
@@ -152,7 +154,7 @@ const FAQS: Record<'fr' | 'en', { q: string; a: string }[]> = {
     },
     {
       q: 'Quelle différence entre le plan Pro et le Pack de lancement ?',
-      a: "Le Pro inclut 100 alias, la réponse depuis l'alias, les pièces jointes, les tags, 3 boîtes de destination et le blocage d'expéditeurs. Le Pack reprend tout le Pro et ajoute les alias illimités, un domaine personnalisé (jusqu'à 3), l'alerte de fuite en temps réel, l'API, le chiffrement PGP, le catch-all, 10 boîtes de destination, un support prioritaire sous 24 h et l'accès anticipé aux nouveautés.",
+      a: "Le Pro inclut 100 alias, la réponse depuis l'alias, les pièces jointes, les tags, 3 boîtes de destination et le blocage d'expéditeurs. Le Pack reprend tout le Pro et ajoute les alias illimités, l'alerte de fuite en temps réel, l'API, le chiffrement PGP, 10 boîtes de destination, un support prioritaire sous 24 h et l'accès anticipé aux nouveautés. Les domaines personnalisés (jusqu'à 3) et le catch-all seront bientôt disponibles.",
     },
     {
       q: 'Que signifie « prix garanti » ?',
@@ -178,7 +180,7 @@ const FAQS: Record<'fr' | 'en', { q: string; a: string }[]> = {
     },
     {
       q: 'What is the difference between Pro and the Launch pack?',
-      a: 'Pro includes 100 aliases, replying from the alias, attachments, tags, 3 destination mailboxes and sender blocking. The Launch pack includes everything in Pro and adds unlimited aliases, a custom domain (up to 3), real-time breach alerts, the API, PGP encryption, catch-all, 10 destination mailboxes, priority support within 24 h and early access to new features.',
+      a: 'Pro includes 100 aliases, replying from the alias, attachments, tags, 3 destination mailboxes and sender blocking. The Launch pack includes everything in Pro and adds unlimited aliases, real-time breach alerts, the API, PGP encryption, 10 destination mailboxes, priority support within 24 h and early access to new features. Custom domains (up to 3) and catch-all are coming soon.',
     },
     {
       q: 'What does "price locked" mean?',
