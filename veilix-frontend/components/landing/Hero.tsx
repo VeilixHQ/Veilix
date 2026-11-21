@@ -24,7 +24,7 @@ function HeroDemo({ t }: { t: Translations }) {
         <span style={{ fontSize: 11, fontWeight: 600, color: 'var(--c-334155)', textTransform: 'uppercase', letterSpacing: '0.6px' }}>{t.demoLabel}</span>
         <span style={{ fontSize: 11, color: 'var(--c-a78bfa)', fontWeight: 600 }}>3 alias</span>
       </div>
-      {[{ email: 'x7k2m9pl4q@veilix.fr', label: 'Shopping' }, { email: 'r3n8w5jt2a@veilix.fr', label: 'Gaming' }].map((r, i) => (
+      {[{ email: 'x7k2m9pl4q@alias.veilix.fr', label: 'Shopping' }, { email: 'r3n8w5jt2a@alias.veilix.fr', label: 'Gaming' }].map((r, i) => (
         <div key={i} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '11px 20px', borderTop: '1px solid rgba(var(--ink),0.04)' }}>
           <div>
             <div style={{ fontSize: 12, fontWeight: 500, fontFamily: 'monospace', color: 'var(--c-e2e8f0)', marginBottom: 3 }}>{r.email}</div>
@@ -33,9 +33,9 @@ function HeroDemo({ t }: { t: Translations }) {
           <span style={{ padding: '3px 9px', borderRadius: 100, fontSize: 10, fontWeight: 700, background: 'rgba(34,197,94,0.08)', color: 'var(--c-4ade80)', border: '1px solid rgba(34,197,94,0.18)' }}>{t.active}</span>
         </div>
       ))}
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '11px 20px', borderTop: '1px solid rgba(var(--ink),0.04)', background: disabled ? 'rgba(239,68,68,0.03)' : 'transparent', transition: 'background 0.4s' }}>
+      <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8, alignItems: 'center', justifyContent: 'space-between', padding: '11px 20px', borderTop: '1px solid rgba(var(--ink),0.04)', background: disabled ? 'rgba(239,68,68,0.03)' : 'transparent', transition: 'background 0.4s' }}>
         <div>
-          <div style={{ fontSize: 12, fontWeight: 500, fontFamily: 'monospace', color: disabled ? 'var(--c-94a3b8)' : 'var(--c-e2e8f0)', marginBottom: 3, transition: 'color 0.4s', textDecoration: disabled ? 'line-through' : 'none' }}>m6p1s4yz8b@veilix.fr</div>
+          <div style={{ fontSize: 12, fontWeight: 500, fontFamily: 'monospace', color: disabled ? 'var(--c-94a3b8)' : 'var(--c-e2e8f0)', marginBottom: 3, transition: 'color 0.4s', textDecoration: disabled ? 'line-through' : 'none' }}>m6p1s4yz8b@alias.veilix.fr</div>
           <div style={{ fontSize: 11, color: 'var(--c-334155)' }}>
             Newsletter{' '}
             {disabled && (

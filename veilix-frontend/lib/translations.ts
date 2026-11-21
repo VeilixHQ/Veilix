@@ -208,11 +208,11 @@ export const T = {
     howVisualLast: {
       label: 'Dernier email reçu',
       msg: 'Amazon : Votre commande a été expédiée',
-      via: 'via x7k2m9pl4q@veilix.fr : il y a 5 min',
+      via: 'via x7k2m9pl4q@alias.veilix.fr : il y a 5 min',
     },
     howVisualRows: [
-      { email: 'x7k2m9pl4q@veilix.fr', label: 'Newsletter', info: 'il y a 2 min' },
-      { email: 'r3n8w5jt2a@veilix.fr', label: 'Inscriptions', info: '12 spams bloqués' },
+      { email: 'x7k2m9pl4q@alias.veilix.fr', label: 'Newsletter', info: 'il y a 2 min' },
+      { email: 'r3n8w5jt2a@alias.veilix.fr', label: 'Inscriptions', info: '12 spams bloqués' },
     ],
     featKicker: 'FONCTIONNALITÉS',
     featTitle: "L'essentiel. Rien de superflu.",
@@ -498,13 +498,13 @@ export const T = {
     howVisualTitle: 'Email aliases',
     howVisualBtn: '+ New alias',
     howVisualRows: [
-      { email: 'x7k2m9pl4q@veilix.fr', label: 'Newsletters', info: '2 min ago' },
-      { email: 'r3n8w5jt2a@veilix.fr', label: 'Signups', info: '12 spams blocked' },
+      { email: 'x7k2m9pl4q@alias.veilix.fr', label: 'Newsletters', info: '2 min ago' },
+      { email: 'r3n8w5jt2a@alias.veilix.fr', label: 'Signups', info: '12 spams blocked' },
     ],
     howVisualLast: {
       label: 'Last email received',
       msg: 'Amazon : Your order has been shipped',
-      via: 'via x7k2m9pl4q@veilix.fr : 5 min ago',
+      via: 'via x7k2m9pl4q@alias.veilix.fr : 5 min ago',
     },
     featKicker: 'FEATURES',
     featTitle: 'Essential. Nothing superfluous.',

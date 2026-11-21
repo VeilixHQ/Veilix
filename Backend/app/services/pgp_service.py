@@ -9,6 +9,7 @@ from email.utils import formatdate, make_msgid
 from fastapi import HTTPException
 from sqlalchemy.orm import Session
 
+from app.core import config
 from app.models.key import Key
 from app.plans import get_effective_plan, has_pack_features
 
@@ -144,7 +145,7 @@ def encrypted_mime(data: dict, files: list, cert) -> bytes:
         "To": data.get("to"),
         "Subject": data.get("subject"),
         "Reply-To": data.get("h:Reply-To"),
-        "Message-Id": data.get("h:Message-Id") or make_msgid(domain="veilix.fr"),
+        "Message-Id": data.get("h:Message-Id") or make_msgid(domain=config.MAILGUN_DOMAIN or config.DOMAIN),
         "X-Veilix-Hops": data.get("h:X-Veilix-Hops"),
         "X-Auto-Response-Suppress": data.get("h:X-Auto-Response-Suppress"),
     }
