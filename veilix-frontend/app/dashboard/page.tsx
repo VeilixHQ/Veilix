@@ -28,7 +28,7 @@ type Alias = {
 
 const LABELS = ['shopping', 'gaming', 'travail', 'newsletter', 'social', 'autre']
 const TAG_MAX_LENGTH = 24
-const TAG_STYLE = { color: '#a78bfa', bg: 'rgba(124,58,237,0.1)', border: 'rgba(124,58,237,0.28)' }
+const TAG_STYLE = { color: 'var(--c-a78bfa)', bg: 'rgba(124,58,237,0.1)', border: 'rgba(124,58,237,0.28)' }
 
 const PLAN_LABELS: Record<string, string> = {
   credits: 'Sans abonnement',
@@ -45,8 +45,8 @@ const UPGRADE_REASONS: Record<string, UpgradeReason> = {
 }
 
 const CARD_STYLE: React.CSSProperties = {
-  background: '#0d0d10',
-  border: '1px solid rgba(255,255,255,0.06)',
+  background: 'var(--c-0d0d10)',
+  border: '1px solid rgba(var(--ink),0.06)',
   borderRadius: 12,
   padding: '18px 20px',
   minWidth: 0,
@@ -60,18 +60,18 @@ function AccountCards({ account, active, inactive }: { account: Account | null; 
   const used = account?.aliases_used ?? active + inactive
   const quota = account?.alias_quota ?? null
   const ratio = quota ? Math.min(used / quota, 1) : 0
-  const barColor = ratio >= 1 ? '#f87171' : ratio >= 0.9 ? '#fbbf24' : '#7c3aed'
+  const barColor = ratio >= 1 ? 'var(--c-f87171)' : ratio >= 0.9 ? 'var(--c-fbbf24)' : '#7c3aed'
 
   return (
     <div className="account-cards">
       <div className="account-card-aliases" style={CARD_STYLE}>
         <div style={{ display: 'flex', alignItems: 'baseline', gap: 6, marginBottom: 2 }}>
-          <span style={{ fontSize: 26, fontWeight: 800, letterSpacing: '-1px', color: '#f1f5f9' }}>{used}</span>
+          <span style={{ fontSize: 26, fontWeight: 800, letterSpacing: '-1px', color: 'var(--c-f1f5f9)' }}>{used}</span>
           {quota !== 0 && (
-            <span style={{ fontSize: 14, fontWeight: 600, color: '#475569' }}>{quota === null ? '/ illimité' : `/ ${quota}`}</span>
+            <span style={{ fontSize: 14, fontWeight: 600, color: 'var(--c-475569)' }}>{quota === null ? '/ illimité' : `/ ${quota}`}</span>
           )}
         </div>
-        <div style={{ fontSize: 12, color: '#64748b', fontWeight: 500 }}>
+        <div style={{ fontSize: 12, color: 'var(--c-64748b)', fontWeight: 500 }}>
           {quota === 0 ? 'Alias utilisés, 1 crédit par nouvel alias' : 'Alias utilisés'}
         </div>
         {quota !== null && quota > 0 && (
@@ -81,29 +81,29 @@ function AccountCards({ account, active, inactive }: { account: Account | null; 
             aria-valuemax={quota}
             aria-valuenow={used}
             aria-label="Alias utilisés sur le quota du plan"
-            style={{ height: 4, borderRadius: 4, background: 'rgba(255,255,255,0.06)', margin: '12px 0 10px', overflow: 'hidden' }}
+            style={{ height: 4, borderRadius: 4, background: 'rgba(var(--ink),0.06)', margin: '12px 0 10px', overflow: 'hidden' }}
           >
             <div style={{ width: `${ratio * 100}%`, height: '100%', background: barColor, borderRadius: 4, transition: 'width .3s' }} />
           </div>
         )}
-        <div style={{ fontSize: 11.5, color: '#475569', marginTop: quota !== null && quota > 0 ? 0 : 10 }}>
-          <span style={{ color: '#4ade80' }}>{active} actif{active > 1 ? 's' : ''}</span>
+        <div style={{ fontSize: 11.5, color: 'var(--c-475569)', marginTop: quota !== null && quota > 0 ? 0 : 10 }}>
+          <span style={{ color: 'var(--c-4ade80)' }}>{active} actif{active > 1 ? 's' : ''}</span>
           <span> · {inactive} inactif{inactive > 1 ? 's' : ''}</span>
         </div>
       </div>
 
       <Link href="/pricing#credits" className="account-card-link" style={{ ...CARD_STYLE, textDecoration: 'none', color: 'inherit', display: 'block' }}>
-        <div style={{ fontSize: 26, fontWeight: 800, letterSpacing: '-1px', marginBottom: 2, color: '#f1f5f9' }}>{account ? account.credits : '-'}</div>
-        <div style={{ fontSize: 12, color: '#64748b', fontWeight: 500 }}>Crédit{account && account.credits > 1 ? 's' : ''}</div>
-        <div style={{ fontSize: 11.5, color: '#a78bfa', fontWeight: 600, marginTop: 10 }}>Acheter des crédits</div>
+        <div style={{ fontSize: 26, fontWeight: 800, letterSpacing: '-1px', marginBottom: 2, color: 'var(--c-f1f5f9)' }}>{account ? account.credits : '-'}</div>
+        <div style={{ fontSize: 12, color: 'var(--c-64748b)', fontWeight: 500 }}>Crédit{account && account.credits > 1 ? 's' : ''}</div>
+        <div style={{ fontSize: 11.5, color: 'var(--c-a78bfa)', fontWeight: 600, marginTop: 10 }}>Acheter des crédits</div>
       </Link>
 
       <Link href="/pricing" className="account-card-link" style={{ ...CARD_STYLE, textDecoration: 'none', color: 'inherit', display: 'block' }}>
-        <div style={{ fontSize: 18, fontWeight: 800, letterSpacing: '-0.4px', lineHeight: 1.25, minHeight: 31, display: 'flex', alignItems: 'center', marginBottom: 2, color: '#f1f5f9' }}>
+        <div style={{ fontSize: 18, fontWeight: 800, letterSpacing: '-0.4px', lineHeight: 1.25, minHeight: 31, display: 'flex', alignItems: 'center', marginBottom: 2, color: 'var(--c-f1f5f9)' }}>
           {account ? planLabel(account.plan) : '-'}
         </div>
-        <div style={{ fontSize: 12, color: '#64748b', fontWeight: 500 }}>Plan</div>
-        <div style={{ fontSize: 11.5, color: '#a78bfa', fontWeight: 600, marginTop: 10 }}>Voir les offres</div>
+        <div style={{ fontSize: 12, color: 'var(--c-64748b)', fontWeight: 500 }}>Plan</div>
+        <div style={{ fontSize: 11.5, color: 'var(--c-a78bfa)', fontWeight: 600, marginTop: 10 }}>Voir les offres</div>
       </Link>
     </div>
   )
@@ -137,7 +137,7 @@ function TagChip({ name, count, active, onClick, size = 'sm' }: {
     whiteSpace: 'nowrap',
     color: c.color,
     background: active ? c.bg : size === 'md' ? 'transparent' : c.bg,
-    border: `1px solid ${active || size === 'sm' ? c.border : 'rgba(255,255,255,0.08)'}`,
+    border: `1px solid ${active || size === 'sm' ? c.border : 'rgba(var(--ink),0.08)'}`,
     cursor: onClick ? 'pointer' : 'default',
   }
   const content = (
@@ -154,9 +154,9 @@ function TagChip({ name, count, active, onClick, size = 'sm' }: {
 }
 
 const STATUS_STYLES: Record<string, { label: string; color: string; bg: string; border: string }> = {
-  active: { label: 'Actif', color: '#4ade80', bg: 'rgba(74,222,128,0.1)', border: 'rgba(74,222,128,0.25)' },
-  pending: { label: 'À confirmer', color: '#a78bfa', bg: 'rgba(124,58,237,0.1)', border: 'rgba(124,58,237,0.28)' },
-  disabled: { label: 'Désactivé', color: '#fbbf24', bg: 'rgba(251,191,36,0.1)', border: 'rgba(251,191,36,0.28)' },
+  active: { label: 'Actif', color: 'var(--c-4ade80)', bg: 'rgba(74,222,128,0.1)', border: 'rgba(74,222,128,0.25)' },
+  pending: { label: 'À confirmer', color: 'var(--c-a78bfa)', bg: 'rgba(124,58,237,0.1)', border: 'rgba(124,58,237,0.28)' },
+  disabled: { label: 'Désactivé', color: 'var(--c-fbbf24)', bg: 'rgba(251,191,36,0.1)', border: 'rgba(251,191,36,0.28)' },
 }
 
 function StatusBadge({ status }: { status: string }) {
@@ -342,7 +342,7 @@ export default function Dashboard() {
 
   if (authLoading) {
     return (
-      <div style={{ minHeight: '100vh', background: '#060608', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+      <div style={{ minHeight: '100vh', background: 'var(--c-060608)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
         <div style={{ width: 32, height: 32, borderRadius: '50%', border: '3px solid rgba(124,58,237,0.15)', borderTopColor: '#7c3aed', animation: 'spin 0.8s linear infinite' }} />
         <style>{`@keyframes spin{to{transform:rotate(360deg)}}`}</style>
       </div>
@@ -371,15 +371,15 @@ export default function Dashboard() {
   })
 
   return (
-    <div style={{ minHeight: '100vh', background: '#060608', color: '#f1f5f9', fontFamily: 'Inter, sans-serif' }}>
+    <div style={{ minHeight: '100vh', background: 'var(--c-060608)', color: 'var(--c-f1f5f9)', fontFamily: 'Inter, sans-serif' }}>
       <style>{`
         @keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
         .account-cards{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:12px;margin-bottom:28px}
         .account-card-link{transition:border-color .15s}
         .account-card-link:hover{border-color:rgba(124,58,237,0.3)!important}
-        .alias-row{display:grid;grid-template-columns:minmax(0,1fr) 180px 110px 210px;gap:20px;align-items:center;min-height:68px;padding:12px 18px;background:#0d0d10;border:1px solid rgba(255,255,255,0.06);border-radius:12px;transition:border-color .15s}
+        .alias-row{display:grid;grid-template-columns:minmax(0,1fr) 180px 110px 210px;gap:20px;align-items:center;min-height:68px;padding:12px 18px;background:var(--c-0d0d10);border:1px solid rgba(var(--ink),0.06);border-radius:12px;transition:border-color .15s}
         .alias-row:hover{border-color:rgba(124,58,237,0.2)}
-        .alias-dest{font-size:12px;color:#64748b;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0}
+        .alias-dest{font-size:12px;color:var(--c-64748b);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0}
         .alias-status{display:flex;align-items:center;justify-content:center;min-width:0}
         .alias-row-actions{display:grid;grid-template-columns:100px 94px;gap:10px;justify-content:center}
         .alias-row-actions button{width:100%}
@@ -422,8 +422,8 @@ export default function Dashboard() {
       <div style={{ maxWidth: 880, margin: '0 auto', padding: '96px 24px 64px' }}>
         <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', marginBottom: 28, flexWrap: 'wrap', gap: 16 }}>
           <div>
-            <h1 style={{ fontSize: 24, fontWeight: 800, letterSpacing: '-0.6px', color: '#f1f5f9', marginBottom: 4 }}>Alias email</h1>
-            <p style={{ fontSize: 13, color: '#64748b' }}>
+            <h1 style={{ fontSize: 24, fontWeight: 800, letterSpacing: '-0.6px', color: 'var(--c-f1f5f9)', marginBottom: 4 }}>Alias email</h1>
+            <p style={{ fontSize: 13, color: 'var(--c-64748b)' }}>
               {aliases.length} alias enregistré{aliases.length > 1 ? 's' : ''}
             </p>
           </div>
@@ -452,7 +452,7 @@ export default function Dashboard() {
               type="button"
               onClick={() => setActiveTag(null)}
               aria-pressed={!effectiveTag}
-              style={{ padding: '4px 11px', borderRadius: 6, fontSize: 11, fontWeight: 500, cursor: 'pointer', fontFamily: 'Inter, sans-serif', background: !effectiveTag ? 'rgba(255,255,255,0.08)' : 'transparent', border: `1px solid ${!effectiveTag ? 'rgba(255,255,255,0.18)' : 'rgba(255,255,255,0.08)'}`, color: !effectiveTag ? '#f1f5f9' : '#64748b' }}
+              style={{ padding: '4px 11px', borderRadius: 6, fontSize: 11, fontWeight: 500, cursor: 'pointer', fontFamily: 'Inter, sans-serif', background: !effectiveTag ? 'rgba(var(--ink),0.08)' : 'transparent', border: `1px solid ${!effectiveTag ? 'rgba(var(--ink),0.18)' : 'rgba(var(--ink),0.08)'}`, color: !effectiveTag ? 'var(--c-f1f5f9)' : 'var(--c-64748b)' }}
             >
               Tous <span style={{ opacity: 0.6, fontWeight: 600 }}>{aliases.length}</span>
             </button>
@@ -470,31 +470,31 @@ export default function Dashboard() {
         )}
 
         {loading ? (
-          <div style={{ textAlign: 'center', padding: 60, color: '#334155', fontSize: 13 }}>Chargement...</div>
+          <div style={{ textAlign: 'center', padding: 60, color: 'var(--c-334155)', fontSize: 13 }}>Chargement...</div>
         ) : aliases.length === 0 ? (
-          <div style={{ textAlign: 'center', padding: '64px 24px', background: '#0d0d10', border: '1px solid rgba(255,255,255,0.06)', borderRadius: 14 }}>
+          <div style={{ textAlign: 'center', padding: '64px 24px', background: 'var(--c-0d0d10)', border: '1px solid rgba(var(--ink),0.06)', borderRadius: 14 }}>
             <div style={{ width: 44, height: 44, borderRadius: 12, background: 'rgba(124,58,237,0.08)', border: '1px solid rgba(124,58,237,0.18)', margin: '0 auto 16px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#a78bfa" strokeWidth="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2" /></svg>
             </div>
             <p style={{ fontSize: 15, fontWeight: 600, marginBottom: 6 }}>Aucun alias</p>
-            <p style={{ fontSize: 13, color: '#64748b', marginBottom: 24 }}>Créez votre premier alias pour protéger votre adresse email.</p>
+            <p style={{ fontSize: 13, color: 'var(--c-64748b)', marginBottom: 24 }}>Créez votre premier alias pour protéger votre adresse email.</p>
             <Button variant="primary" size="md" onClick={() => setShowModal(true)}>Créer un alias</Button>
           </div>
         ) : filtered.length === 0 ? (
-          <div style={{ textAlign: 'center', padding: 40, color: '#64748b', fontSize: 13 }}>Aucun résultat pour &quot;{search}&quot;</div>
+          <div style={{ textAlign: 'center', padding: 40, color: 'var(--c-64748b)', fontSize: 13 }}>Aucun résultat pour &quot;{search}&quot;</div>
         ) : (
           <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-            <div className="dashboard-table-header" style={{ padding: '0 18px', fontSize: 11, fontWeight: 600, color: '#334155', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
+            <div className="dashboard-table-header" style={{ padding: '0 18px', fontSize: 11, fontWeight: 600, color: 'var(--c-334155)', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
               <span>Alias</span><span>Destination</span><span style={{ textAlign: 'center' }}>Statut</span><span style={{ textAlign: 'center' }}>Actions</span>
             </div>
             {filtered.map(alias => (
               <div key={alias.id} className="alias-row">
                 <div style={{ minWidth: 0 }}>
                   <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 4, flexWrap: 'wrap' }}>
-                    <span style={{ fontSize: 13, fontWeight: 500, fontFamily: 'monospace', color: '#e2e8f0' }}>{alias.alias_email}</span>
+                    <span style={{ fontSize: 13, fontWeight: 500, fontFamily: 'monospace', color: 'var(--c-e2e8f0)' }}>{alias.alias_email}</span>
                     <button
                       onClick={() => handleCopy(alias)}
-                      style={{ background: 'none', border: 'none', cursor: 'pointer', color: copied === alias.id ? '#4ade80' : '#475569', fontSize: 11, fontWeight: 600, padding: 0, fontFamily: 'Inter, sans-serif' }}
+                      style={{ background: 'none', border: 'none', cursor: 'pointer', color: copied === alias.id ? 'var(--c-4ade80)' : 'var(--c-475569)', fontSize: 11, fontWeight: 600, padding: 0, fontFamily: 'Inter, sans-serif' }}
                     >
                       {copied === alias.id ? '✓ Copié' : 'Copier'}
                     </button>
@@ -516,7 +516,7 @@ export default function Dashboard() {
                       variant="secondary"
                       size="sm"
                       onClick={() => handleResend(alias)}
-                      style={{ color: '#a78bfa', borderColor: 'rgba(124,58,237,0.35)', background: 'rgba(124,58,237,0.08)' }}
+                      style={{ color: 'var(--c-a78bfa)', borderColor: 'rgba(124,58,237,0.35)', background: 'rgba(124,58,237,0.08)' }}
                     >
                       Renvoyer
                     </Button>
@@ -527,8 +527,8 @@ export default function Dashboard() {
                       onClick={() => handleToggle(alias)}
                       style={
                         alias.status === 'active'
-                          ? { color: '#fbbf24', borderColor: 'rgba(251,191,36,0.35)', background: 'rgba(251,191,36,0.08)' }
-                          : { color: '#4ade80', borderColor: 'rgba(74,222,128,0.35)', background: 'rgba(74,222,128,0.08)' }
+                          ? { color: 'var(--c-fbbf24)', borderColor: 'rgba(251,191,36,0.35)', background: 'rgba(251,191,36,0.08)' }
+                          : { color: 'var(--c-4ade80)', borderColor: 'rgba(74,222,128,0.35)', background: 'rgba(74,222,128,0.08)' }
                       }
                     >
                       {alias.status === 'active' ? 'Désactiver' : 'Activer'}
@@ -547,11 +547,11 @@ export default function Dashboard() {
 
       {showModal && (
         <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.75)', zIndex: 200, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 24 }} onClick={() => setShowModal(false)}>
-          <div style={{ position: 'relative', background: '#0e0e0e', border: '1px solid rgba(255,255,255,0.08)', borderRadius: 16, padding: 28, width: '100%', maxWidth: 420, animation: 'fadeUp 0.2s ease' }} onClick={e => e.stopPropagation()}>
+          <div style={{ position: 'relative', background: 'var(--c-0e0e0e)', border: '1px solid rgba(var(--ink),0.08)', borderRadius: 16, padding: 28, width: '100%', maxWidth: 420, animation: 'fadeUp 0.2s ease' }} onClick={e => e.stopPropagation()}>
             
             <button
               onClick={() => setShowModal(false)}
-              style={{ position: 'absolute', top: 16, right: 16, background: 'none', border: 'none', color: '#64748b', cursor: 'pointer', padding: 4 }}
+              style={{ position: 'absolute', top: 16, right: 16, background: 'none', border: 'none', color: 'var(--c-64748b)', cursor: 'pointer', padding: 4 }}
               aria-label="Fermer"
             >
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -561,16 +561,16 @@ export default function Dashboard() {
             </button>
 
             <h2 style={{ fontSize: 17, fontWeight: 700, marginBottom: 4, letterSpacing: '-0.3px' }}>Nouvel alias</h2>
-            <p style={{ fontSize: 13, color: '#64748b', marginBottom: 24 }}>Un alias unique sera généré automatiquement.</p>
+            <p style={{ fontSize: 13, color: 'var(--c-64748b)', marginBottom: 24 }}>Un alias unique sera généré automatiquement.</p>
             <form onSubmit={handleCreate} style={{ display: 'flex', flexDirection: 'column', gap: 18 }}>
               <Input label="Email de destination" type="email" value={newDest} onChange={e => setNewDest(e.target.value)} placeholder="votre@email.com" required />
               <div>
-                <label style={{ display: 'block', fontSize: 13, fontWeight: 500, color: '#94a3b8', marginBottom: 8 }}>
-                  Label <span style={{ color: '#334155', fontWeight: 400 }}>(optionnel)</span>
+                <label style={{ display: 'block', fontSize: 13, fontWeight: 500, color: 'var(--c-94a3b8)', marginBottom: 8 }}>
+                  Label <span style={{ color: 'var(--c-334155)', fontWeight: 400 }}>(optionnel)</span>
                 </label>
                 <Input value={newLabel} onChange={e => setNewLabel(e.target.value.slice(0, TAG_MAX_LENGTH))} placeholder="Choisissez ou créez un tag..." />
                 {isNewTag && (
-                  <p style={{ fontSize: 12, color: '#64748b', margin: '8px 0 0' }}>
+                  <p style={{ fontSize: 12, color: 'var(--c-64748b)', margin: '8px 0 0' }}>
                     Nouveau tag : <span style={{ color: tagStyle(currentTag).color, fontWeight: 600 }}>{currentTag}</span>
                   </p>
                 )}

@@ -29,7 +29,7 @@ export default function Home() {
   }, [router])
 
   return (
-    <div style={{ background: '#060608', minHeight: '100vh', color: '#f1f5f9', fontFamily: 'Inter, sans-serif' }}>
+    <div style={{ background: 'var(--c-060608)', minHeight: '100vh', color: 'var(--c-f1f5f9)', fontFamily: 'Inter, sans-serif' }}>
       <style>{`
         @keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
         @keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
@@ -37,26 +37,26 @@ export default function Home() {
         
         .pre-line { white-space: pre-line; }
 
-        .nav-link{font-size:13px;color:#64748b;font-weight:500;text-decoration:none;transition:color .15s;cursor:pointer}
-        .nav-link:hover{color:#a78bfa}
-        .footer-link{font-size:13px;color:#475569;text-decoration:none;transition:color .15s}
-        .footer-link:hover{color:#a78bfa}
+        .nav-link{font-size:13px;color:var(--c-64748b);font-weight:500;text-decoration:none;transition:color .15s;cursor:pointer}
+        .nav-link:hover{color:var(--c-a78bfa)}
+        .footer-link{font-size:13px;color:var(--c-475569);text-decoration:none;transition:color .15s}
+        .footer-link:hover{color:var(--c-a78bfa)}
         
-        .feat-card{background:#0d0d10;padding:26px 24px;border-radius:14px;border:1px solid rgba(255,255,255,0.06);transition:background .2s,transform .25s,border-color .2s;cursor:default;white-space:pre-line}
-        .feat-card:hover{background:#111118;transform:translateY(-4px);border-color:rgba(124,58,237,0.3)}
+        .feat-card{background:var(--c-0d0d10);padding:26px 24px;border-radius:14px;border:1px solid rgba(var(--ink),0.06);transition:background .2s,transform .25s,border-color .2s;cursor:default;white-space:pre-line}
+        .feat-card:hover{background:var(--c-111118);transform:translateY(-4px);border-color:rgba(124,58,237,0.3)}
         
         .comp-card{transition:transform .25s}
         .comp-card:hover{transform:scale(1.02)}
         
         .marquee-track{display:flex;width:max-content;animation:marquee 38s linear infinite}
         .marquee-track:hover{animation-play-state:paused}
-        .marquee-item{display:flex;align-items:center;justify-content:center;padding:0 44px;border-right:1px solid rgba(255,255,255,0.05);transition:opacity .2s;opacity:.55;height:52px;min-width:100px}
+        .marquee-item{display:flex;align-items:center;justify-content:center;padding:0 44px;border-right:1px solid rgba(var(--ink),0.05);transition:opacity .2s;opacity:.55;height:52px;min-width:100px}
         .marquee-item:hover{opacity:1}
         
-        .btn-access{padding:8px 14px;border-radius:8px;font-size:13px;font-weight:600;color:#94a3b8;background:transparent;border:1px solid rgba(255,255,255,0.08);text-decoration:none;transition:all .15s}
-        .btn-access:hover{border-color:rgba(255,255,255,0.2);color:#f1f5f9}
+        .btn-access{padding:8px 14px;border-radius:8px;font-size:13px;font-weight:600;color:var(--c-94a3b8);background:transparent;border:1px solid rgba(var(--ink),0.08);text-decoration:none;transition:all .15s}
+        .btn-access:hover{border-color:rgba(var(--ink),0.2);color:var(--c-f1f5f9)}
         
-        .btn-start{padding:8px 16px;border-radius:8px;font-size:13px;font-weight:600;color:#fff;background:linear-gradient(135deg, #7c3aed, #4f46e5);box-shadow:0 4px 12px rgba(124,58,237,0.25);text-decoration:none;transition:transform .15s, opacity .15s}
+        .btn-start{padding:8px 16px;border-radius:8px;font-size:13px;font-weight:600;color:#fff;background:#7c3aed;box-shadow:0 4px 12px rgba(124,58,237,0.25);text-decoration:none;transition:transform .15s, opacity .15s}
         .btn-start:hover{opacity:.95;transform:translateY(-1px)}
         
         @media(max-width:768px){

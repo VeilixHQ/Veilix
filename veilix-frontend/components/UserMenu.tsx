@@ -55,8 +55,8 @@ export function UserMenu({ plan, keyIdShort, fullKeyId, badges = [] }: Props) {
           aria-label="Menu utilisateur"
           style={{
             width: 36, height: 36, borderRadius: '50%',
-            background: 'linear-gradient(135deg, #7c3aed, #4f46e5)',
-            border: '1px solid rgba(255,255,255,0.1)',
+            background: '#7c3aed',
+            border: '1px solid rgba(var(--ink),0.1)',
             display: 'flex', alignItems: 'center', justifyContent: 'center',
             cursor: 'pointer', flexShrink: 0, transition: 'transform .15s',
           }}
@@ -72,26 +72,26 @@ export function UserMenu({ plan, keyIdShort, fullKeyId, badges = [] }: Props) {
         {open && (
           <div style={{
             position: 'absolute', top: '100%', right: 0, marginTop: 10,
-            width: 280, background: '#111118', border: '1px solid rgba(255,255,255,0.08)',
+            width: 280, background: 'var(--c-111118)', border: '1px solid rgba(var(--ink),0.08)',
             borderRadius: 14, boxShadow: '0 20px 60px rgba(0,0,0,0.5)',
             overflow: 'hidden', zIndex: 300, animation: 'menuIn 0.15s ease',
           }}>
             <style>{`@keyframes menuIn{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:translateY(0)}}`}</style>
 
-            <div style={{ padding: '16px 18px', borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
+            <div style={{ padding: '16px 18px', borderBottom: '1px solid rgba(var(--ink),0.06)' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 10 }}>
-                <div style={{ width: 28, height: 28, borderRadius: '50%', background: 'linear-gradient(135deg, #7c3aed, #4f46e5)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                <div style={{ width: 28, height: 28, borderRadius: '50%', background: '#7c3aed', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                     <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" /><circle cx="12" cy="7" r="4" />
                   </svg>
                 </div>
-                <span style={{ fontSize: 13, fontWeight: 700, color: '#f1f5f9' }}>Veilix Identity</span>
+                <span style={{ fontSize: 13, fontWeight: 700, color: 'var(--c-f1f5f9)' }}>Veilix Identity</span>
               </div>
-              <div style={{ fontSize: 12, color: '#64748b', fontFamily: 'monospace', marginBottom: 4 }}>
+              <div style={{ fontSize: 12, color: 'var(--c-64748b)', fontFamily: 'monospace', marginBottom: 4 }}>
                 Key: {keyIdShort}
               </div>
               <div style={{ display: 'inline-flex', alignItems: 'center', gap: 5, padding: '2px 9px', borderRadius: 100, background: plan === 'pro' ? 'rgba(124,58,237,0.12)' : 'rgba(100,116,139,0.1)', border: `1px solid ${plan === 'pro' ? 'rgba(124,58,237,0.25)' : 'rgba(100,116,139,0.2)'}` }}>
-                <span style={{ fontSize: 11, fontWeight: 600, color: plan === 'pro' ? '#a78bfa' : '#94a3b8' }}>{plan}</span>
+                <span style={{ fontSize: 11, fontWeight: 600, color: plan === 'pro' ? 'var(--c-a78bfa)' : 'var(--c-94a3b8)' }}>{plan}</span>
               </div>
               <BadgeRow badges={badges} />
             </div>
@@ -107,15 +107,15 @@ export function UserMenu({ plan, keyIdShort, fullKeyId, badges = [] }: Props) {
               </button>
             </div>
 
-            <div style={{ height: 1, background: 'rgba(255,255,255,0.06)', margin: '0 6px' }} />
+            <div style={{ height: 1, background: 'rgba(var(--ink),0.06)', margin: '0 6px' }} />
 
             <div style={{ padding: 6 }}>
               <button style={{ ...menuItemStyle, width: '100%', border: 'none', background: 'transparent', cursor: 'pointer', textAlign: 'left' }} onClick={() => { setOpen(false); handleChangeIdentity() }}>
                 <MenuIcon path="refresh" />
                 <span>Changer d&apos;identité</span>
               </button>
-              <button style={{ ...menuItemStyle, width: '100%', border: 'none', background: 'transparent', cursor: 'pointer', textAlign: 'left', color: '#f87171' }} onClick={() => { setOpen(false); handleLogout() }}>
-                <MenuIcon path="logout" color="#f87171" />
+              <button style={{ ...menuItemStyle, width: '100%', border: 'none', background: 'transparent', cursor: 'pointer', textAlign: 'left', color: 'var(--c-f87171)' }} onClick={() => { setOpen(false); handleLogout() }}>
+                <MenuIcon path="logout" color="var(--c-f87171)" />
                 <span>Se déconnecter</span>
               </button>
             </div>
@@ -126,12 +126,12 @@ export function UserMenu({ plan, keyIdShort, fullKeyId, badges = [] }: Props) {
       {showKeyModal && (
         <Modal onClose={() => setShowKeyModal(false)}>
           <h2 style={titleStyle}>Votre clé complète</h2>
-          <div style={{ padding: '12px 14px', background: '#0a0a0c', border: '1px solid rgba(255,255,255,0.08)', borderRadius: 10, fontFamily: 'monospace', fontSize: 12, color: '#e2e8f0', wordBreak: 'break-all', marginBottom: 16 }}>
+          <div style={{ padding: '12px 14px', background: 'var(--c-0a0a0c)', border: '1px solid rgba(var(--ink),0.08)', borderRadius: 10, fontFamily: 'monospace', fontSize: 12, color: 'var(--c-e2e8f0)', wordBreak: 'break-all', marginBottom: 16 }}>
             {fullKeyId}
           </div>
           <button
             onClick={copyKey}
-            style={{ width: '100%', padding: '10px', borderRadius: 9, background: copied ? 'rgba(34,197,94,0.1)' : 'rgba(124,58,237,0.1)', border: `1px solid ${copied ? 'rgba(34,197,94,0.3)' : 'rgba(124,58,237,0.25)'}`, color: copied ? '#4ade80' : '#a78bfa', fontSize: 13, fontWeight: 600, cursor: 'pointer', fontFamily: 'Inter, sans-serif' }}
+            style={{ width: '100%', padding: '10px', borderRadius: 9, background: copied ? 'rgba(34,197,94,0.1)' : 'rgba(124,58,237,0.1)', border: `1px solid ${copied ? 'rgba(34,197,94,0.3)' : 'rgba(124,58,237,0.25)'}`, color: copied ? 'var(--c-4ade80)' : 'var(--c-a78bfa)', fontSize: 13, fontWeight: 600, cursor: 'pointer', fontFamily: 'Inter, sans-serif' }}
           >
             {copied ? 'Copié !' : 'Copier'}
           </button>
@@ -175,8 +175,8 @@ function Modal({ children, onClose }: { children: React.ReactNode; onClose: () =
       <div
         onClick={e => e.stopPropagation()}
         style={{
-          position: 'relative', background: '#0e0e0e',
-          border: '1px solid rgba(255,255,255,0.08)', borderRadius: 16,
+          position: 'relative', background: 'var(--c-0e0e0e)',
+          border: '1px solid rgba(var(--ink),0.08)', borderRadius: 16,
           padding: 28, width: '100%', maxWidth: 400, maxHeight: '90vh',
           overflowY: 'auto', boxSizing: 'border-box',
           fontFamily: 'Inter, sans-serif', animation: 'modalIn 0.2s ease',
@@ -187,8 +187,8 @@ function Modal({ children, onClose }: { children: React.ReactNode; onClose: () =
           aria-label="Fermer"
           style={{
             position: 'absolute', top: 12, right: 12, width: 28, height: 28,
-            borderRadius: 8, border: 'none', background: 'rgba(255,255,255,0.05)',
-            color: '#94a3b8', fontSize: 18, lineHeight: 1, cursor: 'pointer',
+            borderRadius: 8, border: 'none', background: 'rgba(var(--ink),0.05)',
+            color: 'var(--c-94a3b8)', fontSize: 18, lineHeight: 1, cursor: 'pointer',
           }}
         >
           ×
@@ -201,17 +201,17 @@ function Modal({ children, onClose }: { children: React.ReactNode; onClose: () =
 }
 
 const titleStyle: React.CSSProperties = {
-  fontSize: 16, fontWeight: 700, margin: '0 0 16px', color: '#f1f5f9', paddingRight: 28,
+  fontSize: 16, fontWeight: 700, margin: '0 0 16px', color: 'var(--c-f1f5f9)', paddingRight: 28,
 }
 
 const menuItemStyle: React.CSSProperties = {
   display: 'flex', alignItems: 'center', gap: 10,
   padding: '9px 12px', borderRadius: 8,
-  fontSize: 13, fontWeight: 500, color: '#cbd5e1',
+  fontSize: 13, fontWeight: 500, color: 'var(--c-cbd5e1)',
   textDecoration: 'none', transition: 'background .15s',
 }
 
-function MenuIcon({ path, color = '#94a3b8' }: { path: string; color?: string }) {
+function MenuIcon({ path, color = 'var(--c-94a3b8)' }: { path: string; color?: string }) {
   const icons: Record<string, React.ReactNode> = {
     settings: <><circle cx="12" cy="12" r="3" /><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z" /></>,
     key: <><path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4" /></>,
@@ -220,7 +220,7 @@ function MenuIcon({ path, color = '#94a3b8' }: { path: string; color?: string })
     logout: <><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" /><polyline points="16 17 21 12 16 7" /><line x1="21" y1="12" x2="9" y2="12" /></>,
   }
   return (
-    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}>
+    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0, color }}>
       {icons[path]}
     </svg>
   )

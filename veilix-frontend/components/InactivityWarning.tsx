@@ -13,7 +13,7 @@ export function InactivityWarning({ countdown, onStay }: Props) {
       display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 24,
     }}>
       <div style={{
-        background: '#0e0e0e', border: '1px solid rgba(255,255,255,0.08)',
+        background: 'var(--c-0e0e0e)', border: '1px solid rgba(var(--ink),0.08)',
         borderRadius: 16, padding: '32px 28px', width: '100%', maxWidth: 380,
         textAlign: 'center', animation: 'fadeUp 0.3s ease',
       }}>
@@ -30,17 +30,17 @@ export function InactivityWarning({ countdown, onStay }: Props) {
           </svg>
         </div>
 
-        <h2 style={{ fontSize: 17, fontWeight: 700, color: '#f1f5f9', marginBottom: 8, letterSpacing: '-0.3px' }}>
+        <h2 style={{ fontSize: 17, fontWeight: 700, color: 'var(--c-f1f5f9)', marginBottom: 8, letterSpacing: '-0.3px' }}>
           Session inactive
         </h2>
 
-        <p style={{ fontSize: 13, color: '#64748b', lineHeight: 1.6, marginBottom: 24 }}>
+        <p style={{ fontSize: 13, color: 'var(--c-64748b)', lineHeight: 1.6, marginBottom: 24 }}>
           Vous allez être déconnecté pour des raisons de sécurité.
         </p>
 
         <div style={{
           fontSize: 40, fontWeight: 900, letterSpacing: '-2px',
-          color: countdown <= 3 ? '#f87171' : '#a78bfa',
+          color: countdown <= 3 ? 'var(--c-f87171)' : 'var(--c-a78bfa)',
           marginBottom: 24, transition: 'color 0.3s',
           fontVariantNumeric: 'tabular-nums',
         }}>
@@ -52,14 +52,14 @@ export function InactivityWarning({ countdown, onStay }: Props) {
             onClick={onStay}
             style={{
               width: '100%', padding: '11px', borderRadius: 9,
-              background: 'linear-gradient(135deg, #7c3aed, #4f46e5)',
+              background: '#7c3aed',
               border: 'none', color: '#fff', fontSize: 14, fontWeight: 600,
               cursor: 'pointer', fontFamily: 'Inter, sans-serif',
             }}
           >
             Rester connecté
           </button>
-          <p style={{ fontSize: 11, color: '#334155' }}>
+          <p style={{ fontSize: 11, color: 'var(--c-334155)' }}>
             Déconnexion automatique dans {countdown} seconde{countdown > 1 ? 's' : ''}
           </p>
         </div>

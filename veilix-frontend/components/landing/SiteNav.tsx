@@ -14,19 +14,19 @@ function NavDropdown({ label, items }: { label: string; items: { label: string; 
     <div style={{ position: 'relative' }} onMouseEnter={enter} onMouseLeave={leave}>
       <button className="nav-link" style={{ display: 'flex', alignItems: 'center', gap: 4, background: 'none', border: 'none', cursor: 'pointer', padding: '4px 8px', fontFamily: 'Inter, sans-serif' }}>
         {label}
-        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" style={{ transition: 'transform 0.2s', transform: open ? 'rotate(180deg)' : 'rotate(0)', color: open ? '#a78bfa' : '#64748b' }}>
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" style={{ transition: 'transform 0.2s', transform: open ? 'rotate(180deg)' : 'rotate(0)', color: open ? 'var(--c-a78bfa)' : 'var(--c-64748b)' }}>
           <polyline points="6 9 12 15 18 9" />
         </svg>
       </button>
       {open && (
         <div onMouseEnter={enter} onMouseLeave={leave} style={{ position: 'absolute', top: '100%', left: 0, paddingTop: 8, zIndex: 200 }}>
-          <div style={{ background: '#111118', border: '1px solid rgba(255,255,255,0.08)', borderRadius: 12, padding: 8, minWidth: 240, boxShadow: '0 20px 60px rgba(0,0,0,0.5)', animation: 'fadeUp 0.15s ease' }}>
+          <div style={{ background: 'var(--c-111118)', border: '1px solid rgba(var(--ink),0.08)', borderRadius: 12, padding: 8, minWidth: 240, boxShadow: '0 20px 60px rgba(0,0,0,0.5)', animation: 'fadeUp 0.15s ease' }}>
             {items.map((item, i) => (
               <a key={i} href={item.href} style={{ display: 'block', padding: '10px 12px', borderRadius: 8, textDecoration: 'none', transition: 'background 0.15s' }}
                 onMouseEnter={e => (e.currentTarget.style.background = 'rgba(124,58,237,0.08)')}
                 onMouseLeave={e => (e.currentTarget.style.background = 'transparent')}>
-                <div style={{ fontSize: 13, fontWeight: 600, color: '#e2e8f0', marginBottom: 2 }}>{item.label}</div>
-                <div style={{ fontSize: 12, color: '#64748b' }}>{item.desc}</div>
+                <div style={{ fontSize: 13, fontWeight: 600, color: 'var(--c-e2e8f0)', marginBottom: 2 }}>{item.label}</div>
+                <div style={{ fontSize: 12, color: 'var(--c-64748b)' }}>{item.desc}</div>
               </a>
             ))}
           </div>
@@ -52,9 +52,9 @@ export function LangSwitcher({ lang, setLang }: { lang: Lang; setLang: (l: Lang)
 
   return (
     <div ref={ref} style={{ position: 'relative' }}>
-      <button onClick={() => setOpen(o => !o)} style={{ display: 'flex', alignItems: 'center', gap: 7, padding: '6px 10px', borderRadius: 7, fontSize: 12, fontWeight: 600, color: '#94a3b8', background: 'transparent', border: '1px solid rgba(255,255,255,0.08)', cursor: 'pointer', fontFamily: 'Inter, sans-serif', transition: 'all .15s', minWidth: 68, justifyContent: 'center' }}
-        onMouseEnter={e => { e.currentTarget.style.borderColor = 'rgba(255,255,255,0.16)'; e.currentTarget.style.color = '#f1f5f9' }}
-        onMouseLeave={e => { e.currentTarget.style.borderColor = 'rgba(255,255,255,0.08)'; e.currentTarget.style.color = '#94a3b8' }}>
+      <button onClick={() => setOpen(o => !o)} style={{ display: 'flex', alignItems: 'center', gap: 7, padding: '6px 10px', borderRadius: 7, fontSize: 12, fontWeight: 600, color: 'var(--c-94a3b8)', background: 'transparent', border: '1px solid rgba(var(--ink),0.08)', cursor: 'pointer', fontFamily: 'Inter, sans-serif', transition: 'all .15s', minWidth: 68, justifyContent: 'center' }}
+        onMouseEnter={e => { e.currentTarget.style.borderColor = 'rgba(var(--ink),0.16)'; e.currentTarget.style.color = 'var(--c-f1f5f9)' }}
+        onMouseLeave={e => { e.currentTarget.style.borderColor = 'rgba(var(--ink),0.08)'; e.currentTarget.style.color = 'var(--c-94a3b8)' }}>
         <Image src={flags[lang]} alt={labels[lang]} width={16} height={12} style={{ borderRadius: 2, objectFit: 'cover', flexShrink: 0, width: 16, height: 12 }} />
         <span>{labels[lang]}</span>
         <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" style={{ transition: 'transform .2s', transform: open ? 'rotate(180deg)' : 'rotate(0)' }}>
@@ -62,8 +62,8 @@ export function LangSwitcher({ lang, setLang }: { lang: Lang; setLang: (l: Lang)
         </svg>
       </button>
       {open && (
-        <div style={{ position: 'absolute', top: '100%', right: 0, marginTop: 6, background: '#111118', border: '1px solid rgba(255,255,255,0.08)', borderRadius: 9, padding: 6, minWidth: 80, boxShadow: '0 16px 48px rgba(0,0,0,0.5)', zIndex: 200, animation: 'fadeUp 0.15s ease' }}>
-          <button onClick={() => { setLang(other); setOpen(false) }} style={{ display: 'flex', alignItems: 'center', gap: 8, width: '100%', padding: '8px 10px', borderRadius: 7, background: 'transparent', border: 'none', cursor: 'pointer', fontSize: 12, fontWeight: 600, color: '#94a3b8', fontFamily: 'Inter, sans-serif', transition: 'background .15s' }}
+        <div style={{ position: 'absolute', top: '100%', right: 0, marginTop: 6, background: 'var(--c-111118)', border: '1px solid rgba(var(--ink),0.08)', borderRadius: 9, padding: 6, minWidth: 80, boxShadow: '0 16px 48px rgba(0,0,0,0.5)', zIndex: 200, animation: 'fadeUp 0.15s ease' }}>
+          <button onClick={() => { setLang(other); setOpen(false) }} style={{ display: 'flex', alignItems: 'center', gap: 8, width: '100%', padding: '8px 10px', borderRadius: 7, background: 'transparent', border: 'none', cursor: 'pointer', fontSize: 12, fontWeight: 600, color: 'var(--c-94a3b8)', fontFamily: 'Inter, sans-serif', transition: 'background .15s' }}
             onMouseEnter={e => (e.currentTarget.style.background = 'rgba(124,58,237,0.08)')}
             onMouseLeave={e => (e.currentTarget.style.background = 'transparent')}>
             <Image src={flags[other]} alt={labels[other]} width={16} height={12} style={{ borderRadius: 2, objectFit: 'cover', flexShrink: 0, width: 16, height: 12 }} />
@@ -88,11 +88,11 @@ const LOGO_SIZE = 48
 
 export function SiteNav({ t, lang, setLang, mode = 'public', hideNavLinks = false, rightSlot }: SiteNavProps) {
   return (
-    <nav className="site-nav" style={{ position: 'fixed', top: 0, left: 0, right: 0, zIndex: 100, display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '0 40px', height: 64, background: 'rgba(6,6,8,0.92)', backdropFilter: 'blur(16px)', borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
+    <nav className="site-nav" style={{ position: 'fixed', top: 0, left: 0, right: 0, zIndex: 100, display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '0 40px', height: 64, background: 'rgba(var(--bg-rgb),0.92)', backdropFilter: 'blur(16px)', borderBottom: '1px solid rgba(var(--ink),0.06)' }}>
       <div style={{ display: 'flex', alignItems: 'center', gap: 28 }}>
         <Link href="/" style={{ display: 'flex', alignItems: 'center', gap: 7, textDecoration: 'none', flexShrink: 0 }}>
           <Image src="/vlx-white.svg" alt="Veilix" width={LOGO_SIZE} height={LOGO_SIZE} style={{ objectFit: 'contain', flexShrink: 0, display: 'block' }} />
-          <span style={{ fontSize: 20, fontWeight: 800, letterSpacing: '-0.4px', color: '#ffffff', whiteSpace: 'nowrap' }}>Veilix</span>
+          <span style={{ fontSize: 20, fontWeight: 800, letterSpacing: '-0.4px', color: 'var(--c-heading)', whiteSpace: 'nowrap' }}>Veilix</span>
         </Link>
         {!hideNavLinks && mode === 'public' && (
           <div className="nav-center-links" style={{ display: 'flex', gap: 4, alignItems: 'center' }}>
@@ -106,17 +106,17 @@ export function SiteNav({ t, lang, setLang, mode = 'public', hideNavLinks = fals
         <LangSwitcher lang={lang} setLang={setLang} />
         {mode === 'public' && (
           <>
-            <div className="nav-divider" style={{ width: 1, height: 20, background: 'rgba(255,255,255,0.06)' }} />
-            <Link href="/access?mode=restore" className="btn-access" style={{ padding: '8px 14px', borderRadius: 8, fontSize: 13, fontWeight: 600, color: '#94a3b8', textDecoration: 'none', transition: 'color .15s' }}>
+            <div className="nav-divider" style={{ width: 1, height: 20, background: 'rgba(var(--ink),0.06)' }} />
+            <Link href="/access?mode=restore" className="btn-access" style={{ padding: '8px 14px', borderRadius: 8, fontSize: 13, fontWeight: 600, color: 'var(--c-94a3b8)', textDecoration: 'none', transition: 'color .15s' }}>
               {t.nav.login}
             </Link>
-            <Link href="/access" className="btn-start" style={{ padding: '8px 16px', borderRadius: 8, fontSize: 13, fontWeight: 600, color: '#fff', background: 'linear-gradient(135deg, #7c3aed, #4f46e5)', textDecoration: 'none', boxShadow: '0 4px 12px rgba(124,58,237,0.25)' }}>
+            <Link href="/access" className="btn-start" style={{ padding: '8px 16px', borderRadius: 8, fontSize: 13, fontWeight: 600, color: '#fff', background: '#7c3aed', textDecoration: 'none', boxShadow: '0 4px 12px rgba(124,58,237,0.25)' }}>
               {t.nav.start}
             </Link>
           </>
         )}
         {mode === 'auth' && (
-          <Link href="/" className="btn-start" style={{ display: 'inline-flex', alignItems: 'center', gap: 6, padding: '8px 14px', borderRadius: 8, fontSize: 13, fontWeight: 600, color: '#fff', background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.08)', textDecoration: 'none' }}>
+          <Link href="/" className="btn-start" style={{ display: 'inline-flex', alignItems: 'center', gap: 6, padding: '8px 14px', borderRadius: 8, fontSize: 13, fontWeight: 600, color: 'var(--c-heading)', background: 'rgba(var(--ink),0.05)', border: '1px solid rgba(var(--ink),0.08)', textDecoration: 'none' }}>
             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
               <line x1="19" y1="12" x2="5" y2="12" /><polyline points="12 19 5 12 12 5" />
             </svg>

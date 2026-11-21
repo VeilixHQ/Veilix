@@ -12,22 +12,22 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 
 const styles: Record<Variant, object> = {
   primary: {
-    background: 'linear-gradient(135deg, #7c3aed, #3b82f6)',
+    background: '#7c3aed',
     color: '#fff', border: 'none',
   },
   secondary: {
     background: 'transparent',
-    color: '#94a3b8',
-    border: '1px solid rgba(255,255,255,0.08)',
+    color: 'var(--c-94a3b8)',
+    border: '1px solid rgba(var(--ink),0.08)',
   },
   danger: {
     background: 'transparent',
-    color: '#f87171',
+    color: 'var(--c-f87171)',
     border: '1px solid rgba(239,68,68,0.2)',
   },
   ghost: {
     background: 'transparent',
-    color: '#64748b',
+    color: 'var(--c-64748b)',
     border: 'none',
   },
 }

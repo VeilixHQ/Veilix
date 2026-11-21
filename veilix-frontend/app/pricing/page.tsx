@@ -31,6 +31,7 @@ const PLANS: Record<'fr' | 'en', PlanData[]> = {
     {
       name: 'Pro',
       desc: 'L’essentiel pour protéger votre boîte mail.',
+      lead: 'Inclus :',
       monthly: { price: '4,99 €', period: '/ mois', sub: 'ou 44,90 € / an, dont 3 mois offerts' },
       yearly: { price: '44,90 €', period: '/ an', sub: 'soit 3,74 € / mois, dont 3 mois offerts' },
       features: [
@@ -73,6 +74,7 @@ const PLANS: Record<'fr' | 'en', PlanData[]> = {
     {
       name: 'Pro',
       desc: 'Essential privacy for your daily emails.',
+      lead: 'Included:',
       monthly: { price: '€4.99', period: '/ month', sub: 'or €44.90 / year, 3 months free' },
       yearly: { price: '€44.90', period: '/ year', sub: 'that is €3.74 / month, 3 months free' },
       features: [
@@ -205,7 +207,7 @@ export default function Pricing() {
   const soldOut = PACK_REMAINING <= 0
 
   return (
-    <div style={{ minHeight: '100vh', background: '#060608', color: '#f1f5f9', fontFamily: 'Inter, sans-serif' }}>
+    <div style={{ minHeight: '100vh', background: 'var(--c-060608)', color: 'var(--c-f1f5f9)', fontFamily: 'Inter, sans-serif' }}>
       <style>{`
         .plan-card{transition:transform .25s, border-color .2s}
         .plan-card:hover{transform:translateY(-4px)}
@@ -218,9 +220,9 @@ export default function Pricing() {
       <section style={{ padding: '140px 24px 64px', textAlign: 'center', position: 'relative', overflow: 'hidden' }}>
         <div style={{ position: 'absolute', top: '-100px', left: '50%', transform: 'translateX(-50%)', width: 800, height: 500, background: 'radial-gradient(ellipse at 50% 0%, rgba(124,58,237,0.12) 0%, transparent 65%)', pointerEvents: 'none' }} />
         <div style={{ position: 'relative', zIndex: 1, animation: 'fadeUp 0.6s ease' }}>
-          <div style={{ fontSize: 11, fontWeight: 700, color: '#a78bfa', textTransform: 'uppercase', letterSpacing: '1.2px', marginBottom: 14 }}>{pt.kicker}</div>
+          <div style={{ fontSize: 11, fontWeight: 700, color: 'var(--c-a78bfa)', textTransform: 'uppercase', letterSpacing: '1.2px', marginBottom: 14 }}>{pt.kicker}</div>
           <h1 style={{ fontSize: 'clamp(28px, 4.5vw, 48px)', fontWeight: 900, letterSpacing: '-2px', lineHeight: 1.08, marginBottom: 16 }}>{pt.title}</h1>
-          <p style={{ fontSize: 15, color: '#64748b', maxWidth: 420, margin: '0 auto', lineHeight: 1.7, whiteSpace: 'pre-line' }}>{pt.subtitle}</p>
+          <p style={{ fontSize: 15, color: 'var(--c-64748b)', maxWidth: 420, margin: '0 auto', lineHeight: 1.7, whiteSpace: 'pre-line' }}>{pt.subtitle}</p>
         </div>
       </section>
 
@@ -234,25 +236,23 @@ export default function Pricing() {
             const href = hasToggle ? `${plan.href}&billing=${proYearly ? 'yearly' : 'monthly'}` : plan.href
 
             return (
-              <div key={i} className="plan-card" style={{ position: 'relative', background: highlight ? 'linear-gradient(180deg, rgba(124,58,237,0.08), rgba(124,58,237,0.02))' : '#0d0d10', border: highlight ? '1px solid rgba(124,58,237,0.35)' : '1px solid rgba(255,255,255,0.07)', borderRadius: 16, padding: '32px 26px', display: 'flex', flexDirection: 'column' }}>
+              <div key={i} className="plan-card" style={{ position: 'relative', background: highlight ? 'linear-gradient(180deg, rgba(124,58,237,0.08), rgba(124,58,237,0.02))' : 'var(--c-0d0d10)', border: highlight ? '1px solid rgba(124,58,237,0.35)' : '1px solid rgba(var(--ink),0.07)', borderRadius: 16, padding: '32px 26px', display: 'flex', flexDirection: 'column' }}>
 
                 {plan.badge && (
-                  <div style={{ position: 'absolute', top: -14, left: 26, padding: '5px 14px', borderRadius: 100, fontSize: 12, fontWeight: 700, color: '#fff', background: 'linear-gradient(135deg, #7c3aed, #4f46e5)', boxShadow: '0 4px 12px rgba(124,58,237,0.3)' }}>
+                  <div style={{ position: 'absolute', top: -14, left: 26, padding: '5px 14px', borderRadius: 100, fontSize: 12, fontWeight: 700, color: '#fff', background: '#7c3aed', boxShadow: '0 4px 12px rgba(124,58,237,0.3)' }}>
                     {plan.badge}
                   </div>
                 )}
 
-                <div style={{ minHeight: 95, display: 'flex', flexDirection: 'column', justifyContent: 'flex-start' }}>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 10, marginBottom: 6 }}>
-                    <div style={{ fontSize: 18, fontWeight: 800, letterSpacing: '-0.3px' }}>{plan.name}</div>
-
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 10, height: 32 }}>
+                  <div style={{ fontSize: 18, fontWeight: 800, letterSpacing: '-0.3px' }}>{plan.name}</div>
                     {hasToggle && (
-                      <div role="group" aria-label="Facturation" style={{ display: 'flex', padding: 3, borderRadius: 100, background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.08)' }}>
+                      <div role="group" aria-label="Facturation" style={{ display: 'flex', padding: 3, borderRadius: 100, background: 'rgba(var(--ink),0.05)', border: '1px solid rgba(var(--ink),0.08)' }}>
                         <button
                           type="button"
                           aria-pressed={!proYearly}
                           onClick={() => setProYearly(false)}
-                          style={{ padding: '5px 11px', borderRadius: 100, border: 'none', cursor: 'pointer', fontFamily: 'Inter, sans-serif', fontSize: 11, fontWeight: 600, whiteSpace: 'nowrap', color: !proYearly ? '#fff' : '#64748b', background: !proYearly ? 'rgba(124,58,237,0.35)' : 'transparent', transition: 'background .2s, color .2s' }}
+                          style={{ padding: '5px 11px', borderRadius: 100, border: 'none', cursor: 'pointer', fontFamily: 'Inter, sans-serif', fontSize: 11, fontWeight: 600, whiteSpace: 'nowrap', color: !proYearly ? '#fff' : 'var(--c-64748b)', background: !proYearly ? 'rgba(124,58,237,0.35)' : 'transparent', transition: 'background .2s, color .2s' }}
                         >
                           {tx.monthly}
                         </button>
@@ -260,38 +260,41 @@ export default function Pricing() {
                           type="button"
                           aria-pressed={proYearly}
                           onClick={() => setProYearly(true)}
-                          style={{ padding: '5px 11px', borderRadius: 100, border: 'none', cursor: 'pointer', fontFamily: 'Inter, sans-serif', fontSize: 11, fontWeight: 600, whiteSpace: 'nowrap', color: proYearly ? '#fff' : '#64748b', background: proYearly ? 'rgba(124,58,237,0.35)' : 'transparent', transition: 'background .2s, color .2s' }}
+                          style={{ padding: '5px 11px', borderRadius: 100, border: 'none', cursor: 'pointer', fontFamily: 'Inter, sans-serif', fontSize: 11, fontWeight: 600, whiteSpace: 'nowrap', color: proYearly ? '#fff' : 'var(--c-64748b)', background: proYearly ? 'rgba(124,58,237,0.35)' : 'transparent', transition: 'background .2s, color .2s' }}
                         >
                           {tx.yearlyLabel}
                         </button>
                       </div>
                     )}
-                  </div>
+                </div>
 
-                  {plan.desc && <div style={{ fontSize: 12.5, color: '#64748b', marginBottom: 12 }}>{plan.desc}</div>}
+                <div style={{ fontSize: 12.5, color: 'var(--c-64748b)', lineHeight: 1.5, minHeight: 38, marginTop: 6 }}>{plan.desc}</div>
 
+                <div style={{ display: 'flex', alignItems: 'baseline', gap: 4, marginTop: 16, height: 44 }}>
+                  <span style={{ fontSize: 36, fontWeight: 900, letterSpacing: '-1.5px', fontVariantNumeric: 'tabular-nums' }}>{cur.price}</span>
+                  <span style={{ fontSize: 13, color: 'var(--c-64748b)', fontWeight: 500 }}>{cur.period}</span>
+                </div>
+                <div style={{ fontSize: 12, color: 'var(--c-64748b)', minHeight: 18, marginTop: 4 }}>{cur.sub}</div>
+
+                <div style={{ height: 44, marginTop: 18 }} aria-live="polite">
                   {isPack && (
-                    <div style={{ marginTop: 'auto' }} aria-live="polite">
-                      <div style={{ fontSize: 12, color: '#94a3b8', marginBottom: 6 }}>{soldOut ? tx.full : tx.left(PACK_REMAINING)}</div>
-                      <div style={{ height: 5, borderRadius: 100, background: 'rgba(255,255,255,0.08)', overflow: 'hidden' }}>
-                        <div style={{ height: '100%', width: `${((PACK_TOTAL - PACK_REMAINING) / PACK_TOTAL) * 100}%`, borderRadius: 100, background: 'linear-gradient(135deg, #7c3aed, #4f46e5)' }} />
+                    <>
+                      <div style={{ fontSize: 12, color: 'var(--c-94a3b8)', marginBottom: 6 }}>{soldOut ? tx.full : tx.left(PACK_REMAINING)}</div>
+                      <div style={{ height: 5, borderRadius: 100, background: 'rgba(var(--ink),0.08)', overflow: 'hidden' }}>
+                        <div style={{ height: '100%', width: `${((PACK_TOTAL - PACK_REMAINING) / PACK_TOTAL) * 100}%`, borderRadius: 100, background: '#7c3aed' }} />
                       </div>
-                    </div>
+                    </>
                   )}
                 </div>
 
-                <div style={{ display: 'flex', alignItems: 'baseline', gap: 4, marginBottom: 4, marginTop: 12 }}>
-                  <span style={{ fontSize: 36, fontWeight: 900, letterSpacing: '-1.5px' }}>{cur.price}</span>
-                  <span style={{ fontSize: 13, color: '#64748b', fontWeight: 500 }}>{cur.period}</span>
-                </div>
-                <div style={{ fontSize: 12, color: '#64748b', marginBottom: 24 }}>{cur.sub}</div>
+                <div style={{ height: 1, background: 'rgba(var(--ink),0.06)', margin: '6px 0 20px' }} />
 
-                {plan.lead && <div style={{ fontSize: 13, fontWeight: 600, color: '#e2e8f0', marginBottom: 14 }}>{plan.lead}</div>}
+                <div style={{ fontSize: 13, fontWeight: 600, color: 'var(--c-e2e8f0)', minHeight: 20, marginBottom: 14 }}>{plan.lead}</div>
                 <div style={{ display: 'flex', flexDirection: 'column', gap: 12, marginBottom: 28, flex: 1 }}>
                   {plan.features.map((f, fi) => (
                     <div key={fi} style={{ display: 'flex', alignItems: 'flex-start', gap: 9 }}>
-                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke={highlight ? '#a78bfa' : '#4ade80'} strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0, marginTop: 3 }}><polyline points="20 6 9 17 4 12" /></svg>
-                      <span style={{ fontSize: 13, color: '#94a3b8', lineHeight: 1.5 }}>{f}</span>
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ color: highlight ? 'var(--c-a78bfa)' : 'var(--c-4ade80)', flexShrink: 0, marginTop: 3 }}><polyline points="20 6 9 17 4 12" /></svg>
+                      <span style={{ fontSize: 13, color: 'var(--c-94a3b8)', lineHeight: 1.5 }}>{f}</span>
                     </div>
                   ))}
                 </div>
@@ -305,7 +308,7 @@ export default function Pricing() {
                     </Link>
                   )}
 
-                  <div style={{ marginTop: 14, textAlign: 'center', fontSize: 12, lineHeight: 1.6, color: '#64748b' }}>
+                  <div style={{ marginTop: 14, textAlign: 'center', fontSize: 12, lineHeight: 1.6, color: 'var(--c-64748b)' }}>
                     <div>{plan.reassure}</div>
                     <div style={{ fontSize: 11, opacity: 0.8 }}>{tx.payment}</div>
                   </div>
@@ -318,11 +321,11 @@ export default function Pricing() {
       </section>
 
       <section id="credits" style={{ padding: '0 24px 96px', scrollMarginTop: 96 }}>
-        <div style={{ maxWidth: 1000, margin: '0 auto', background: '#0d0d10', border: '1px solid rgba(255,255,255,0.06)', borderRadius: 16, padding: '36px 32px' }}>
+        <div style={{ maxWidth: 1000, margin: '0 auto', background: 'var(--c-0d0d10)', border: '1px solid rgba(var(--ink),0.06)', borderRadius: 16, padding: '36px 32px' }}>
           <div className="credits-row" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 32, flexWrap: 'wrap' }}>
             <div style={{ maxWidth: 380 }}>
               <h3 style={{ fontSize: 18, fontWeight: 800, letterSpacing: '-0.4px', marginBottom: 8 }}>{pt.creditsTitle}</h3>
-              <p style={{ fontSize: 13, color: '#64748b', lineHeight: 1.7 }}>{pt.creditsDesc}</p>
+              <p style={{ fontSize: 13, color: 'var(--c-64748b)', lineHeight: 1.7 }}>{pt.creditsDesc}</p>
             </div>
             <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }}>
               {pt.creditsPacks.map((pack, i) => (
@@ -332,10 +335,10 @@ export default function Pricing() {
                   className="credit-pack"
                   onClick={() => setCreditPack(pack)}
                   aria-label={tx.buyCredits(pack.amount, pack.price)}
-                  style={{ textAlign: 'center', padding: '14px 18px', borderRadius: 10, background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.06)', minWidth: 100, cursor: 'pointer', color: 'inherit', fontFamily: 'Inter, sans-serif', transition: 'border-color .15s, background .15s' }}
+                  style={{ textAlign: 'center', padding: '14px 18px', borderRadius: 10, background: 'rgba(var(--ink),0.02)', border: '1px solid rgba(var(--ink),0.06)', minWidth: 100, cursor: 'pointer', color: 'inherit', fontFamily: 'Inter, sans-serif', transition: 'border-color .15s, background .15s' }}
                 >
                   <div style={{ fontSize: 16, fontWeight: 800, marginBottom: 2 }}>{pack.price}</div>
-                  <div style={{ fontSize: 11, color: '#475569' }}>{pack.amount}</div>
+                  <div style={{ fontSize: 11, color: 'var(--c-475569)' }}>{pack.amount}</div>
                 </button>
               ))}
             </div>
@@ -362,10 +365,10 @@ export default function Pricing() {
         >
           <div
             onClick={e => e.stopPropagation()}
-            style={{ background: '#0d0d10', border: '1px solid rgba(124,58,237,0.3)', borderRadius: 16, padding: 28, width: '100%', maxWidth: 420, textAlign: 'center' }}
+            style={{ background: 'var(--c-0d0d10)', border: '1px solid rgba(124,58,237,0.3)', borderRadius: 16, padding: 28, width: '100%', maxWidth: 420, textAlign: 'center' }}
           >
             <h3 id="credits-soon-title" style={{ fontSize: 18, fontWeight: 800, marginBottom: 10 }}>{tx.creditsSoonTitle(creditPack.amount, creditPack.price)}</h3>
-            <p style={{ fontSize: 13, color: '#94a3b8', lineHeight: 1.7, marginBottom: 22 }}>{tx.creditsSoonText}</p>
+            <p style={{ fontSize: 13, color: 'var(--c-94a3b8)', lineHeight: 1.7, marginBottom: 22 }}>{tx.creditsSoonText}</p>
             <Button variant="primary" size="md" onClick={() => setCreditPack(null)} style={{ width: '100%' }} autoFocus>{tx.close}</Button>
           </div>
         </div>
@@ -379,12 +382,12 @@ export default function Pricing() {
 function PricingFAQItem({ q, a }: { q: string; a: string }) {
   const [open, setOpen] = useState(false)
   return (
-    <div style={{ background: '#0d0d10', border: `1px solid ${open ? 'rgba(124,58,237,0.3)' : 'rgba(255,255,255,0.06)'}`, borderRadius: 12, overflow: 'hidden', transition: 'border-color 0.2s' }}>
+    <div style={{ background: 'var(--c-0d0d10)', border: `1px solid ${open ? 'rgba(124,58,237,0.3)' : 'rgba(var(--ink),0.06)'}`, borderRadius: 12, overflow: 'hidden', transition: 'border-color 0.2s' }}>
       <button onClick={() => setOpen(o => !o)} style={{ width: '100%', padding: '16px 18px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: 'transparent', border: 'none', cursor: 'pointer', textAlign: 'left', fontFamily: 'Inter, sans-serif' }}>
-        <span style={{ fontSize: 13, fontWeight: 600, color: '#e2e8f0' }}>{q}</span>
+        <span style={{ fontSize: 13, fontWeight: 600, color: 'var(--c-e2e8f0)' }}>{q}</span>
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#64748b" strokeWidth="2" strokeLinecap="round" style={{ flexShrink: 0, marginLeft: 12, transition: 'transform 0.2s', transform: open ? 'rotate(45deg)' : 'rotate(0)' }}><line x1="12" y1="5" x2="12" y2="19" /><line x1="5" y1="12" x2="19" y2="12" /></svg>
       </button>
-      {open && <div style={{ padding: '0 18px 16px', fontSize: 13, color: '#64748b', lineHeight: 1.7, whiteSpace: 'pre-line' }}>{a}</div>}
+      {open && <div style={{ padding: '0 18px 16px', fontSize: 13, color: 'var(--c-64748b)', lineHeight: 1.7, whiteSpace: 'pre-line' }}>{a}</div>}
     </div>
   )
 }

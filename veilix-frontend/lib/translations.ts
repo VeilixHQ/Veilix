@@ -17,6 +17,7 @@ export const T = {
     ],
     navExplorer: [
       { label: 'FAQ', desc: 'Réponses aux questions fréquentes', href: '/faq' },
+      { label: 'Sécurité', desc: 'Ce que Veilix sait de vous', href: '/securite' },
       { label: 'À propos', desc: 'Pourquoi Veilix existe', href: '/a-propos' },
       { label: 'Contact', desc: "Écrire à l'équipe", href: '/contact' },
       { label: 'Discord', desc: 'Rejoindre la communauté', href: 'https://discord.gg/Cfze5qmvhV' },
@@ -179,9 +180,9 @@ export const T = {
       p2l: 'Données vendues',
       p3n: '< 1s',
       p3l: 'Création alias',
-      b1: 'Chiffrement TLS',
-      b2: 'Conforme RGPD',
-      b3: 'Hébergé en Europe',
+      b1: 'Adresses chiffrées AES-256',
+      b2: 'Aucun cookie de suivi',
+      b3: 'Serveurs situés en Europe',
     },
     howKicker: 'Fonctionnement',
     howTitle: 'La simplicité par principe.',
@@ -218,7 +219,7 @@ export const T = {
     featSub: 'Simple. Rapide. Privé.',
     features: [
       { title: 'Alias en un clic', desc: "Génération immédiate.\nPrêts à l'emploi sans configuration.", tag: 'Instant' },
-      { title: 'Blocage instantané', desc: 'Un spammeur vous harcèle ?\nCoupez lès accès en un clic.', tag: '1-Click' },
+      { title: 'Blocage instantané', desc: 'Un spammeur vous harcèle ?\nCoupez les accès en un clic.', tag: '1-Click' },
       { title: 'Réponse anonyme', desc: 'Répondez directement via vos alias\ntout en gardant votre adresse privée.', tag: '100% Anonyme' },
       { title: 'Pièces jointes incluses', desc: 'Recevez et envoyez vos PDF,\ndocuments et images en toute sécurité.', tag: 'PDF, Docs, Img' },
       { title: 'Adresse 100% privée', desc: 'Votre vraie adresse reste sous clé.\nProtection totale en arrière-plan.', tag: 'Privacy First' },
@@ -276,6 +277,7 @@ export const T = {
         title: 'Ressources',
         links: [
           { label: 'FAQ', href: '/faq' },
+          { label: 'Sécurité', href: '/securite' },
           { label: 'Discord', href: 'https://discord.gg/Cfze5qmvhV' },
         ],
       },
@@ -284,7 +286,7 @@ export const T = {
         links: [
           { label: 'À propos', href: '/a-propos' },
           { label: 'Contact', href: '/contact' },
-          { label: 'Open Source', href: 'https://github.com/VeilixHQ' },
+          { label: 'Open Source', href: 'https://github.com/VeilixHQ/Veilix' },
         ],
       },
       {
@@ -319,6 +321,7 @@ export const T = {
     ],
     navExplorer: [
       { label: 'FAQ', desc: 'Answers to common questions', href: '/faq' },
+      { label: 'Security', desc: 'What Veilix knows about you', href: '/securite' },
       { label: 'About', desc: 'Why Veilix exists', href: '/a-propos' },
       { label: 'Contact', desc: 'Write to the team', href: '/contact' },
       { label: 'Discord', desc: 'Join the community', href: 'https://discord.gg/Cfze5qmvhV' },
@@ -481,9 +484,9 @@ export const T = {
       p2l: 'Data sold',
       p3n: '< 1s',
       p3l: 'Alias creation',
-      b1: 'TLS Encryption',
-      b2: 'GDPR Compliant',
-      b3: 'Hosted in Europe',
+      b1: 'AES-256 encrypted addresses',
+      b2: 'No tracking cookies',
+      b3: 'Servers located in Europe',
     },
     howKicker: 'How it works',
     howTitle: 'Simple by design.',
@@ -566,6 +569,7 @@ export const T = {
         title: 'Resources',
         links: [
           { label: 'FAQ', href: '/faq' },
+          { label: 'Security', href: '/securite' },
           { label: 'Discord', href: 'https://discord.gg/Cfze5qmvhV' },
         ],
       },
@@ -574,7 +578,7 @@ export const T = {
         links: [
           { label: 'About', href: '/a-propos' },
           { label: 'Contact', href: '/contact' },
-          { label: 'Open Source', href: 'https://github.com/VeilixHQ' },
+          { label: 'Open Source', href: 'https://github.com/VeilixHQ/Veilix' },
         ],
       },
       {

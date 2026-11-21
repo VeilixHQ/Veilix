@@ -84,15 +84,15 @@ export default function ConfirmDestination() {
     text.readyText
 
   return (
-    <div style={{ minHeight: '100vh', background: '#060608', color: '#f1f5f9', fontFamily: 'Inter, sans-serif' }}>
+    <div style={{ minHeight: '100vh', background: 'var(--c-060608)', color: 'var(--c-f1f5f9)', fontFamily: 'Inter, sans-serif' }}>
       <SiteNav t={t} lang={lang} setLang={setLang} mode="public" hideNavLinks />
 
       <section style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '120px 24px 80px' }}>
         {step !== 'loading' && (
-          <div style={{ width: '100%', maxWidth: 440, padding: 32, background: '#0d0d10', border: '1px solid rgba(255,255,255,0.06)', borderRadius: 16, textAlign: 'center' }}>
-            <div style={{ fontSize: 11, fontWeight: 700, color: '#a78bfa', textTransform: 'uppercase', letterSpacing: '1.2px', marginBottom: 12 }}>{text.kicker}</div>
+          <div style={{ width: '100%', maxWidth: 440, padding: 32, background: 'var(--c-0d0d10)', border: '1px solid rgba(var(--ink),0.06)', borderRadius: 16, textAlign: 'center' }}>
+            <div style={{ fontSize: 11, fontWeight: 700, color: 'var(--c-a78bfa)', textTransform: 'uppercase', letterSpacing: '1.2px', marginBottom: 12 }}>{text.kicker}</div>
             <h1 style={{ fontSize: 24, fontWeight: 800, letterSpacing: '-0.8px', lineHeight: 1.2, marginBottom: 14 }}>{title}</h1>
-            <p style={{ fontSize: 14, color: '#94a3b8', lineHeight: 1.7, marginBottom: 24 }}>{body}</p>
+            <p style={{ fontSize: 14, color: 'var(--c-94a3b8)', lineHeight: 1.7, marginBottom: 24 }}>{body}</p>
 
             {(step === 'ready' || step === 'confirming') && (
               <Button variant="primary" size="lg" loading={step === 'confirming'} onClick={handleConfirm} style={{ width: '100%' }}>
@@ -101,7 +101,7 @@ export default function ConfirmDestination() {
             )}
 
             {(step === 'done' || step === 'error' || step === 'missing') && (
-              <Link href="/" style={{ fontSize: 13, fontWeight: 600, color: '#a78bfa', textDecoration: 'none' }}>{text.home}</Link>
+              <Link href="/" style={{ fontSize: 13, fontWeight: 600, color: 'var(--c-a78bfa)', textDecoration: 'none' }}>{text.home}</Link>
             )}
           </div>
         )}
