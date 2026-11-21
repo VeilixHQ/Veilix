@@ -13,8 +13,9 @@ import { DomainsPanel } from '@/components/settings/DomainsPanel'
 import { PgpPanel } from '@/components/settings/PgpPanel'
 import { ApiTokensPanel } from '@/components/settings/ApiTokensPanel'
 import { NotificationsPanel } from '@/components/settings/NotificationsPanel'
+import { DeleteAccount } from '@/components/BetaPanel'
 
-type TabType = 'billing' | 'domains' | 'pgp' | 'security' | 'privacy'
+type TabType = 'billing' | 'domains' | 'pgp' | 'security' | 'privacy' | 'danger'
 type CancelReason = 'expensive' | 'unused' | 'missing_feature' | 'other' | null
 
 export default function SettingsPage() {
@@ -158,7 +159,8 @@ export default function SettingsPage() {
             { id: 'domains', label: FT[lang].settings.domainsTab },
             { id: 'pgp', label: FT[lang].settings.pgpTab },
             { id: 'security', label: 'Développeurs & API' },
-            { id: 'privacy', label: 'Confidentialité & Données' }
+            { id: 'privacy', label: 'Confidentialité & Données' },
+            { id: 'danger', label: FT[lang].settings.dangerTab }
           ].map(tab => (
             <button
               key={tab.id}
@@ -170,7 +172,7 @@ export default function SettingsPage() {
                 background: 'transparent',
                 border: 'none',
                 borderBottom: activeTab === tab.id ? '2px solid var(--c-8b5cf6)' : '2px solid transparent',
-                color: activeTab === tab.id ? 'var(--c-f1f5f9)' : 'var(--c-64748b)',
+                color: tab.id === 'danger' ? 'var(--c-f87171)' : activeTab === tab.id ? 'var(--c-f1f5f9)' : 'var(--c-64748b)',
                 cursor: 'pointer',
                 whiteSpace: 'nowrap',
                 transition: 'all 0.2s'
@@ -234,6 +236,13 @@ export default function SettingsPage() {
 
         {activeTab === 'domains' && (
           <DomainsPanel lang={lang} plan={plan} onToast={showToast} />
+        )}
+
+        {activeTab === 'danger' && (
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+            <p style={{ fontSize: 13, color: 'var(--c-94a3b8)', lineHeight: 1.6 }}>{FT[lang].settings.dangerDesc}</p>
+            <DeleteAccount />
+          </div>
         )}
 
         {activeTab === 'pgp' && (

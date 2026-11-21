@@ -81,6 +81,8 @@ def _deliverable(db: Session, alias: Alias | None) -> str | None:
     key = db.get(Key, alias.key_id)
     if not key or key.status != "active":
         return None
+    if alias.domain_id and not domain_service.pack_active(key):
+        return None
     if not is_verified(db, alias.key_id, alias.email_hmac):
         return None
     destination = destination_of(alias)
@@ -156,6 +158,9 @@ def _catch_all(db: Session, recipient: str) -> Alias | None:
         return None
     domain = domain_service.find_verified(db, domain_name)
     if domain is None or not domain.catch_all:
+        return None
+    owner = db.get(Key, domain.key_id)
+    if owner is None or not domain_service.pack_active(owner):
         return None
     alias = alias_service.create_catch_all_alias(db, domain, recipient)
     if alias is not None:

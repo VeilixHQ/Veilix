@@ -164,3 +164,33 @@ def test_domaine_d_un_autre_invisible(client, dns, mailgun_domaines):
     autre = inscrire(client, plan="pack")
     assert client.post(f"/domains/{domaine['id']}/verify", headers=entetes(autre)).status_code == 404
     assert client.get("/domains", headers=entetes(autre)).json() == []
+
+
+def test_retour_au_plan_pro_coupe_domaines_et_catch_all(client, emails, dns, mailgun_domaines, db):
+    from app.models.key import Key
+
+    cle = inscrire(client, plan="pack")
+    destination_confirmee(client, cle, emails)
+    domaine = domaine_verifie(client, cle, dns)
+    client.patch(f"/domains/{domaine['id']}/catch-all", headers=entetes(cle), json={"enabled": True, "destination_email": "alice@example.com"})
+    alias = client.post("/alias", headers=entetes(cle), json={"destination_email": "alice@example.com", "domain_id": domaine["id"], "local_part": "boutique"}).json()
+    db.query(Key).update({Key.plan: "pro"})
+    db.commit()
+    assert recevoir(client, alias["alias_email"]).json() == {"status": "ignored"}
+    assert recevoir(client, "autre@exemple.fr").json() == {"status": "ignored"}
+    assert emails == []
+
+
+def test_retour_au_pack_retablit_les_domaines(client, emails, dns, mailgun_domaines, db):
+    from app.models.key import Key
+
+    cle = inscrire(client, plan="pack")
+    destination_confirmee(client, cle, emails)
+    domaine = domaine_verifie(client, cle, dns)
+    alias = client.post("/alias", headers=entetes(cle), json={"destination_email": "alice@example.com", "domain_id": domaine["id"], "local_part": "boutique"}).json()
+    db.query(Key).update({Key.plan: "pro"})
+    db.commit()
+    assert recevoir(client, alias["alias_email"]).json() == {"status": "ignored"}
+    db.query(Key).update({Key.plan: "pack"})
+    db.commit()
+    assert recevoir(client, alias["alias_email"]).json() == {"status": "forwarded"}

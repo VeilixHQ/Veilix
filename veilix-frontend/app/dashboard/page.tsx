@@ -15,7 +15,7 @@ import { UserMenu } from '@/components/UserMenu'
 import { InactivityWarning } from '@/components/InactivityWarning'
 import { SessionExpiredModal } from '@/components/SessionExpiredModal'
 import { UpgradeModal, UpgradeReason } from '@/components/UpgradeModal'
-import { BetaPanel, DeleteAccount } from '@/components/BetaPanel'
+import { BetaPanel } from '@/components/BetaPanel'
 import { Button } from '@/components/Button'
 import { Input } from '@/components/Input'
 import { T, Lang } from '@/lib/translations'
@@ -581,7 +581,6 @@ export default function Dashboard() {
             ))}
           </div>
         )}
-        <DeleteAccount />
       </div>
 
       <SiteFooter t={t} />

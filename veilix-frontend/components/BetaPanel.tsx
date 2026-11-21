@@ -210,7 +210,7 @@ export function DeleteAccount() {
   }
 
   return (
-    <div style={{ ...PANEL, marginTop: 40, border: '1px solid rgba(248,113,113,0.18)' }}>
+    <div style={{ ...PANEL, border: '1px solid rgba(248,113,113,0.18)' }}>
       <h2 style={{ fontSize: 14, fontWeight: 700, marginBottom: 4 }}>Quitter Veilix</h2>
       <p style={{ fontSize: 12.5, color: 'var(--c-64748b)', lineHeight: 1.6, marginBottom: 14 }}>
         Supprime définitivement votre clé, vos alias, vos destinations et vos retours de bêta. Les e-mails envoyés à vos alias ne seront plus transférés.

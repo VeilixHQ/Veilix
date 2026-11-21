@@ -17,7 +17,6 @@ export function PgpPanel({ lang, plan, onToast }: { lang: Lang; plan: string; on
     return () => { alive = false }
   }, [])
 
-  if (!isPack(plan) && !status?.configured) return <PackUpsell lang={lang} title={t.pgpTitle} desc={t.pgpDesc} />
 
   async function run(action: () => Promise<PgpStatus>, success?: string) {
     setBusy(true)
@@ -32,6 +31,20 @@ export function PgpPanel({ lang, plan, onToast }: { lang: Lang; plan: string; on
   }
 
   const fingerprint = status?.fingerprint?.toUpperCase().match(/.{1,4}/g)?.join(' ')
+
+  if (!isPack(plan)) {
+    return (
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+        <PackUpsell lang={lang} title={t.pgpTitle} desc={t.pgpDesc} />
+        {status?.configured && (
+          <div style={{ ...CARD, display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 12, flexWrap: 'wrap' }}>
+            <span style={{ fontSize: 13, color: 'var(--c-94a3b8)' }}>{t.pgpKept}</span>
+            <button type="button" disabled={busy} onClick={() => run(deletePgp)} style={buttonStyle('danger')}>{t.pgpRemove}</button>
+          </div>
+        )}
+      </div>
+    )
+  }
 
   return (
     <div style={CARD}>
@@ -63,9 +76,7 @@ export function PgpPanel({ lang, plan, onToast }: { lang: Lang; plan: string; on
             )}
           </dl>
           <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
-            {isPack(plan) && (
-              <button type="button" disabled={busy} onClick={() => run(() => togglePgp(!status.enabled))} style={buttonStyle('secondary')}>{status.enabled ? t.pgpPause : t.pgpResume}</button>
-            )}
+            <button type="button" disabled={busy} onClick={() => run(() => togglePgp(!status.enabled))} style={buttonStyle('secondary')}>{status.enabled ? t.pgpPause : t.pgpResume}</button>
             <button type="button" disabled={busy} onClick={() => run(deletePgp)} style={buttonStyle('danger')}>{t.pgpRemove}</button>
           </div>
         </div>

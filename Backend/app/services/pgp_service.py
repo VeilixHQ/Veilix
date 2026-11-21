@@ -101,6 +101,8 @@ def remove_public_key(db: Session, key: Key) -> Key:
 def active_cert(key: Key | None):
     if not key or not key.pgp_enabled or not key.pgp_public_key:
         return None
+    if not has_pack_features(get_effective_plan(key.key_id, key.plan, key.is_admin)):
+        return None
     try:
         return _sequoia().Cert.from_bytes(key.pgp_public_key.encode())
     except Exception:

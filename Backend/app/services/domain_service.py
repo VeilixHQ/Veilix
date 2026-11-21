@@ -58,6 +58,10 @@ def is_internal_domain(domain: str) -> bool:
     return any(domain == internal or domain.endswith(f".{internal}") for internal in config.INTERNAL_DOMAINS)
 
 
+def pack_active(key: Key) -> bool:
+    return has_pack_features(get_effective_plan(key.key_id, key.plan, key.is_admin))
+
+
 def _require_pack(key: Key) -> None:
     if not has_pack_features(get_effective_plan(key.key_id, key.plan, key.is_admin)):
         raise HTTPException(status_code=403, detail="PACK_REQUIRED")

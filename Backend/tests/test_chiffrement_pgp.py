@@ -110,10 +110,21 @@ def test_suppression_de_la_cle(client, emails, paire, db):
     assert db.query(Key).one().pgp_public_key is None
 
 
-def test_retour_au_plan_pro_conserve_le_chiffrement(client, emails, envois_mime, paire, db):
+def test_retour_au_plan_pro_retire_le_chiffrement(client, emails, envois_mime, paire, db):
     cle, alias = alias_pack(client, emails)
     client.put("/pgp", headers=entetes(cle), json={"public_key": paire[1]})
     db.query(Key).update({Key.plan: "pro"})
+    db.commit()
+    recevoir(client, alias["alias_email"])
+    assert envois_mime == [] and len(emails) == 1
+
+
+def test_retour_au_pack_reactive_le_chiffrement(client, emails, envois_mime, paire, db):
+    cle, alias = alias_pack(client, emails)
+    client.put("/pgp", headers=entetes(cle), json={"public_key": paire[1]})
+    db.query(Key).update({Key.plan: "pro"})
+    db.commit()
+    db.query(Key).update({Key.plan: "pack"})
     db.commit()
     recevoir(client, alias["alias_email"])
     assert emails == [] and len(envois_mime) == 1
