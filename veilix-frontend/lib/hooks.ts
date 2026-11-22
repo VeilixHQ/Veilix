@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useState } from 'react'
 
 export function useOnScreen(ref: React.RefObject<HTMLElement | null>, once = true) {
   const [visible, setVisible] = useState(false)
@@ -16,7 +16,7 @@ export function useOnScreen(ref: React.RefObject<HTMLElement | null>, once = tru
     )
     obs.observe(el)
     return () => obs.disconnect()
-  }, [once])
+  }, [ref, once])
   return visible
 }
 

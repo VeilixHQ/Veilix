@@ -15,15 +15,15 @@ export function SessionExpiredModal({ onClose }: Props) {
 
   return (
     <div style={{ position: 'fixed', inset: 0, zIndex: 999, background: 'rgba(0,0,0,0.75)', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 24 }}>
-      <div style={{ position: 'relative', background: '#0e0e0e', border: '1px solid rgba(255,255,255,0.08)', borderRadius: 16, padding: '32px 28px', width: '100%', maxWidth: 380, textAlign: 'center', animation: 'fadeUp 0.3s ease' }}>
+      <div style={{ position: 'relative', background: 'var(--c-0e0e0e)', border: '1px solid rgba(var(--ink),0.08)', borderRadius: 16, padding: '32px 28px', width: '100%', maxWidth: 380, textAlign: 'center', animation: 'fadeUp 0.3s ease' }}>
         <style>{`@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}`}</style>
 
         <button
           onClick={handleClose}
           aria-label="Fermer"
-          style={{ position: 'absolute', top: 14, right: 14, width: 28, height: 28, borderRadius: 8, background: 'transparent', border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#64748b', transition: 'background .15s, color .15s' }}
-          onMouseEnter={e => { e.currentTarget.style.background = 'rgba(255,255,255,0.06)'; e.currentTarget.style.color = '#f1f5f9' }}
-          onMouseLeave={e => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.color = '#64748b' }}
+          style={{ position: 'absolute', top: 14, right: 14, width: 28, height: 28, borderRadius: 8, background: 'transparent', border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--c-64748b)', transition: 'background .15s, color .15s' }}
+          onMouseEnter={e => { e.currentTarget.style.background = 'rgba(var(--ink),0.06)'; e.currentTarget.style.color = 'var(--c-f1f5f9)' }}
+          onMouseLeave={e => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.color = 'var(--c-64748b)' }}
         >
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
             <line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" />
@@ -37,16 +37,16 @@ export function SessionExpiredModal({ onClose }: Props) {
           </svg>
         </div>
 
-        <h2 style={{ fontSize: 17, fontWeight: 700, color: '#f1f5f9', marginBottom: 8, letterSpacing: '-0.3px' }}>
+        <h2 style={{ fontSize: 17, fontWeight: 700, color: 'var(--c-f1f5f9)', marginBottom: 8, letterSpacing: '-0.3px' }}>
           Session expirée
         </h2>
-        <p style={{ fontSize: 13, color: '#64748b', lineHeight: 1.6, marginBottom: 24 }}>
+        <p style={{ fontSize: 13, color: 'var(--c-64748b)', lineHeight: 1.6, marginBottom: 24 }}>
           Vous avez été déconnecté automatiquement après une période d&apos;inactivité, pour protéger votre identité.
         </p>
 
         <button
           onClick={handleClose}
-          style={{ width: '100%', padding: '11px', borderRadius: 9, background: 'linear-gradient(135deg, #7c3aed, #4f46e5)', border: 'none', color: '#fff', fontSize: 14, fontWeight: 600, cursor: 'pointer', fontFamily: 'Inter, sans-serif' }}
+          style={{ width: '100%', padding: '11px', borderRadius: 9, background: '#7c3aed', border: 'none', color: '#fff', fontSize: 14, fontWeight: 600, cursor: 'pointer', fontFamily: 'Inter, sans-serif' }}
         >
           J&apos;ai compris
         </button>

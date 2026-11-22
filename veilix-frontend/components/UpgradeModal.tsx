@@ -14,7 +14,7 @@ const CONTENT: Record<UpgradeReason, { title: string; text: React.ReactNode; pri
     title: 'Limite de 100 alias atteinte',
     text: (
       <>
-        Votre plan Pro inclut 100 alias, désactivés compris. Utilisez des crédits pour en créer d&apos;autres, ou passez au <strong style={{ color: '#a78bfa' }}>Pack de lancement</strong> pour des alias illimités.
+        Votre plan Pro inclut 100 alias, désactivés compris. Utilisez des crédits pour en créer d&apos;autres, ou passez au <strong style={{ color: 'var(--c-a78bfa)' }}>Pack de lancement</strong> pour des alias illimités.
       </>
     ),
     primary: { href: '/pricing', label: 'Découvrir le Pack de lancement' },
@@ -24,7 +24,7 @@ const CONTENT: Record<UpgradeReason, { title: string; text: React.ReactNode; pri
     title: 'Plus de crédits disponibles',
     text: (
       <>
-        Chaque alias consomme 1 crédit, qui n&apos;est pas rendu à la suppression. Rachetez des crédits, ou passez à un <strong style={{ color: '#a78bfa' }}>abonnement</strong> pour créer vos alias sans compter.
+        Chaque alias consomme 1 crédit, qui n&apos;est pas rendu à la suppression. Rachetez des crédits, ou passez à un <strong style={{ color: 'var(--c-a78bfa)' }}>abonnement</strong> pour créer vos alias sans compter.
       </>
     ),
     primary: { href: '/pricing#credits', label: 'Acheter des crédits' },
@@ -53,7 +53,7 @@ export function UpgradeModal({ reason, onClose }: UpgradeModalProps) {
       <div
         style={{
           position: 'relative',
-          background: '#0d0d10',
+          background: 'var(--c-0d0d10)',
           border: '1px solid rgba(124,58,237,0.3)',
           borderRadius: 16,
           padding: 32,
@@ -72,7 +72,7 @@ export function UpgradeModal({ reason, onClose }: UpgradeModalProps) {
             right: 16,
             background: 'none',
             border: 'none',
-            color: '#64748b',
+            color: 'var(--c-64748b)',
             cursor: 'pointer',
             padding: 4,
           }}
@@ -102,10 +102,10 @@ export function UpgradeModal({ reason, onClose }: UpgradeModalProps) {
           </svg>
         </div>
 
-        <h3 style={{ fontSize: 19, fontWeight: 800, marginBottom: 8, letterSpacing: '-0.4px', color: '#f1f5f9' }}>
+        <h3 style={{ fontSize: 19, fontWeight: 800, marginBottom: 8, letterSpacing: '-0.4px', color: 'var(--c-f1f5f9)' }}>
           {content.title}
         </h3>
-        <p style={{ fontSize: 13.5, color: '#94a3b8', lineHeight: 1.6, marginBottom: 24 }}>
+        <p style={{ fontSize: 13.5, color: 'var(--c-94a3b8)', lineHeight: 1.6, marginBottom: 24 }}>
           {content.text}
         </p>
 

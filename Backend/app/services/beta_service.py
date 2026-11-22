@@ -309,6 +309,10 @@ def submit_feedback(db: Session, key: Key, answers: dict, now: datetime | None =
 def delete_account(db: Session, key: Key) -> None:
     access = db.query(AccessCode).filter(AccessCode.key_id == key.id).first()
     phase = access.phase if access else None
+    from app.services import domain_service
+
+    for domain in domain_service.list_domains(db, key):
+        domain_service.unregister_from_mailgun(domain)
     db.query(Alias).filter(Alias.key_id == key.id).delete(synchronize_session=False)
     db.query(DestinationVerification).filter(DestinationVerification.key_id == key.id).delete(synchronize_session=False)
     db.query(BetaFeedback).filter(BetaFeedback.key_id == key.id).delete(synchronize_session=False)

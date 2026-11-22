@@ -103,7 +103,7 @@ def test_renvoi_de_confirmation_limite(client, emails):
 
 
 def test_trop_de_destinations_en_attente_bloquees(client, emails):
-    cle = inscrire(client)
+    cle = inscrire(client, plan="pack")
     statuts = [creer_alias(client, cle, f"dest{i}@example.com")["confirmation_sent"] for i in range(6)]
     assert statuts == [True] * 5 + [False]
     assert len(emails) == 5

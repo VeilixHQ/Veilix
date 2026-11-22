@@ -21,9 +21,9 @@ export function LangSwitcher({ lang, setLang }: { lang: Lang; setLang: (l: Lang)
     <div ref={ref} style={{ position: 'relative' }}>
       <button
         onClick={() => setOpen(o => !o)}
-        style={{ display: 'flex', alignItems: 'center', gap: 7, padding: '6px 10px', borderRadius: 7, fontSize: 12, fontWeight: 600, color: '#94a3b8', background: 'transparent', border: '1px solid rgba(255,255,255,0.08)', cursor: 'pointer', fontFamily: 'Inter, sans-serif', transition: 'all .15s', minWidth: 68, justifyContent: 'center' }}
-        onMouseEnter={e => { e.currentTarget.style.borderColor = 'rgba(255,255,255,0.16)'; e.currentTarget.style.color = '#f1f5f9' }}
-        onMouseLeave={e => { e.currentTarget.style.borderColor = 'rgba(255,255,255,0.08)'; e.currentTarget.style.color = '#94a3b8' }}
+        style={{ display: 'flex', alignItems: 'center', gap: 7, padding: '6px 10px', borderRadius: 7, fontSize: 12, fontWeight: 600, color: 'var(--c-94a3b8)', background: 'transparent', border: '1px solid rgba(var(--ink),0.08)', cursor: 'pointer', fontFamily: 'Inter, sans-serif', transition: 'all .15s', minWidth: 68, justifyContent: 'center' }}
+        onMouseEnter={e => { e.currentTarget.style.borderColor = 'rgba(var(--ink),0.16)'; e.currentTarget.style.color = 'var(--c-f1f5f9)' }}
+        onMouseLeave={e => { e.currentTarget.style.borderColor = 'rgba(var(--ink),0.08)'; e.currentTarget.style.color = 'var(--c-94a3b8)' }}
       >
         <Image src={flags[lang]} alt={labels[lang]} width={16} height={12} style={{ borderRadius: 2, objectFit: 'cover', flexShrink: 0, width: 16, height: 12 }} />
         <span>{labels[lang]}</span>
@@ -32,10 +32,10 @@ export function LangSwitcher({ lang, setLang }: { lang: Lang; setLang: (l: Lang)
         </svg>
       </button>
       {open && (
-        <div style={{ position: 'absolute', top: '100%', right: 0, marginTop: 6, background: '#111118', border: '1px solid rgba(255,255,255,0.08)', borderRadius: 9, padding: 6, minWidth: 80, boxShadow: '0 16px 48px rgba(0,0,0,0.5)', zIndex: 200, animation: 'fadeUp 0.15s ease' }}>
+        <div style={{ position: 'absolute', top: '100%', right: 0, marginTop: 6, background: 'var(--c-111118)', border: '1px solid rgba(var(--ink),0.08)', borderRadius: 9, padding: 6, minWidth: 80, boxShadow: '0 16px 48px rgba(0,0,0,0.5)', zIndex: 200, animation: 'fadeUp 0.15s ease' }}>
           <button
             onClick={() => { setLang(other); setOpen(false) }}
-            style={{ display: 'flex', alignItems: 'center', gap: 8, width: '100%', padding: '8px 10px', borderRadius: 7, background: 'transparent', border: 'none', cursor: 'pointer', fontSize: 12, fontWeight: 600, color: '#94a3b8', fontFamily: 'Inter, sans-serif', transition: 'background .15s' }}
+            style={{ display: 'flex', alignItems: 'center', gap: 8, width: '100%', padding: '8px 10px', borderRadius: 7, background: 'transparent', border: 'none', cursor: 'pointer', fontSize: 12, fontWeight: 600, color: 'var(--c-94a3b8)', fontFamily: 'Inter, sans-serif', transition: 'background .15s' }}
             onMouseEnter={e => (e.currentTarget.style.background = 'rgba(124,58,237,0.08)')}
             onMouseLeave={e => (e.currentTarget.style.background = 'transparent')}
           >

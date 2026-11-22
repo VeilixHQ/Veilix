@@ -1,13 +1,14 @@
-﻿from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from app.db.session import get_db
 from app.core.security import get_current_key_id, get_current_key_id_str
 from app.core.rate_limit import enforce_daily_limit
 from app.core.encryption import decrypt, is_encrypted
 from app.models.alias import Alias
-from app.schemas.alias import CreateAliasRequest, AliasResponse
+from app.schemas.alias import AliasResponse, BlockedSenderResponse, BlockSenderRequest, CreateAliasRequest
 from app.services.alias_service import create_alias, get_alias, list_aliases, disable_alias, enable_alias, delete_alias
 from app.services.destination_service import request_confirmation
+from app.services import leak_service, sender_block_service
 
 router = APIRouter(tags=["Alias"])
 
@@ -22,7 +23,19 @@ def _to_response(alias: Alias, confirmation_sent: bool | None = None) -> AliasRe
         destination_email=_destination_of(alias),
         label=alias.label,
         status=alias.status,
+        domain_id=alias.domain_id,
+        forwarded_count=alias.forwarded_count or 0,
+        blocked_count=alias.blocked_count or 0,
+        leak_detected_at=alias.leak_detected_at,
         confirmation_sent=confirmation_sent,
+    )
+
+def _block_response(block) -> BlockedSenderResponse:
+    return BlockedSenderResponse(
+        id=block.id,
+        sender=sender_block_service.pattern_of(block),
+        blocked_count=block.blocked_count or 0,
+        created_at=block.created_at,
     )
 
 def _send_confirmation_if_pending(db: Session, key_id: int, alias: Alias) -> bool | None:
@@ -37,7 +50,7 @@ def _send_confirmation_if_pending(db: Session, key_id: int, alias: Alias) -> boo
 @router.post("/alias", response_model=AliasResponse)
 def create(body: CreateAliasRequest, key_id: int = Depends(get_current_key_id), key_id_str: str = Depends(get_current_key_id_str), db: Session = Depends(get_db)):
     enforce_daily_limit(key_id_str)
-    alias = create_alias(db, key_id, body.destination_email, body.label)
+    alias = create_alias(db, key_id, body.destination_email, body.label, body.domain_id, body.local_part)
     confirmation_sent = _send_confirmation_if_pending(db, key_id, alias)
     return _to_response(alias, confirmation_sent)
 
@@ -71,3 +84,27 @@ def remove(alias_id: int, key_id: int = Depends(get_current_key_id), key_id_str:
     enforce_daily_limit(key_id_str)
     delete_alias(db, key_id, alias_id)
     return {"status": "deleted"}
+
+@router.get("/alias/{alias_id}/blocked-senders", response_model=list[BlockedSenderResponse])
+def list_blocked(alias_id: int, key_id: int = Depends(get_current_key_id), db: Session = Depends(get_db)):
+    alias = get_alias(db, key_id, alias_id)
+    return [_block_response(block) for block in sender_block_service.list_blocks(db, alias)]
+
+@router.post("/alias/{alias_id}/blocked-senders", response_model=BlockedSenderResponse)
+def block_sender(alias_id: int, body: BlockSenderRequest, key_id: int = Depends(get_current_key_id), key_id_str: str = Depends(get_current_key_id_str), db: Session = Depends(get_db)):
+    enforce_daily_limit(key_id_str)
+    alias = get_alias(db, key_id, alias_id)
+    return _block_response(sender_block_service.add_block(db, alias, body.sender))
+
+@router.delete("/alias/{alias_id}/blocked-senders/{block_id}")
+def unblock_sender(alias_id: int, block_id: int, key_id: int = Depends(get_current_key_id), key_id_str: str = Depends(get_current_key_id_str), db: Session = Depends(get_db)):
+    enforce_daily_limit(key_id_str)
+    alias = get_alias(db, key_id, alias_id)
+    sender_block_service.remove_block(db, alias, block_id)
+    return {"status": "deleted"}
+
+
+@router.post("/alias/{alias_id}/leak/dismiss", response_model=AliasResponse)
+def dismiss_leak(alias_id: int, key_id: int = Depends(get_current_key_id), key_id_str: str = Depends(get_current_key_id_str), db: Session = Depends(get_db)):
+    enforce_daily_limit(key_id_str)
+    return _to_response(leak_service.dismiss(db, get_alias(db, key_id, alias_id)))

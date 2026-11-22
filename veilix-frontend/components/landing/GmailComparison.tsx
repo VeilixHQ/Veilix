@@ -16,8 +16,8 @@ function GmailCard({ t }: { t: Translations }) {
 
   const cols = [
     {
-      border: 'rgba(239,68,68,0.2)', bg: 'rgba(239,68,68,0.03)', dot: '#ef4444',
-      label: t.gmailBefore, labelColor: '#f87171', borderInner: 'rgba(239,68,68,0.1)',
+      border: 'rgba(239,68,68,0.2)', bg: 'rgba(239,68,68,0.03)', dot: 'var(--c-ef4444)',
+      label: t.gmailBefore, labelColor: 'var(--c-f87171)', borderInner: 'rgba(239,68,68,0.1)',
       count: visible ? spamCount.toLocaleString(isEnglish ? 'en-US' : 'fr-FR') : '0',
       countBg: '#EA4335', countColor: '#fff',
       rows: t.gmailRowsBefore, msg: t.gmailMsgBefore, times: timesBefore,
@@ -31,10 +31,10 @@ function GmailCard({ t }: { t: Translations }) {
       desc: t.gmailBeforeDesc,
     },
     {
-      border: 'rgba(124,58,237,0.2)', bg: 'rgba(124,58,237,0.04)', dot: '#a78bfa',
-      label: t.gmailAfter, labelColor: '#a78bfa', borderInner: 'rgba(124,58,237,0.1)',
+      border: 'rgba(124,58,237,0.2)', bg: 'rgba(124,58,237,0.04)', dot: 'var(--c-a78bfa)',
+      label: t.gmailAfter, labelColor: 'var(--c-a78bfa)', borderInner: 'rgba(124,58,237,0.1)',
       count: visible ? cleanCount : '0',
-      countBg: '#4ade80', countColor: '#052e16',
+      countBg: 'var(--c-4ade80)', countColor: '#052e16',
       rows: t.gmailRowsAfter, msg: t.gmailMsgAfter, times: timesAfter,
       extra: (
         <div style={{ padding: '8px 14px', textAlign: 'center' as const, background: '#fff' }}>
@@ -77,7 +77,7 @@ function GmailCard({ t }: { t: Translations }) {
             </div>
           </div>
           <div style={{ padding: '0 16px 20px', textAlign: 'center' }}>
-            <span style={{ fontSize: 13, fontWeight: 600, color: '#64748b' }}>{col.desc}</span>
+            <span style={{ fontSize: 13, fontWeight: 600, color: 'var(--c-64748b)' }}>{col.desc}</span>
           </div>
         </div>
       ))}
@@ -87,12 +87,12 @@ function GmailCard({ t }: { t: Translations }) {
 
 export function GmailComparison({ t }: { t: Translations }) {
   return (
-    <section style={{ padding: '96px 24px', background: '#060608' }}>
+    <section style={{ padding: '96px 24px', background: 'var(--c-060608)' }}>
       <div style={{ maxWidth: 1060, margin: '0 auto' }}>
         <FadeInSection>
-          <div style={{ fontSize: 11, fontWeight: 700, color: '#a78bfa', textTransform: 'uppercase', letterSpacing: '1.2px', marginBottom: 12 }}>{t.whyKicker}</div>
+          <div style={{ fontSize: 11, fontWeight: 700, color: 'var(--c-a78bfa)', textTransform: 'uppercase', letterSpacing: '1.2px', marginBottom: 12 }}>{t.whyKicker}</div>
           <h2 style={{ fontSize: 'clamp(24px, 3.2vw, 40px)', fontWeight: 800, letterSpacing: '-1.5px', marginBottom: 12, lineHeight: 1.1 }}>{t.whyTitle}</h2>
-          <p style={{ fontSize: 14, color: '#64748b', marginBottom: 48 }}>{t.whySub}</p>
+          <p style={{ fontSize: 14, color: 'var(--c-64748b)', marginBottom: 48 }}>{t.whySub}</p>
         </FadeInSection>
         <FadeInSection delay={100}>
           <GmailCard t={t} />

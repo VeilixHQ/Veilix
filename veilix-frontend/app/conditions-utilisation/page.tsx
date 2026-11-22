@@ -43,18 +43,18 @@ const CONTENT: Record<Lang, {
         { title: '7. Responsabilité', content: "Veilix n'est pas responsable du contenu des messages transférés ni des pertes indirectes. Sa responsabilité, si elle était engagée, est limitée aux sommes que vous avez versées au cours des 12 derniers mois, sauf faute lourde ou disposition légale contraire." },
         { title: '8. Fin du service', content: "Vous pouvez supprimer à tout moment votre clé, vos alias et vos données depuis le tableau de bord. La suppression est immédiate et définitive : les messages envoyés à vos anciens alias ne sont plus transférés." },
         { title: '9. Données personnelles', content: 'Le traitement de vos données est décrit dans la politique de confidentialité.' },
-        { title: '10. Propriété intellectuelle', content: "Le code du site est publié sous licence open source. Le backend, l'infrastructure et la marque Veilix restent la propriété de l'éditeur." },
+        { title: '10. Propriété intellectuelle', content: "L'intégralité du code de Veilix, site et backend, est open source et publiquement consultable sur github.com/VeilixHQ/Veilix. La marque Veilix et son logo restent la propriété de l'éditeur." },
         { title: '11. Modifications', content: "Toute modification importante des présentes conditions est annoncée sur le site au moins 30 jours avant son entrée en vigueur." },
         { title: '12. Droit applicable', content: "Les présentes conditions sont soumises au droit français. En cas de litige, une solution amiable est recherchée en priorité ; à défaut, les tribunaux français sont compétents, sous réserve des règles protectrices du consommateur." },
       ],
       cgv: [
         { title: '1. Objet', content: "Les présentes conditions régissent la vente des abonnements Veilix et des crédits d'alias. Le paiement en ligne ouvre le 1er février 2027." },
-        { title: '2. Offres et prix', content: "Pro : 4,99 € par mois ou 44,90 € par an, 100 alias inclus, alias désactivés compris. Pack de lancement : 69 € par an, alias illimités, limité aux 100 premières ventes. Premium : 7,75 € par mois ou 93 € par an, alias illimités, remplace le Pack de lancement une fois les 100 exemplaires vendus. Crédits, sans abonnement : 1,99 € les 10, 3,99 € les 25, 6,99 € les 50. Il n'existe pas de plan gratuit. Prix en euros, [mention TVA à compléter selon le régime fiscal de l'éditeur]." },
+        { title: '2. Offres et prix', content: "Pro : 4,99 € par mois ou 44,90 € par an, 100 alias inclus, alias désactivés compris. Pack de lancement : 69 € par an, alias illimités, limité aux 100 premières ventes. Il n'existe pas de plan gratuit. Prix en euros, [mention TVA à compléter selon le régime fiscal de l'éditeur]." },
         { title: '3. Crédits', content: "Un crédit permet de créer un alias. Il est consommé à la création et n'est pas rendu si l'alias est supprimé. Les crédits restent utilisables au-delà du quota d'un abonnement Pro." },
         { title: "4. Période d'essai", content: "Les abonnements commencent par un essai de 14 jours. Un moyen de paiement est demandé à l'inscription, sans débit pendant l'essai. Sans résiliation avant la fin de l'essai, l'abonnement démarre automatiquement." },
         { title: '5. Paiement et renouvellement', content: "Les paiements sont traités par Stripe par carte, Google Pay ou Apple Pay. Les abonnements se renouvellent automatiquement à chaque échéance. En cas d'échec de paiement, l'accès est suspendu jusqu'à régularisation." },
         { title: '6. Prix garanti du Pack de lancement', content: "Le prix d'un Pack de lancement payé reste inchangé tant que l'abonnement reste actif. Il est perdu en cas de résiliation ou de paiement non régularisé." },
-        { title: '7. Droit de rétractation et remboursement', content: "Vous disposez de 14 jours après votre premier paiement pour demander un remboursement intégral, sans justification, en écrivant à contact@veilix.fr. Les crédits déjà utilisés ne sont pas remboursés." },
+        { title: '7. Droit de rétractation et remboursement', content: "Vous disposez de 14 jours après votre premier paiement pour demander un remboursement intégral, sans justification, en écrivant à support@veilix.fr. Les crédits déjà utilisés ne sont pas remboursés." },
         { title: '8. Résiliation', content: "Les abonnements sont sans engagement. Vous pouvez résilier à tout moment depuis les paramètres ; la résiliation prend effet à la fin de la période déjà payée." },
         { title: '9. Évolution des prix', content: "Les prix peuvent évoluer avec un préavis de 30 jours par e-mail ou sur le site, sans effet sur un Pack de lancement payé et toujours actif." },
         { title: '10. Factures', content: "Les factures sont disponibles dans votre espace de paiement Stripe." },
@@ -71,7 +71,7 @@ const CONTENT: Record<Lang, {
         { title: '8. Quitter la bêta', content: "Vous pouvez quitter la bêta à tout moment en supprimant votre compte depuis le tableau de bord. Pendant la bêta, le service peut connaître des interruptions : ne l'utilisez pas pour des messages indispensables." },
       ],
       abus: [
-        { title: 'Comment signaler', content: "Écrivez à contact@veilix.fr en précisant l'alias concerné si vous le connaissez, une description du problème et, si possible, un exemple du message reçu." },
+        { title: 'Comment signaler', content: "Écrivez à legal@veilix.fr en précisant l'alias concerné si vous le connaissez, une description du problème et, si possible, un exemple du message reçu." },
         { title: 'Notre traitement', content: "Chaque signalement est examiné. En cas d'abus confirmé, l'alias concerné est désactivé et la clé peut être suspendue. Veilix ne connaît pas l'identité de ses utilisateurs et ne peut donc pas la révéler, sauf réquisition judiciaire portant sur les données dont il dispose." },
         { title: 'Signalement légal', content: "Pour une infraction pénale, vous pouvez aussi contacter les autorités compétentes : police, gendarmerie ou plateforme PHAROS (internet-signalement.gouv.fr)." },
       ],
@@ -102,18 +102,18 @@ const CONTENT: Record<Lang, {
         { title: '7. Liability', content: 'Veilix is not responsible for the content of forwarded messages or for indirect losses. Its liability, if any, is limited to the amounts you paid in the last 12 months, except in case of gross negligence or where the law provides otherwise.' },
         { title: '8. Ending the service', content: 'You can delete your key, aliases and data at any time from the dashboard. Deletion is immediate and permanent: messages sent to your former aliases are no longer forwarded.' },
         { title: '9. Personal data', content: 'How your data is processed is described in the privacy policy.' },
-        { title: '10. Intellectual property', content: 'The website code is published under an open source license. The backend, infrastructure and the Veilix brand remain the property of the publisher.' },
+        { title: '10. Intellectual property', content: 'All of the Veilix code, website and backend, is open source and publicly available at github.com/VeilixHQ/Veilix. The Veilix brand and logo remain the property of the publisher.' },
         { title: '11. Changes', content: 'Any significant change to these terms is announced on the site at least 30 days before it takes effect.' },
         { title: '12. Governing law', content: 'These terms are governed by French law. Any dispute will first be settled amicably where possible; otherwise French courts have jurisdiction, subject to consumer protection rules.' },
       ],
       cgv: [
         { title: '1. Purpose', content: 'These terms govern the sale of Veilix subscriptions and alias credits. Online payment opens on February 1, 2027.' },
-        { title: '2. Offers and prices', content: 'Pro: €4.99 per month or €44.90 per year, 100 aliases included, disabled aliases counted. Launch pack: €69 per year, unlimited aliases, limited to the first 100 sales. Premium: €7.75 per month or €93 per year, unlimited aliases, replaces the Launch pack once 100 have been sold. Credits, no subscription: €1.99 for 10, €3.99 for 25, €6.99 for 50. There is no free plan. Prices in euros, [VAT statement to be completed according to the publisher\'s tax status].' },
+        { title: '2. Offers and prices', content: 'Pro: €4.99 per month or €44.90 per year, 100 aliases included, disabled aliases counted. Launch pack: €69 per year, unlimited aliases, limited to the first 100 sales. There is no free plan. Prices in euros, [VAT statement to be completed according to the publisher\'s tax status].' },
         { title: '3. Credits', content: 'One credit creates one alias. It is used when the alias is created and is not refunded if the alias is deleted. Credits remain usable beyond the quota of a Pro subscription.' },
         { title: '4. Trial', content: 'Subscriptions start with a 14-day trial. A payment method is required at signup, with no charge during the trial. Unless cancelled before the trial ends, the subscription starts automatically.' },
         { title: '5. Payment and renewal', content: 'Payments are processed by Stripe by card, Google Pay or Apple Pay. Subscriptions renew automatically at each term. If a payment fails, access is suspended until it is settled.' },
         { title: '6. Locked Launch pack price', content: 'The price of a paid Launch pack stays the same as long as the subscription remains active. It is lost if you cancel or if a payment remains unsettled.' },
-        { title: '7. Withdrawal and refunds', content: 'You have 14 days after your first payment to request a full refund, without giving a reason, by writing to contact@veilix.fr. Credits already used are not refunded.' },
+        { title: '7. Withdrawal and refunds', content: 'You have 14 days after your first payment to request a full refund, without giving a reason, by writing to support@veilix.fr. Credits already used are not refunded.' },
         { title: '8. Cancellation', content: 'Subscriptions have no commitment. You can cancel at any time from settings; cancellation takes effect at the end of the period already paid.' },
         { title: '9. Price changes', content: 'Prices may change with 30 days\' notice by email or on the site, with no effect on a paid and still active Launch pack.' },
         { title: '10. Invoices', content: 'Invoices are available in your Stripe payment portal.' },
@@ -130,7 +130,7 @@ const CONTENT: Record<Lang, {
         { title: '8. Leaving the beta', content: 'You can leave the beta at any time by deleting your account from the dashboard. The service may be interrupted during the beta: do not use it for essential messages.' },
       ],
       abus: [
-        { title: 'How to report', content: 'Write to contact@veilix.fr with the alias involved if you know it, a description of the problem and, if possible, an example of the message received.' },
+        { title: 'How to report', content: 'Write to legal@veilix.fr with the alias involved if you know it, a description of the problem and, if possible, an example of the message received.' },
         { title: 'Our process', content: 'Every report is reviewed. If abuse is confirmed, the alias is disabled and the key may be suspended. Veilix does not know who its users are and therefore cannot reveal their identity, except under a court order covering the data it holds.' },
         { title: 'Legal reporting', content: 'For a criminal offense, you can also contact the relevant authorities.' },
       ],
@@ -165,17 +165,17 @@ export default function ConditionsUtilisation() {
   }
 
   return (
-    <div style={{ minHeight: '100vh', background: '#060608', color: '#f1f5f9', fontFamily: 'Inter, sans-serif' }}>
+    <div style={{ minHeight: '100vh', background: 'var(--c-060608)', color: 'var(--c-f1f5f9)', fontFamily: 'Inter, sans-serif' }}>
       <SiteNav t={t} lang={lang} setLang={setLang} mode="public" hideNavLinks />
 
       <div style={{ maxWidth: 720, margin: '0 auto', padding: '120px 24px 80px' }}>
         <div style={{ marginBottom: 32 }}>
-          <div style={{ fontSize: 11, fontWeight: 700, color: '#a78bfa', textTransform: 'uppercase', letterSpacing: '1.2px', marginBottom: 12 }}>{c.kicker}</div>
+          <div style={{ fontSize: 11, fontWeight: 700, color: 'var(--c-a78bfa)', textTransform: 'uppercase', letterSpacing: '1.2px', marginBottom: 12 }}>{c.kicker}</div>
           <h1 style={{ fontSize: 'clamp(28px, 4vw, 40px)', fontWeight: 900, letterSpacing: '-1.5px', lineHeight: 1.1, marginBottom: 16 }}>{c.title}</h1>
-          <p style={{ fontSize: 13, color: '#475569' }}>{c.updated}</p>
+          <p style={{ fontSize: 13, color: 'var(--c-475569)' }}>{c.updated}</p>
         </div>
 
-        <div role="tablist" style={{ display: 'flex', flexWrap: 'wrap', columnGap: 20, marginBottom: 40, borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
+        <div role="tablist" style={{ display: 'flex', flexWrap: 'wrap', columnGap: 20, marginBottom: 40, borderBottom: '1px solid rgba(var(--ink),0.06)' }}>
           {TAB_IDS.map(id => (
             <button
               key={id}
@@ -186,7 +186,7 @@ export default function ConditionsUtilisation() {
               style={{
                 padding: '10px 4px', background: 'none', border: 'none', cursor: 'pointer',
                 fontSize: 13, fontWeight: 600, fontFamily: 'Inter, sans-serif',
-                color: active === id ? '#a78bfa' : '#64748b',
+                color: active === id ? 'var(--c-a78bfa)' : 'var(--c-64748b)',
                 borderBottom: active === id ? '2px solid #7c3aed' : '2px solid transparent',
                 transition: 'color .15s, border-color .15s', marginBottom: -1,
               }}
@@ -199,7 +199,7 @@ export default function ConditionsUtilisation() {
         <h2 style={{ fontSize: 20, fontWeight: 800, letterSpacing: '-0.4px', marginBottom: 24 }}>{c.titles[active]}</h2>
 
         {c.intro[active] && (
-          <p style={{ fontSize: 14, color: '#94a3b8', lineHeight: 1.8, marginBottom: 28, padding: '16px 18px', background: 'rgba(239,68,68,0.04)', border: '1px solid rgba(239,68,68,0.15)', borderRadius: 12 }}>
+          <p style={{ fontSize: 14, color: 'var(--c-94a3b8)', lineHeight: 1.8, marginBottom: 28, padding: '16px 18px', background: 'rgba(239,68,68,0.04)', border: '1px solid rgba(239,68,68,0.15)', borderRadius: 12 }}>
             {c.intro[active]}
           </p>
         )}
@@ -207,8 +207,8 @@ export default function ConditionsUtilisation() {
         <div style={{ display: 'flex', flexDirection: 'column', gap: 32 }}>
           {c.sections[active].map(section => (
             <div key={section.title}>
-              <h3 style={{ fontSize: 15, fontWeight: 700, color: '#e2e8f0', marginBottom: 10 }}>{section.title}</h3>
-              <p style={{ fontSize: 14, color: '#64748b', lineHeight: 1.8 }}>{section.content}</p>
+              <h3 style={{ fontSize: 15, fontWeight: 700, color: 'var(--c-e2e8f0)', marginBottom: 10 }}>{section.title}</h3>
+              <p style={{ fontSize: 14, color: 'var(--c-64748b)', lineHeight: 1.8 }}>{section.content}</p>
             </div>
           ))}
         </div>

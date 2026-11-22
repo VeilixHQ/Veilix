@@ -14,7 +14,7 @@ export function ScrollProgress() {
   }, [])
   return (
     <div style={{ position: 'fixed', top: 0, left: 0, right: 0, height: 2, zIndex: 999, background: 'transparent' }}>
-      <div style={{ height: '100%', width: `${pct}%`, background: 'linear-gradient(90deg, #7c3aed, #3b82f6)', transition: 'width 0.1s linear' }} />
+      <div style={{ height: '100%', width: `${pct}%`, background: '#7c3aed', transition: 'width 0.1s linear' }} />
     </div>
   )
 }
@@ -31,7 +31,7 @@ export function BackToTop({ label }: { label: string }) {
     <button
       onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
       title={label}
-      style={{ position: 'fixed', bottom: 28, right: 28, zIndex: 300, width: 44, height: 44, borderRadius: '50%', background: 'rgba(124,58,237,0.15)', border: '1px solid rgba(124,58,237,0.3)', color: '#a78bfa', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', backdropFilter: 'blur(8px)', transition: 'all 0.2s', fontSize: 18 }}
+      style={{ position: 'fixed', bottom: 28, right: 28, zIndex: 300, width: 44, height: 44, borderRadius: '50%', background: 'rgba(124,58,237,0.15)', border: '1px solid rgba(124,58,237,0.3)', color: 'var(--c-a78bfa)', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', backdropFilter: 'blur(8px)', transition: 'all 0.2s', fontSize: 18 }}
       onMouseEnter={e => { e.currentTarget.style.background = 'rgba(124,58,237,0.3)' }}
       onMouseLeave={e => { e.currentTarget.style.background = 'rgba(124,58,237,0.15)' }}
     >

@@ -10,8 +10,8 @@ type Tester = { code_id: number; phase: string; code_status: string; created_at:
 type Overview = { phases: Record<'private' | 'public', Phase>; metrics: Record<string, number>; testers: Tester[] }
 type Feedback = { id: number; key_id: number; submitted_at: string; is_final: boolean; answers: Record<string, unknown> }
 
-const CARD: React.CSSProperties = { background: '#0d0d10', border: '1px solid rgba(255,255,255,0.06)', borderRadius: 12, padding: '16px 18px', minWidth: 0 }
-const CELL: React.CSSProperties = { padding: '9px 10px', borderBottom: '1px solid rgba(255,255,255,0.05)', textAlign: 'left', whiteSpace: 'nowrap', fontSize: 12.5 }
+const CARD: React.CSSProperties = { background: 'var(--c-0d0d10)', border: '1px solid rgba(var(--ink),0.06)', borderRadius: 12, padding: '16px 18px', minWidth: 0 }
+const CELL: React.CSSProperties = { padding: '9px 10px', borderBottom: '1px solid rgba(var(--ink),0.05)', textAlign: 'left', whiteSpace: 'nowrap', fontSize: 12.5 }
 const METRIC_LABELS: Record<string, string> = { testers: 'Testeurs inscrits', with_alias: 'Ont créé un alias', aliases: 'Alias créés', feedback: 'Retours reçus', suspended: 'Suspendus' }
 
 function stateOf(t: Tester) {
@@ -66,31 +66,31 @@ export default function AdminPage() {
 
   if (denied) {
     return (
-      <main style={{ minHeight: '100vh', background: '#060608', color: '#f1f5f9', fontFamily: 'Inter, sans-serif', display: 'grid', placeItems: 'center', padding: 24 }}>
+      <main style={{ minHeight: '100vh', background: 'var(--c-060608)', color: 'var(--c-f1f5f9)', fontFamily: 'Inter, sans-serif', display: 'grid', placeItems: 'center', padding: 24 }}>
         <div style={{ textAlign: 'center' }}>
           <p style={{ fontSize: 15, fontWeight: 700, marginBottom: 8 }}>Page introuvable</p>
-          <Link href="/" style={{ color: '#a78bfa', fontSize: 13 }}>Retour à l&apos;accueil</Link>
+          <Link href="/" style={{ color: 'var(--c-a78bfa)', fontSize: 13 }}>Retour à l&apos;accueil</Link>
         </div>
       </main>
     )
   }
 
   return (
-    <main style={{ minHeight: '100vh', background: '#060608', color: '#f1f5f9', fontFamily: 'Inter, sans-serif', padding: '40px max(16px, 3vw) 64px' }}>
+    <main style={{ minHeight: '100vh', background: 'var(--c-060608)', color: 'var(--c-f1f5f9)', fontFamily: 'Inter, sans-serif', padding: '40px max(16px, 3vw) 64px' }}>
       <div style={{ maxWidth: 1100, margin: '0 auto', display: 'flex', flexDirection: 'column', gap: 28 }}>
         <header style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 16, flexWrap: 'wrap' }}>
           <div>
             <h1 style={{ fontSize: 24, fontWeight: 800, letterSpacing: '-0.6px' }}>Suivi de la bêta</h1>
-            <p style={{ fontSize: 13, color: '#64748b' }}>Les invitations, rappels et suspensions partent automatiquement toutes les 10 minutes.</p>
+            <p style={{ fontSize: 13, color: 'var(--c-64748b)' }}>Les invitations, rappels et suspensions partent automatiquement toutes les 10 minutes.</p>
           </div>
           <div style={{ display: 'flex', gap: 10, alignItems: 'center' }}>
-            {notice && <span role="status" style={{ fontSize: 12.5, color: '#a78bfa' }}>{notice}</span>}
+            {notice && <span role="status" style={{ fontSize: 12.5, color: 'var(--c-a78bfa)' }}>{notice}</span>}
             <Button variant="secondary" size="sm" loading={busy} onClick={() => act(adminBeta.tick, 'Tâches exécutées')}>Lancer les tâches maintenant</Button>
           </div>
         </header>
 
         {!data ? (
-          <p style={{ color: '#64748b', fontSize: 13 }}>Chargement...</p>
+          <p style={{ color: 'var(--c-64748b)', fontSize: 13 }}>Chargement...</p>
         ) : (
           <>
             <section style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: 12 }}>
@@ -100,12 +100,12 @@ export default function AdminPage() {
                   <div key={phase} style={CARD}>
                     <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 10 }}>
                       <strong style={{ fontSize: 14 }}>{phase === 'private' ? 'Bêta privée' : 'Bêta publique'}</strong>
-                      <span style={{ fontSize: 11.5, fontWeight: 600, color: p.open ? '#4ade80' : '#64748b' }}>{p.open ? 'Ouverte' : 'Fermée'}</span>
+                      <span style={{ fontSize: 11.5, fontWeight: 600, color: p.open ? 'var(--c-4ade80)' : 'var(--c-64748b)' }}>{p.open ? 'Ouverte' : 'Fermée'}</span>
                     </div>
                     <div style={{ fontSize: 26, fontWeight: 800, fontVariantNumeric: 'tabular-nums' }}>
-                      {p.seats_taken}<span style={{ fontSize: 14, color: '#475569' }}> / {p.capacity ?? '-'} places</span>
+                      {p.seats_taken}<span style={{ fontSize: 14, color: 'var(--c-475569)' }}> / {p.capacity ?? '-'} places</span>
                     </div>
-                    <p style={{ fontSize: 12, color: '#64748b', marginTop: 6, lineHeight: 1.6 }}>
+                    <p style={{ fontSize: 12, color: 'var(--c-64748b)', marginTop: 6, lineHeight: 1.6 }}>
                       {p.waiting} en attente · {p.invited} invités · {p.registered} inscrits
                       {p.ends_at && <><br />Clôture le {formatDate(p.ends_at)}</>}
                       {phase === 'public' && p.wave2_opens_at && <><br />Vague 2 le {formatDate(p.wave2_opens_at)}{p.wave2_hold ? ' (bloquée)' : ''}</>}
@@ -118,7 +118,7 @@ export default function AdminPage() {
                 <dl style={{ display: 'grid', gridTemplateColumns: '1fr auto', gap: '6px 12px', marginTop: 10, fontSize: 12.5 }}>
                   {Object.entries(data.metrics).map(([k, v]) => (
                     <div key={k} style={{ display: 'contents' }}>
-                      <dt style={{ color: '#94a3b8' }}>{METRIC_LABELS[k] || k}</dt>
+                      <dt style={{ color: 'var(--c-94a3b8)' }}>{METRIC_LABELS[k] || k}</dt>
                       <dd style={{ margin: 0, fontWeight: 700, fontVariantNumeric: 'tabular-nums', textAlign: 'right' }}>{v}</dd>
                     </div>
                   ))}
@@ -131,7 +131,7 @@ export default function AdminPage() {
               <div style={{ overflowX: 'auto' }}>
                 <table style={{ width: '100%', borderCollapse: 'collapse' }}>
                   <thead>
-                    <tr style={{ color: '#64748b' }}>
+                    <tr style={{ color: 'var(--c-64748b)' }}>
                       {['Code', 'Phase', 'Contact', 'État', 'Invité le', 'Activé le', 'Prochain retour', 'Retours', 'Alias', ''].map(h => <th key={h} style={{ ...CELL, fontWeight: 600, fontSize: 11.5 }}>{h}</th>)}
                     </tr>
                   </thead>
@@ -164,16 +164,16 @@ export default function AdminPage() {
 
             <section style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
               <h2 style={{ fontSize: 15, fontWeight: 700 }}>Retours reçus</h2>
-              {feedback.length === 0 && <p style={{ fontSize: 13, color: '#64748b' }}>Aucun retour pour l&apos;instant.</p>}
+              {feedback.length === 0 && <p style={{ fontSize: 13, color: 'var(--c-64748b)' }}>Aucun retour pour l&apos;instant.</p>}
               {feedback.map(f => (
                 <article key={f.id} style={CARD}>
-                  <div style={{ fontSize: 12, color: '#64748b', marginBottom: 8 }}>
+                  <div style={{ fontSize: 12, color: 'var(--c-64748b)', marginBottom: 8 }}>
                     Clé #{f.key_id} · {formatDate(f.submitted_at)}{f.is_final ? ' · retour final' : ''}
                   </div>
                   <dl style={{ display: 'grid', gridTemplateColumns: 'minmax(140px, auto) 1fr', gap: '4px 14px', fontSize: 12.5 }}>
                     {Object.entries(f.answers).map(([k, v]) => (
                       <div key={k} style={{ display: 'contents' }}>
-                        <dt style={{ color: '#94a3b8' }}>{k}</dt>
+                        <dt style={{ color: 'var(--c-94a3b8)' }}>{k}</dt>
                         <dd style={{ margin: 0, whiteSpace: 'pre-wrap', overflowWrap: 'anywhere' }}>{Array.isArray(v) ? v.join(', ') : String(v || '-')}</dd>
                       </div>
                     ))}

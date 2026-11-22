@@ -21,9 +21,9 @@ function noInvitationOnServer() {
   return null
 }
 
-const CARD: React.CSSProperties = { background: '#0d0d10', border: '1px solid rgba(255,255,255,0.07)', borderRadius: 16, padding: 28 }
+const CARD: React.CSSProperties = { background: 'var(--c-0d0d10)', border: '1px solid rgba(var(--ink),0.07)', borderRadius: 16, padding: 28 }
 const NOTICE_TITLE: React.CSSProperties = { fontSize: 15, fontWeight: 700, marginBottom: 8 }
-const NOTICE_TEXT: React.CSSProperties = { fontSize: 13, color: '#94a3b8', lineHeight: 1.7 }
+const NOTICE_TEXT: React.CSSProperties = { fontSize: 13, color: 'var(--c-94a3b8)', lineHeight: 1.7 }
 
 export default function BetaPage() {
   const invitation = useSyncExternalStore(subscribeToUrl, readInvitation, noInvitationOnServer)
@@ -75,7 +75,7 @@ export default function BetaPage() {
   }
 
   return (
-    <div style={{ minHeight: '100vh', background: '#060608', color: '#f1f5f9', fontFamily: 'Inter, sans-serif' }}>
+    <div style={{ minHeight: '100vh', background: 'var(--c-060608)', color: 'var(--c-f1f5f9)', fontFamily: 'Inter, sans-serif' }}>
       <SiteNav t={t} lang={lang} setLang={setLang} mode="auth" />
 
       <section style={{ display: 'flex', justifyContent: 'center', padding: '120px 24px 80px', position: 'relative', overflow: 'hidden' }}>
@@ -83,24 +83,24 @@ export default function BetaPage() {
 
         <div style={{ width: '100%', maxWidth: 480, position: 'relative', zIndex: 1, display: 'flex', flexDirection: 'column', gap: 24 }}>
           <div style={{ textAlign: 'center' }}>
-            <div style={{ display: 'inline-flex', padding: '5px 14px', borderRadius: 100, background: 'rgba(124,58,237,0.08)', border: '1px solid rgba(124,58,237,0.2)', fontSize: 12, color: '#a78bfa', fontWeight: 600, marginBottom: 20 }}>
+            <div style={{ display: 'inline-flex', padding: '5px 14px', borderRadius: 100, background: 'rgba(124,58,237,0.08)', border: '1px solid rgba(124,58,237,0.2)', fontSize: 12, color: 'var(--c-a78bfa)', fontWeight: 600, marginBottom: 20 }}>
               {shown === 'private' ? 'Bêta privée · sur invitation' : shown === 'public' ? 'Bêta publique' : view === 'invitation' ? 'Bêta sur invitation' : 'Bêta Veilix'}
             </div>
             <h1 style={{ fontSize: 'clamp(26px, 4vw, 34px)', fontWeight: 900, letterSpacing: '-1.2px', lineHeight: 1.1, marginBottom: 12 }}>
               Rejoindre la bêta Veilix
             </h1>
             {view === 'form' && !sent && (
-              <p style={{ fontSize: 14, color: '#64748b', lineHeight: 1.7, maxWidth: 400, margin: '0 auto' }}>
+              <p style={{ fontSize: 14, color: 'var(--c-64748b)', lineHeight: 1.7, maxWidth: 400, margin: '0 auto' }}>
                 {isPrivate
                   ? "Entrez votre adresse : votre code personnel arrive par e-mail dans la minute. Pendant la bêta privée, le Pack de lancement vous est offert, sans carte bancaire."
                   : "Entrez votre adresse : votre code personnel arrive par e-mail dans la minute. Après la création de votre clé, vous choisissez votre offre, Pro ou Pack de lancement."}
               </p>
             )}
             {phase?.opens_at && phase.ends_at && (
-              <p style={{ fontSize: 13, color: '#a78bfa', fontWeight: 600, marginTop: 14 }}>
+              <p style={{ fontSize: 13, color: 'var(--c-a78bfa)', fontWeight: 600, marginTop: 14 }}>
                 Du {formatDate(phase.opens_at)} au {formatLastDay(phase.ends_at)}
                 {isPrivate && phase.signups_close_at && phase.signups_close_at !== phase.ends_at && (
-                  <span style={{ display: 'block', fontSize: 12, color: '#64748b', fontWeight: 500, marginTop: 4 }}>
+                  <span style={{ display: 'block', fontSize: 12, color: 'var(--c-64748b)', fontWeight: 500, marginTop: 4 }}>
                     Inscriptions jusqu&apos;au {formatLastDay(phase.signups_close_at)}
                   </span>
                 )}
@@ -110,8 +110,8 @@ export default function BetaPage() {
 
           {shown === 'private' && (view === 'form' || view === 'upcoming') && (
             <div style={{ padding: '16px 18px', borderRadius: 14, background: 'rgba(124,58,237,0.08)', border: '1px solid rgba(124,58,237,0.25)' }}>
-              <p style={{ fontSize: 14, fontWeight: 700, color: '#c4b5fd', marginBottom: 6 }}>Après la bêta : 3 mois offerts</p>
-              <p style={{ fontSize: 13, color: '#a5a3c4', lineHeight: 1.65 }}>
+              <p style={{ fontSize: 14, fontWeight: 700, color: 'var(--c-c4b5fd)', marginBottom: 6 }}>Après la bêta : 3 mois offerts</p>
+              <p style={{ fontSize: 13, color: 'var(--c-a5a3c4)', lineHeight: 1.65 }}>
                 {status?.launch_at ? `Au lancement officiel de Veilix, le ${formatDate(status.launch_at)}, ` : 'Au lancement officiel de Veilix, '}
                 vous gardez le Pack de lancement avec 3 mois offerts. Une carte bancaire vous sera demandée à ce moment-là, sans aucun prélèvement pendant ces 3 mois, et vous pouvez résilier avant la fin de l&apos;offre.
               </p>
@@ -121,7 +121,7 @@ export default function BetaPage() {
           {sent ? (
             <div style={{ ...CARD, textAlign: 'center' }} role="status">
               <p style={{ fontSize: 16, fontWeight: 700, marginBottom: 8 }}>C&apos;est noté.</p>
-              <p style={{ fontSize: 13, color: '#94a3b8', lineHeight: 1.7, marginBottom: 20 }}>
+              <p style={{ fontSize: 13, color: 'var(--c-94a3b8)', lineHeight: 1.7, marginBottom: 20 }}>
                 Vérifiez votre boîte mail : vous y trouverez votre code, ou votre place dans la liste d&apos;attente. Dès qu&apos;une place se libère, le code vous est envoyé automatiquement.
               </p>
               <Link href="/access" style={{ textDecoration: 'none' }}>
@@ -143,8 +143,8 @@ export default function BetaPage() {
               <p style={{ ...NOTICE_TEXT, marginBottom: 20 }}>
                 Les inscriptions sont réservées aux personnes invitées. Si vous avez reçu une invitation, ouvrez le lien qu&apos;elle contient pour vous inscrire.
               </p>
-              <p style={{ fontSize: 12, color: '#64748b' }}>
-                Vous avez déjà votre code ? <Link href="/access" style={{ color: '#a78bfa', fontWeight: 600, textDecoration: 'none' }}>Créer ma clé</Link>
+              <p style={{ fontSize: 12, color: 'var(--c-64748b)' }}>
+                Vous avez déjà votre code ? <Link href="/access" style={{ color: 'var(--c-a78bfa)', fontWeight: 600, textDecoration: 'none' }}>Créer ma clé</Link>
               </p>
             </div>
           ) : view === 'paused' ? (
@@ -181,8 +181,8 @@ export default function BetaPage() {
               </div>
 
               <div>
-                <p style={{ fontSize: 12, fontWeight: 600, color: '#94a3b8', marginBottom: 8 }}>Conditions de participation</p>
-                <div style={{ maxHeight: 180, overflowY: 'auto', padding: '12px 14px', borderRadius: 10, background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.06)', fontSize: 12, lineHeight: 1.65, color: '#94a3b8', display: 'flex', flexDirection: 'column', gap: 10 }}>
+                <p style={{ fontSize: 12, fontWeight: 600, color: 'var(--c-94a3b8)', marginBottom: 8 }}>Conditions de participation</p>
+                <div style={{ maxHeight: 180, overflowY: 'auto', padding: '12px 14px', borderRadius: 10, background: 'rgba(var(--ink),0.02)', border: '1px solid rgba(var(--ink),0.06)', fontSize: 12, lineHeight: 1.65, color: 'var(--c-94a3b8)', display: 'flex', flexDirection: 'column', gap: 10 }}>
                   <p>{BETA_TERMS}</p>
                   <p>{betaRhythm(isPrivate ? 'private' : 'public')}</p>
                   <p>{BETA_RIGHTS}</p>
@@ -192,26 +192,26 @@ export default function BetaPage() {
                 </div>
               </div>
 
-              <label htmlFor="beta-accept" style={{ display: 'flex', alignItems: 'flex-start', gap: 10, cursor: 'pointer', fontSize: 13, color: '#cbd5e1', lineHeight: 1.5 }}>
+              <label htmlFor="beta-accept" style={{ display: 'flex', alignItems: 'flex-start', gap: 10, cursor: 'pointer', fontSize: 13, color: 'var(--c-cbd5e1)', lineHeight: 1.5 }}>
                 <input id="beta-accept" type="checkbox" checked={accepted} onChange={e => setAccepted(e.target.checked)} style={{ marginTop: 3, accentColor: '#7c3aed', width: 16, height: 16, flexShrink: 0 }} />
                 <span>
-                  J&apos;accepte les <a href="/conditions-utilisation#beta" target="_blank" rel="noopener" style={{ color: '#a78bfa' }}>conditions de participation à la bêta</a>.
+                  J&apos;accepte les <a href="/conditions-utilisation#beta" target="_blank" rel="noopener" style={{ color: 'var(--c-a78bfa)' }}>conditions de participation à la bêta</a>.
                 </span>
               </label>
 
               {!isPrivate && status?.public.wave === 1 && status.public.wave2_opens_at && (
-                <p style={{ fontSize: 12, color: '#64748b', lineHeight: 1.6 }}>
+                <p style={{ fontSize: 12, color: 'var(--c-64748b)', lineHeight: 1.6 }}>
                   Première vague en cours. Si elle est complète, vous rejoignez la liste d&apos;attente : la seconde vague ouvre automatiquement le {formatDate(status.public.wave2_opens_at)}.
                 </p>
               )}
 
-              {error && <p role="alert" style={{ fontSize: 13, color: '#f87171' }}>{error}</p>}
+              {error && <p role="alert" style={{ fontSize: 13, color: 'var(--c-f87171)' }}>{error}</p>}
 
               <Button type="submit" variant="primary" size="lg" loading={sending} disabled={!canSubmit} style={{ width: '100%' }}>
                 Recevoir mon code
               </Button>
-              <p style={{ fontSize: 12, color: '#64748b', textAlign: 'center' }}>
-                Vous avez déjà votre code ? <Link href="/access" style={{ color: '#a78bfa', fontWeight: 600, textDecoration: 'none' }}>Créer ma clé</Link>
+              <p style={{ fontSize: 12, color: 'var(--c-64748b)', textAlign: 'center' }}>
+                Vous avez déjà votre code ? <Link href="/access" style={{ color: 'var(--c-a78bfa)', fontWeight: 600, textDecoration: 'none' }}>Créer ma clé</Link>
               </p>
             </form>
           )}

@@ -41,8 +41,8 @@ export function SocialProof({ lang }: Props) {
     <section
       style={{
         padding: '96px 24px',
-        background: '#0d0d10',
-        borderTop: '1px solid rgba(255,255,255,0.06)',
+        background: 'var(--c-0d0d10)',
+        borderTop: '1px solid rgba(var(--ink),0.06)',
       }}
     >
       <div
@@ -67,8 +67,8 @@ export function SocialProof({ lang }: Props) {
                 aspectRatio: '4 / 5',
                 borderRadius: 20,
                 overflow: 'hidden',
-                border: '1px solid rgba(255,255,255,0.07)',
-                background: '#0a0a0c',
+                border: '1px solid rgba(var(--ink),0.07)',
+                background: 'var(--c-0a0a0c)',
                 boxShadow: '0 32px 80px rgba(0,0,0,0.5)',
               }}
             >
@@ -92,7 +92,7 @@ export function SocialProof({ lang }: Props) {
                 style={{
                   fontSize: 11,
                   fontWeight: 700,
-                  color: '#a78bfa',
+                  color: 'var(--c-a78bfa)',
                   textTransform: 'uppercase',
                   letterSpacing: '1.2px',
                   marginBottom: 14,
@@ -108,7 +108,7 @@ export function SocialProof({ lang }: Props) {
                   letterSpacing: '-1.2px',
                   lineHeight: 1.15,
                   marginBottom: 28,
-                  color: '#f1f5f9',
+                  color: 'var(--c-f1f5f9)',
                 }}
               >
                 {t.title}
@@ -127,7 +127,7 @@ export function SocialProof({ lang }: Props) {
                     key={index}
                     style={{
                       fontSize: 14,
-                      color: '#64748b',
+                      color: 'var(--c-64748b)',
                       lineHeight: 1.8,
                     }}
                     dangerouslySetInnerHTML={{ __html: paragraph }}
@@ -168,7 +168,7 @@ export function SocialProof({ lang }: Props) {
                       style={{
                         fontSize: 12,
                         fontWeight: 600,
-                        color: '#a78bfa',
+                        color: 'var(--c-a78bfa)',
                       }}
                     >
                       {pillar}

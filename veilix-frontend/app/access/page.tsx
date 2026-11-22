@@ -224,7 +224,7 @@ function AccessContent() {
   }
 
   return (
-    <div style={{ minHeight: '100vh', background: '#060608', color: '#f1f5f9', fontFamily: 'Inter, sans-serif' }}>
+    <div style={{ minHeight: '100vh', background: 'var(--c-060608)', color: 'var(--c-f1f5f9)', fontFamily: 'Inter, sans-serif' }}>
       <style>{`
         @keyframes spin{to{transform:rotate(360deg)}}
         @keyframes pulse{0%,100%{opacity:1}50%{opacity:.5}}
@@ -241,18 +241,18 @@ function AccessContent() {
 
           {step === 'choice' && (
             <div className="step-enter" style={{ textAlign: 'center' }}>
-              <div style={{ display: 'inline-flex', alignItems: 'center', gap: 7, padding: '5px 14px', borderRadius: 100, background: 'rgba(124,58,237,0.08)', border: '1px solid rgba(124,58,237,0.2)', fontSize: 12, color: '#a78bfa', fontWeight: 600, marginBottom: 24 }}>
+              <div style={{ display: 'inline-flex', alignItems: 'center', gap: 7, padding: '5px 14px', borderRadius: 100, background: 'rgba(124,58,237,0.08)', border: '1px solid rgba(124,58,237,0.2)', fontSize: 12, color: 'var(--c-a78bfa)', fontWeight: 600, marginBottom: 24 }}>
                 {t.access.badge}
               </div>
 
               <h1 style={{ fontSize: 'clamp(26px, 4vw, 36px)', fontWeight: 900, letterSpacing: '-1.5px', lineHeight: 1.1, marginBottom: 14 }}>
                 {t.access.title}
               </h1>
-              <p style={{ fontSize: 14, color: '#64748b', lineHeight: 1.7, maxWidth: 360, margin: '0 auto 40px', whiteSpace: 'pre-line' }}>
+              <p style={{ fontSize: 14, color: 'var(--c-64748b)', lineHeight: 1.7, maxWidth: 360, margin: '0 auto 40px', whiteSpace: 'pre-line' }}>
                 {t.access.subtitle}
               </p>
 
-              <div style={{ background: '#0d0d10', border: '1px solid rgba(255,255,255,0.07)', borderRadius: 16, padding: 28, textAlign: 'left' }}>
+              <div style={{ background: 'var(--c-0d0d10)', border: '1px solid rgba(var(--ink),0.07)', borderRadius: 16, padding: 28, textAlign: 'left' }}>
                 <Button variant="primary" size="lg" onClick={() => setStep('code')} style={{ width: '100%', marginBottom: 12 }}>
                   {t.access.generateBtn}
                 </Button>
@@ -260,11 +260,11 @@ function AccessContent() {
                   {t.access.restoreBtn}
                 </Button>
 
-                <div style={{ marginTop: 20, paddingTop: 20, borderTop: '1px solid rgba(255,255,255,0.06)', display: 'flex', flexDirection: 'column', gap: 10 }}>
+                <div style={{ marginTop: 20, paddingTop: 20, borderTop: '1px solid rgba(var(--ink),0.06)', display: 'flex', flexDirection: 'column', gap: 10 }}>
                   {t.access.bullets.map((txt, i) => (
                     <div key={i} style={{ display: 'flex', alignItems: 'flex-start', gap: 8 }}>
                       <span style={{ width: 4, height: 4, borderRadius: '50%', background: '#7c3aed', flexShrink: 0, marginTop: 6 }} />
-                      <span style={{ fontSize: 12, color: '#64748b', lineHeight: 1.6 }}>{txt}</span>
+                      <span style={{ fontSize: 12, color: 'var(--c-64748b)', lineHeight: 1.6 }}>{txt}</span>
                     </div>
                   ))}
                 </div>
@@ -278,14 +278,14 @@ function AccessContent() {
                 <h1 style={{ fontSize: 'clamp(22px, 3.5vw, 28px)', fontWeight: 800, letterSpacing: '-0.8px', marginBottom: 10 }}>
                   {lang === 'fr' ? "Code d'accès bêta" : 'Beta access code'}
                 </h1>
-                <p style={{ fontSize: 13, color: '#64748b', lineHeight: 1.7, maxWidth: 380, margin: '0 auto' }}>
+                <p style={{ fontSize: 13, color: 'var(--c-64748b)', lineHeight: 1.7, maxWidth: 380, margin: '0 auto' }}>
                   {lang === 'fr'
                     ? 'Veilix est en bêta. Saisissez le code personnel reçu avec votre invitation.'
                     : 'Veilix is in beta. Enter the personal code you received with your invitation.'}
                 </p>
               </div>
 
-              <div style={{ background: '#0d0d10', border: '1px solid rgba(255,255,255,0.07)', borderRadius: 14, padding: 24, display: 'flex', flexDirection: 'column', gap: 18 }}>
+              <div style={{ background: 'var(--c-0d0d10)', border: '1px solid rgba(var(--ink),0.07)', borderRadius: 14, padding: 24, display: 'flex', flexDirection: 'column', gap: 18 }}>
                 <Input
                   id="access-code"
                   label={lang === 'fr' ? 'Code personnel' : 'Personal code'}
@@ -298,17 +298,17 @@ function AccessContent() {
                 />
 
                 <div>
-                  <p style={{ fontSize: 12, fontWeight: 600, color: '#94a3b8', marginBottom: 8 }}>
+                  <p style={{ fontSize: 12, fontWeight: 600, color: 'var(--c-94a3b8)', marginBottom: 8 }}>
                     {lang === 'fr' ? 'Conditions de participation à la bêta' : 'Beta participation terms'}
                   </p>
-                  <div style={{ maxHeight: 168, overflowY: 'auto', padding: '12px 14px', borderRadius: 10, background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.06)', fontSize: 12, lineHeight: 1.65, color: '#94a3b8' }}>
+                  <div style={{ maxHeight: 168, overflowY: 'auto', padding: '12px 14px', borderRadius: 10, background: 'rgba(var(--ink),0.02)', border: '1px solid rgba(var(--ink),0.06)', fontSize: 12, lineHeight: 1.65, color: 'var(--c-94a3b8)' }}>
                     <p style={{ marginBottom: 10 }}>{BETA_TERMS}</p>
                     <p style={{ marginBottom: 10 }}>{betaRhythm(termsPhase)}</p>
                     <p>{BETA_RIGHTS}</p>
                   </div>
                 </div>
 
-                <label htmlFor="accept-terms" style={{ display: 'flex', alignItems: 'flex-start', gap: 10, cursor: 'pointer', fontSize: 13, color: '#cbd5e1', lineHeight: 1.5 }}>
+                <label htmlFor="accept-terms" style={{ display: 'flex', alignItems: 'flex-start', gap: 10, cursor: 'pointer', fontSize: 13, color: 'var(--c-cbd5e1)', lineHeight: 1.5 }}>
                   <input
                     id="accept-terms"
                     type="checkbox"
@@ -318,14 +318,14 @@ function AccessContent() {
                   />
                   <span>
                     {lang === 'fr' ? "J'accepte les " : 'I accept the '}
-                    <a href="/conditions-utilisation#beta" target="_blank" rel="noopener" style={{ color: '#a78bfa' }}>{lang === 'fr' ? 'conditions de participation à la bêta' : 'beta participation terms'}</a>.
+                    <a href="/conditions-utilisation#beta" target="_blank" rel="noopener" style={{ color: 'var(--c-a78bfa)' }}>{lang === 'fr' ? 'conditions de participation à la bêta' : 'beta participation terms'}</a>.
                   </span>
                 </label>
 
-                <p style={{ fontSize: 12, color: '#64748b', textAlign: 'center' }}>
+                <p style={{ fontSize: 12, color: 'var(--c-64748b)', textAlign: 'center' }}>
                   {lang === 'fr' ? 'Pas encore de code ? ' : 'No code yet? '}
                   {publicBetaOpen
-                    ? <a href="/beta" style={{ color: '#a78bfa', fontWeight: 600, textDecoration: 'none' }}>{lang === 'fr' ? 'Rejoindre la bêta' : 'Join the beta'}</a>
+                    ? <a href="/beta" style={{ color: 'var(--c-a78bfa)', fontWeight: 600, textDecoration: 'none' }}>{lang === 'fr' ? 'Rejoindre la bêta' : 'Join the beta'}</a>
                     : (lang === 'fr' ? "La bêta est sur invitation : utilisez le lien reçu avec votre invitation." : 'The beta is invitation-only: use the link you received with your invitation.')}
                 </p>
 
@@ -342,8 +342,8 @@ function AccessContent() {
           {step === 'generating' && (
             <div className="step-enter" style={{ textAlign: 'center', padding: '60px 0' }}>
               <div style={{ width: 48, height: 48, margin: '0 auto 24px', borderRadius: '50%', border: '3px solid rgba(124,58,237,0.15)', borderTopColor: '#7c3aed', animation: 'spin 0.8s linear infinite' }} />
-              <p style={{ fontSize: 14, color: '#94a3b8', fontWeight: 500, animation: 'pulse 1.5s ease infinite' }}>{lang === 'fr' ? 'Génération de votre clé...' : 'Generating your key...'}</p>
-              <p style={{ fontSize: 12, color: '#334155', marginTop: 8 }}>{lang === 'fr' ? 'Chiffrement local en cours' : 'Local encryption in progress'}</p>
+              <p style={{ fontSize: 14, color: 'var(--c-94a3b8)', fontWeight: 500, animation: 'pulse 1.5s ease infinite' }}>{lang === 'fr' ? 'Génération de votre clé...' : 'Generating your key...'}</p>
+              <p style={{ fontSize: 12, color: 'var(--c-334155)', marginTop: 8 }}>{lang === 'fr' ? 'Chiffrement local en cours' : 'Local encryption in progress'}</p>
             </div>
           )}
 
@@ -353,26 +353,26 @@ function AccessContent() {
                 <h1 style={{ fontSize: 'clamp(22px, 3.5vw, 28px)', fontWeight: 800, letterSpacing: '-0.8px', marginBottom: 10 }}>
                   {t.access.revealTitle}
                 </h1>
-                <p style={{ fontSize: 13, color: '#64748b', lineHeight: 1.7, maxWidth: 380, margin: '0 auto' }}>
+                <p style={{ fontSize: 13, color: 'var(--c-64748b)', lineHeight: 1.7, maxWidth: 380, margin: '0 auto' }}>
                   {t.access.revealSub}
                 </p>
               </div>
 
               <div style={{ position: 'relative', marginBottom: 12 }}>
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 8, padding: 20, background: '#0d0d10', border: '1px solid rgba(255,255,255,0.07)', borderRadius: 14, filter: revealed ? 'none' : 'blur(8px)', userSelect: revealed ? 'text' : 'none', transition: 'filter 0.3s' }}>
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 8, padding: 20, background: 'var(--c-0d0d10)', border: '1px solid rgba(var(--ink),0.07)', borderRadius: 14, filter: revealed ? 'none' : 'blur(8px)', userSelect: revealed ? 'text' : 'none', transition: 'filter 0.3s' }}>
                   {identity.seedPhrase.split(' ').map((word, i) => (
-                    <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 6, padding: '8px 10px', background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.04)', borderRadius: 8 }}>
-                      <span style={{ fontSize: 10, color: '#475569', fontWeight: 600, minWidth: 14 }}>{i + 1}</span>
-                      <span style={{ fontSize: 13, fontFamily: 'monospace', color: '#e2e8f0' }}>{word}</span>
+                    <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 6, padding: '8px 10px', background: 'rgba(var(--ink),0.02)', border: '1px solid rgba(var(--ink),0.04)', borderRadius: 8 }}>
+                      <span style={{ fontSize: 10, color: 'var(--c-475569)', fontWeight: 600, minWidth: 14 }}>{i + 1}</span>
+                      <span style={{ fontSize: 13, fontFamily: 'monospace', color: 'var(--c-e2e8f0)' }}>{word}</span>
                     </div>
                   ))}
                 </div>
                 {!revealed && (
-                  <button onClick={() => setRevealed(true)} style={{ position: 'absolute', inset: 0, background: 'rgba(8,8,8,0.5)', border: 'none', borderRadius: 14, cursor: 'pointer', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 10 }}>
+                  <button onClick={() => setRevealed(true)} style={{ position: 'absolute', inset: 0, background: 'rgba(var(--bg-rgb),0.5)', border: 'none', borderRadius: 14, cursor: 'pointer', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 10 }}>
                     <div style={{ width: 40, height: 40, borderRadius: 10, background: 'rgba(124,58,237,0.15)', border: '1px solid rgba(124,58,237,0.3)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#a78bfa" strokeWidth="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" /><circle cx="12" cy="12" r="3" /></svg>
                     </div>
-                    <span style={{ fontSize: 13, fontWeight: 600, color: '#a78bfa' }}>{t.access.clickToReveal}</span>
+                    <span style={{ fontSize: 13, fontWeight: 600, color: 'var(--c-a78bfa)' }}>{t.access.clickToReveal}</span>
                   </button>
                 )}
               </div>
@@ -385,7 +385,7 @@ function AccessContent() {
                     showToast(lang === 'fr' ? 'Phrase copiée' : 'Phrase copied', 'success')
                     setTimeout(() => setCopiedSeed(false), 2000)
                   }}
-                  style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 7, width: '100%', padding: '10px', marginBottom: 20, background: copiedSeed ? 'rgba(34,197,94,0.08)' : 'rgba(255,255,255,0.02)', border: `1px solid ${copiedSeed ? 'rgba(34,197,94,0.25)' : 'rgba(255,255,255,0.07)'}`, borderRadius: 10, cursor: 'pointer', transition: 'all .15s', fontFamily: 'Inter, sans-serif', fontSize: 12, fontWeight: 600, color: copiedSeed ? '#4ade80' : '#94a3b8' }}
+                  style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 7, width: '100%', padding: '10px', marginBottom: 20, background: copiedSeed ? 'rgba(34,197,94,0.08)' : 'rgba(var(--ink),0.02)', border: `1px solid ${copiedSeed ? 'rgba(34,197,94,0.25)' : 'rgba(var(--ink),0.07)'}`, borderRadius: 10, cursor: 'pointer', transition: 'all .15s', fontFamily: 'Inter, sans-serif', fontSize: 12, fontWeight: 600, color: copiedSeed ? 'var(--c-4ade80)' : 'var(--c-94a3b8)' }}
                 >
                   {copiedSeed ? (
                     <>
@@ -407,7 +407,7 @@ function AccessContent() {
                   <line x1="12" y1="9" x2="12" y2="13" />
                   <circle cx="12" cy="17" r="1" fill="#f87171" />
                 </svg>
-                <p style={{ fontSize: 12, color: '#f87171', lineHeight: 1.6, whiteSpace: 'pre-line' }}>
+                <p style={{ fontSize: 12, color: 'var(--c-f87171)', lineHeight: 1.6, whiteSpace: 'pre-line' }}>
                   {t.access.warningText}
                 </p>
               </div>
@@ -424,12 +424,12 @@ function AccessContent() {
                 <h1 style={{ fontSize: 'clamp(22px, 3.5vw, 28px)', fontWeight: 800, letterSpacing: '-0.8px', marginBottom: 10 }}>
                   {t.access.confirmTitle}
                 </h1>
-                <p style={{ fontSize: 13, color: '#64748b', lineHeight: 1.7 }}>
+                <p style={{ fontSize: 13, color: 'var(--c-64748b)', lineHeight: 1.7 }}>
                   {t.access.confirmSub}
                 </p>
               </div>
 
-              <div style={{ background: '#0d0d10', border: '1px solid rgba(255,255,255,0.07)', borderRadius: 14, padding: 24 }}>
+              <div style={{ background: 'var(--c-0d0d10)', border: '1px solid rgba(var(--ink),0.07)', borderRadius: 14, padding: 24 }}>
                 <div style={{ display: 'flex', flexDirection: 'column', gap: 16, marginBottom: 24 }}>
                   {checkIndices.map(i => (
                     <Input key={i} label={`${lang === 'fr' ? 'Mot' : 'Word'} n°${i + 1}`} value={confirmWords[i] || ''} onChange={e => setConfirmWords(prev => ({ ...prev, [i]: e.target.value }))} placeholder="..." />
@@ -450,14 +450,14 @@ function AccessContent() {
                 <h1 style={{ fontSize: 'clamp(22px, 3.5vw, 28px)', fontWeight: 800, letterSpacing: '-0.8px', marginBottom: 10 }}>
                   {lang === 'fr' ? 'Adresse de contact' : 'Contact address'}
                 </h1>
-                <p style={{ fontSize: 13, color: '#64748b', lineHeight: 1.7, maxWidth: 380, margin: '0 auto' }}>
+                <p style={{ fontSize: 13, color: 'var(--c-64748b)', lineHeight: 1.7, maxWidth: 380, margin: '0 auto' }}>
                   {lang === 'fr'
                     ? 'Obligatoire pendant la bêta. Elle sert uniquement à vous écrire : rappels de retours, incidents et fin de bêta.'
                     : 'Required during the beta. It is only used to write to you: feedback reminders, incidents and the end of the beta.'}
                 </p>
               </div>
 
-              <div style={{ background: '#0d0d10', border: '1px solid rgba(255,255,255,0.07)', borderRadius: 14, padding: 24, display: 'flex', flexDirection: 'column', gap: 18 }}>
+              <div style={{ background: 'var(--c-0d0d10)', border: '1px solid rgba(var(--ink),0.07)', borderRadius: 14, padding: 24, display: 'flex', flexDirection: 'column', gap: 18 }}>
                 <Input
                   id="contact-email"
                   type="email"
@@ -468,8 +468,8 @@ function AccessContent() {
                   autoComplete="email"
                 />
 
-                <div style={{ padding: '12px 14px', borderRadius: 10, background: 'rgba(124,58,237,0.06)', border: '1px solid rgba(124,58,237,0.18)', fontSize: 12, lineHeight: 1.65, color: '#a5a3c4' }}>
-                  <p style={{ fontWeight: 600, color: '#c4b5fd', marginBottom: 6 }}>
+                <div style={{ padding: '12px 14px', borderRadius: 10, background: 'rgba(124,58,237,0.06)', border: '1px solid rgba(124,58,237,0.18)', fontSize: 12, lineHeight: 1.65, color: 'var(--c-a5a3c4)' }}>
+                  <p style={{ fontWeight: 600, color: 'var(--c-c4b5fd)', marginBottom: 6 }}>
                     {lang === 'fr' ? 'Comment elle est protégée' : 'How it is protected'}
                   </p>
                   <p>
@@ -492,15 +492,15 @@ function AccessContent() {
                 <h1 style={{ fontSize: 'clamp(22px, 3.5vw, 28px)', fontWeight: 800, letterSpacing: '-0.8px', marginBottom: 10 }}>
                   {t.access.restoreTitle}
                 </h1>
-                <p style={{ fontSize: 13, color: '#64748b', lineHeight: 1.7 }}>
+                <p style={{ fontSize: 13, color: 'var(--c-64748b)', lineHeight: 1.7 }}>
                   {t.access.restoreSub}
                 </p>
               </div>
 
-              <div style={{ background: '#0d0d10', border: '1px solid rgba(255,255,255,0.07)', borderRadius: 14, padding: 24 }}>
+              <div style={{ background: 'var(--c-0d0d10)', border: '1px solid rgba(var(--ink),0.07)', borderRadius: 14, padding: 24 }}>
                 <div style={{ display: 'flex', gap: 8, marginBottom: 18 }}>
                   <div style={{ position: 'relative', flex: 1 }}>
-                    <input type="text" placeholder={t.access.pastePlaceholder} onPaste={e => handleWordPaste(0, e)} onChange={() => {}} value="" style={{ width: '100%', padding: '12px 14px', background: '#0a0a0c', border: '1px dashed rgba(124,58,237,0.3)', borderRadius: 10, fontSize: 13, color: '#94a3b8', outline: 'none', fontFamily: 'Inter, sans-serif' }} />
+                    <input type="text" placeholder={t.access.pastePlaceholder} onPaste={e => handleWordPaste(0, e)} onChange={() => {}} value="" style={{ width: '100%', padding: '12px 14px', background: 'var(--c-0a0a0c)', border: '1px dashed rgba(124,58,237,0.3)', borderRadius: 10, fontSize: 13, color: 'var(--c-94a3b8)', outline: 'none', fontFamily: 'Inter, sans-serif' }} />
                   </div>
                   <button
                     type="button"
@@ -518,7 +518,7 @@ function AccessContent() {
                         showToast(lang === 'fr' ? 'Collage indisponible, utilisez Ctrl+V dans le champ' : 'Paste unavailable, use Ctrl+V in the field', 'error')
                       }
                     }}
-                    style={{ display: 'flex', alignItems: 'center', gap: 6, padding: '0 14px', background: 'rgba(124,58,237,0.1)', border: '1px solid rgba(124,58,237,0.25)', borderRadius: 10, cursor: 'pointer', fontFamily: 'Inter, sans-serif', fontSize: 12, fontWeight: 600, color: '#a78bfa', whiteSpace: 'nowrap', transition: 'background .15s' }}
+                    style={{ display: 'flex', alignItems: 'center', gap: 6, padding: '0 14px', background: 'rgba(124,58,237,0.1)', border: '1px solid rgba(124,58,237,0.25)', borderRadius: 10, cursor: 'pointer', fontFamily: 'Inter, sans-serif', fontSize: 12, fontWeight: 600, color: 'var(--c-a78bfa)', whiteSpace: 'nowrap', transition: 'background .15s' }}
                     onMouseEnter={e => (e.currentTarget.style.background = 'rgba(124,58,237,0.18)')}
                     onMouseLeave={e => (e.currentTarget.style.background = 'rgba(124,58,237,0.1)')}
                   >
@@ -528,15 +528,15 @@ function AccessContent() {
                 </div>
 
                 <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 18 }}>
-                  <div style={{ flex: 1, height: 1, background: 'rgba(255,255,255,0.06)' }} />
-                  <span style={{ fontSize: 11, color: '#334155', fontWeight: 600 }}>{t.access.manualSeparator}</span>
-                  <div style={{ flex: 1, height: 1, background: 'rgba(255,255,255,0.06)' }} />
+                  <div style={{ flex: 1, height: 1, background: 'rgba(var(--ink),0.06)' }} />
+                  <span style={{ fontSize: 11, color: 'var(--c-334155)', fontWeight: 600 }}>{t.access.manualSeparator}</span>
+                  <div style={{ flex: 1, height: 1, background: 'rgba(var(--ink),0.06)' }} />
                 </div>
 
                 <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 8, marginBottom: 20 }}>
                   {restoreWords.map((word, i) => (
-                    <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 6, padding: '0 10px', background: '#0a0a0c', border: '1px solid rgba(255,255,255,0.07)', borderRadius: 8, transition: 'border-color .15s' }}>
-                      <span style={{ fontSize: 10, color: '#475569', fontWeight: 600, minWidth: 14, flexShrink: 0 }}>{i + 1}</span>
+                    <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 6, padding: '0 10px', background: 'var(--c-0a0a0c)', border: '1px solid rgba(var(--ink),0.07)', borderRadius: 8, transition: 'border-color .15s' }}>
+                      <span style={{ fontSize: 10, color: 'var(--c-475569)', fontWeight: 600, minWidth: 14, flexShrink: 0 }}>{i + 1}</span>
                       <input
                         ref={el => { restoreInputRefs.current[i] = el }}
                         value={word}
@@ -546,7 +546,7 @@ function AccessContent() {
                         autoComplete="off"
                         autoCapitalize="off"
                         spellCheck={false}
-                        style={{ width: '100%', padding: '9px 0', background: 'transparent', border: 'none', outline: 'none', fontSize: 13, fontFamily: 'monospace', color: '#f1f5f9' }}
+                        style={{ width: '100%', padding: '9px 0', background: 'transparent', border: 'none', outline: 'none', fontSize: 13, fontFamily: 'monospace', color: 'var(--c-f1f5f9)' }}
                       />
                     </div>
                   ))}
@@ -570,7 +570,7 @@ function AccessContent() {
 
 export default function Access() {
   return (
-    <Suspense fallback={<div style={{ minHeight: '100vh', background: '#060608' }} />}>
+    <Suspense fallback={<div style={{ minHeight: '100vh', background: 'var(--c-060608)' }} />}>
       <AccessContent />
     </Suspense>
   )

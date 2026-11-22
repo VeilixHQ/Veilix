@@ -4,7 +4,8 @@ from dotenv import load_dotenv
 load_dotenv(encoding="utf-8-sig")
 
 DATABASE_URL        = os.getenv("DATABASE_URL")
-DOMAIN              = os.getenv("DOMAIN", "veilix.fr")
+DOMAIN              = os.getenv("DOMAIN", "alias.veilix.fr")
+BRAND_DOMAIN        = os.getenv("BRAND_DOMAIN", "veilix.fr").strip().lower()
 EMAIL_PROVIDER      = os.getenv("EMAIL_PROVIDER", "mailgun")
 MAILGUN_API_KEY     = os.getenv("MAILGUN_API_KEY")
 MAILGUN_DOMAIN      = os.getenv("MAILGUN_DOMAIN")
@@ -12,6 +13,7 @@ MAILGUN_SIGNING_KEY = os.getenv("MAILGUN_SIGNING_KEY", "").strip()
 MAILGUN_API_URL     = os.getenv("MAILGUN_API_URL", "https://api.eu.mailgun.net").rstrip("/")
 REPLY_DOMAIN        = (os.getenv("REPLY_DOMAIN") or MAILGUN_DOMAIN or DOMAIN).strip().lower()
 INTERNAL_DOMAINS    = {d.strip().lower() for d in (DOMAIN, MAILGUN_DOMAIN, REPLY_DOMAIN) if d and d.strip()}
+CUSTOM_DOMAINS_ENABLED = os.getenv("CUSTOM_DOMAINS_ENABLED", "false").strip().lower() in ("1", "true", "yes")
 FRONTEND_URL        = os.getenv("FRONTEND_URL", "http://localhost:3000").rstrip("/")
 ENCRYPTION_KEY      = os.getenv("ENCRYPTION_KEY")
 HMAC_SECRET         = os.getenv("HMAC_SECRET")

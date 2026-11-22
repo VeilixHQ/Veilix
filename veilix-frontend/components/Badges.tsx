@@ -115,13 +115,13 @@ export function BadgeRow({ badges }: { badges: AccountBadge[] }) {
         .vx-badge{position:relative;width:30px;height:30px;padding:0;border:0;background:none;border-radius:8px;cursor:default}
         .vx-badge svg{filter:drop-shadow(0 3px 4px rgba(0,0,0,.5));transition:transform .2s ease}
         .vx-badge:hover svg,.vx-badge:focus-visible svg{transform:translateY(-2px) scale(1.08)}
-        .vx-badge:focus-visible{outline:2px solid #a78bfa;outline-offset:3px}
-        .vx-badge-tip{position:absolute;bottom:calc(100% + 10px);left:50%;transform:translate(-50%,4px);width:max-content;max-width:200px;padding:7px 10px;border-radius:8px;background:#1a1a24;border:1px solid rgba(255,255,255,.1);font-size:11.5px;line-height:1.4;color:#f1f5f9;text-align:left;opacity:0;pointer-events:none;transition:opacity .15s,transform .15s;z-index:5}
-        .vx-badge-tip span{display:block;color:#94a3b8;font-size:11px}
+        .vx-badge:focus-visible{outline:2px solid var(--c-a78bfa);outline-offset:3px}
+        .vx-badge-tip{position:absolute;bottom:calc(100% + 10px);left:50%;transform:translate(-50%,4px);width:max-content;max-width:200px;padding:7px 10px;border-radius:8px;background:var(--c-1a1a24);border:1px solid rgba(var(--ink),.1);font-size:11.5px;line-height:1.4;color:var(--c-f1f5f9);text-align:left;opacity:0;pointer-events:none;transition:opacity .15s,transform .15s;z-index:5}
+        .vx-badge-tip span{display:block;color:var(--c-94a3b8);font-size:11px}
         .vx-badge:hover .vx-badge-tip,.vx-badge:focus-visible .vx-badge-tip{opacity:1;transform:translate(-50%,0)}
         @media (prefers-reduced-motion: reduce){.vx-badge svg,.vx-badge-tip{transition:none}}
       `}</style>
-      <span style={{ fontSize: 10.5, fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase', color: '#64748b', marginRight: 2 }}>Badges</span>
+      <span style={{ fontSize: 10.5, fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase', color: 'var(--c-64748b)', marginRight: 2 }}>Badges</span>
       {badges.map(badge => {
         const title = badgeTitle(badge)
         return (

@@ -21,9 +21,9 @@ export default function Contact() {
   }
 
   return (
-    <div style={{ minHeight: '100vh', background: '#060608', color: '#f1f5f9', fontFamily: 'Inter, sans-serif' }}>
+    <div style={{ minHeight: '100vh', background: 'var(--c-060608)', color: 'var(--c-f1f5f9)', fontFamily: 'Inter, sans-serif' }}>
       <style>{`
-        input,textarea{width:100%;padding:11px 14px;background:#0d0d10;border:1px solid rgba(255,255,255,0.08);border-radius:8px;font-size:13px;color:#f1f5f9;outline:none;font-family:Inter,sans-serif;transition:border-color .2s;resize:none}
+        input,textarea{width:100%;padding:11px 14px;background:var(--c-0d0d10);border:1px solid rgba(var(--ink),0.08);border-radius:8px;font-size:13px;color:var(--c-f1f5f9);outline:none;font-family:Inter,sans-serif;transition:border-color .2s;resize:none}
         input:focus,textarea:focus{border-color:rgba(124,58,237,0.4)}
       `}</style>
 
@@ -31,9 +31,9 @@ export default function Contact() {
 
       <div style={{ maxWidth: 600, margin: '0 auto', padding: '120px 24px 80px' }}>
         <div style={{ marginBottom: 48 }}>
-          <div style={{ fontSize: 11, fontWeight: 700, color: '#a78bfa', textTransform: 'uppercase', letterSpacing: '1.2px', marginBottom: 12 }}>{pt.kicker}</div>
+          <div style={{ fontSize: 11, fontWeight: 700, color: 'var(--c-a78bfa)', textTransform: 'uppercase', letterSpacing: '1.2px', marginBottom: 12 }}>{pt.kicker}</div>
           <h1 style={{ fontSize: 'clamp(28px, 4vw, 40px)', fontWeight: 900, letterSpacing: '-1.5px', lineHeight: 1.1, marginBottom: 16 }}>{pt.title}</h1>
-          <p style={{ fontSize: 14, color: '#64748b', lineHeight: 1.7 }}>{pt.sub}</p>
+          <p style={{ fontSize: 14, color: 'var(--c-64748b)', lineHeight: 1.7 }}>{pt.sub}</p>
         </div>
 
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: 12, marginBottom: 40 }}>
@@ -41,38 +41,50 @@ export default function Contact() {
             { icon: <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#a78bfa" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><rect x="2" y="4" width="20" height="16" rx="2" /><path d="m22 7-10 6L2 7" /></svg>, label: pt.email, value: 'contact@veilix.fr', href: 'mailto:contact@veilix.fr', external: false },
             { icon: <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#a78bfa" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" /></svg>, label: pt.discord, value: pt.discordValue, href: 'https://discord.gg/Cfze5qmvhV', external: true },
           ].map((c, i) => (
-            <a key={i} href={c.href} {...(c.external ? { target: '_blank', rel: 'noopener noreferrer' } : {})} style={{ display: 'flex', alignItems: 'center', gap: 12, padding: '16px 18px', background: '#0d0d10', border: '1px solid rgba(255,255,255,0.07)', borderRadius: 12, textDecoration: 'none', transition: 'border-color .2s' }}
+            <a key={i} href={c.href} {...(c.external ? { target: '_blank', rel: 'noopener noreferrer' } : {})} style={{ display: 'flex', alignItems: 'center', gap: 12, padding: '16px 18px', background: 'var(--c-0d0d10)', border: '1px solid rgba(var(--ink),0.07)', borderRadius: 12, textDecoration: 'none', transition: 'border-color .2s' }}
               onMouseEnter={e => (e.currentTarget.style.borderColor = 'rgba(124,58,237,0.3)')}
-              onMouseLeave={e => (e.currentTarget.style.borderColor = 'rgba(255,255,255,0.07)')}>
+              onMouseLeave={e => (e.currentTarget.style.borderColor = 'rgba(var(--ink),0.07)')}>
               <span style={{ display: 'flex', flexShrink: 0 }}>{c.icon}</span>
               <div>
-                <div style={{ fontSize: 12, fontWeight: 700, color: '#e2e8f0' }}>{c.label}</div>
-                <div style={{ fontSize: 11, color: '#475569' }}>{c.value}</div>
+                <div style={{ fontSize: 12, fontWeight: 700, color: 'var(--c-e2e8f0)' }}>{c.label}</div>
+                <div style={{ fontSize: 11, color: 'var(--c-475569)' }}>{c.value}</div>
               </div>
             </a>
           ))}
         </div>
 
+        <div style={{ background: 'var(--c-0d0d10)', border: '1px solid rgba(var(--ink),0.07)', borderRadius: 14, overflow: 'hidden', marginBottom: 40 }}>
+          <h2 style={{ fontSize: 14, fontWeight: 700, color: 'var(--c-e2e8f0)', padding: '16px 20px', borderBottom: '1px solid rgba(var(--ink),0.06)' }}>{pt.addressesTitle}</h2>
+          <dl>
+            {pt.addresses.map((item, i) => (
+              <div key={item.email} style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between', alignItems: 'center', gap: '4px 16px', padding: '12px 20px', borderTop: i === 0 ? 'none' : '1px solid rgba(var(--ink),0.05)' }}>
+                <dt style={{ fontSize: 13, color: 'var(--c-94a3b8)' }}>{item.role}</dt>
+                <dd><a href={`mailto:${item.email}`} style={{ fontSize: 13, fontWeight: 600, color: 'var(--c-a78bfa)', textDecoration: 'none', fontFamily: 'ui-monospace, Menlo, Consolas, monospace' }}>{item.email}</a></dd>
+              </div>
+            ))}
+          </dl>
+        </div>
+
         {!sent ? (
-          <div style={{ background: '#0d0d10', border: '1px solid rgba(255,255,255,0.07)', borderRadius: 14, padding: 28 }}>
+          <div style={{ background: 'var(--c-0d0d10)', border: '1px solid rgba(var(--ink),0.07)', borderRadius: 14, padding: 28 }}>
             <h2 style={{ fontSize: 16, fontWeight: 700, marginBottom: 24, letterSpacing: '-0.3px' }}>{pt.formTitle}</h2>
             <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
               <div>
-                <label style={{ display: 'block', fontSize: 12, fontWeight: 600, color: '#94a3b8', marginBottom: 6 }}>{pt.subjectLabel}</label>
+                <label style={{ display: 'block', fontSize: 12, fontWeight: 600, color: 'var(--c-94a3b8)', marginBottom: 6 }}>{pt.subjectLabel}</label>
                 <input type="text" value={subject} onChange={e => setSubject(e.target.value)} placeholder={pt.subjectPlaceholder} required />
               </div>
               <div>
-                <label style={{ display: 'block', fontSize: 12, fontWeight: 600, color: '#94a3b8', marginBottom: 6 }}>{pt.messageLabel}</label>
+                <label style={{ display: 'block', fontSize: 12, fontWeight: 600, color: 'var(--c-94a3b8)', marginBottom: 6 }}>{pt.messageLabel}</label>
                 <textarea value={message} onChange={e => setMessage(e.target.value)} placeholder={pt.messagePlaceholder} rows={5} required />
               </div>
-              <button type="submit" style={{ padding: '11px', borderRadius: 9, background: 'linear-gradient(135deg, #7c3aed, #4f46e5)', border: 'none', color: '#fff', fontSize: 14, fontWeight: 600, cursor: 'pointer', fontFamily: 'Inter, sans-serif', marginTop: 4 }}>{pt.send}</button>
+              <button type="submit" style={{ padding: '11px', borderRadius: 9, background: '#7c3aed', border: 'none', color: '#fff', fontSize: 14, fontWeight: 600, cursor: 'pointer', fontFamily: 'Inter, sans-serif', marginTop: 4 }}>{pt.send}</button>
             </form>
           </div>
         ) : (
           <div style={{ background: 'rgba(34,197,94,0.05)', border: '1px solid rgba(34,197,94,0.2)', borderRadius: 14, padding: 28, textAlign: 'center' }}>
             <div style={{ display: 'flex', justifyContent: 'center', marginBottom: 12 }}><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#4ade80" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12" /></svg></div>
-            <div style={{ fontSize: 15, fontWeight: 700, color: '#4ade80', marginBottom: 8 }}>{pt.sentTitle}</div>
-            <div style={{ fontSize: 13, color: '#64748b' }}>{pt.sentDesc}</div>
+            <div style={{ fontSize: 15, fontWeight: 700, color: 'var(--c-4ade80)', marginBottom: 8 }}>{pt.sentTitle}</div>
+            <div style={{ fontSize: 13, color: 'var(--c-64748b)' }}>{pt.sentDesc}</div>
           </div>
         )}
       </div>

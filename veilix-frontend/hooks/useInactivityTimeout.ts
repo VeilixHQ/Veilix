@@ -34,7 +34,7 @@ export function useInactivityTimeout() {
   }, [expireSession])
 
   const reset = useCallback(() => {
-    if (sessionExpired) return 
+    if (sessionExpired) return
     if (warningTimer.current) clearTimeout(warningTimer.current)
     if (countdownRef.current) clearInterval(countdownRef.current)
     setShowWarning(false)
@@ -45,15 +45,16 @@ export function useInactivityTimeout() {
   const stayConnected = useCallback(() => { reset() }, [reset])
 
   useEffect(() => {
+    if (sessionExpired) return
     const events = ['mousemove', 'keydown', 'click', 'scroll', 'touchstart']
     events.forEach(e => window.addEventListener(e, reset, { passive: true }))
-    reset()
+    warningTimer.current = setTimeout(startCountdown, TIMEOUT_MS)
     return () => {
       events.forEach(e => window.removeEventListener(e, reset))
       if (warningTimer.current) clearTimeout(warningTimer.current)
       if (countdownRef.current) clearInterval(countdownRef.current)
     }
-  }, [reset])
+  }, [reset, startCountdown, sessionExpired])
 
   return { showWarning, countdown, stayConnected, sessionExpired, setSessionExpired }
 }

@@ -13,7 +13,7 @@ LOCK_ID = 7_402_917
 
 
 def run_once() -> dict | None:
-    from app.services import beta_service
+    from app.services import beta_service, digest_service
 
     with engine.connect() as conn:
         acquired = conn.execute(text("SELECT pg_try_advisory_lock(:id)"), {"id": LOCK_ID}).scalar()
@@ -22,7 +22,13 @@ def run_once() -> dict | None:
         try:
             db = SessionLocal()
             try:
-                return beta_service.tick(db)
+                report = beta_service.tick(db)
+                try:
+                    report["digests"] = digest_service.send_due(db)
+                except Exception as exc:
+                    db.rollback()
+                    logger.error("Échec des rapports hebdomadaires : %s", type(exc).__name__)
+                return report
             finally:
                 db.close()
         finally:

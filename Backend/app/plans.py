@@ -15,6 +15,16 @@ PLAN_QUOTAS = {
 
 STORED_PLANS = tuple(plan for plan in PLAN_QUOTAS if plan != "admin")
 
+DESTINATION_LIMITS = {
+    "credits": 3,
+    "pro": 3,
+    "pack": 10,
+    "premium": 10,
+    "admin": None,
+}
+
+PACK_PLANS = {"pack", "premium", "admin"}
+
 LIMIT_DETAILS = {
     "credits": "NO_CREDITS",
     "pro": "LIMIT_REACHED_PRO",
@@ -46,6 +56,14 @@ def check_alias_allowance(plan: str, current_count: int, credits: int) -> AliasA
     if credits > 0:
         return AliasAllowance(allowed=True, uses_credit=True)
     return AliasAllowance(allowed=False, uses_credit=False)
+
+
+def destination_limit(plan: str) -> int | None:
+    return DESTINATION_LIMITS.get(plan, 3)
+
+
+def has_pack_features(plan: str) -> bool:
+    return plan in PACK_PLANS
 
 
 def limit_detail(plan: str) -> str:

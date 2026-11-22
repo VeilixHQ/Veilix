@@ -13,13 +13,13 @@ const content = {
 export function SimpleFooter({ lang }: Props) {
   const t = content[lang]
   return (
-    <footer style={{ borderTop: '1px solid rgba(255,255,255,0.06)', padding: '24px 40px' }}>
+    <footer style={{ borderTop: '1px solid rgba(var(--ink),0.06)', padding: '24px 40px' }}>
       <style>{`
-        .footer-link{font-size:13px;color:#475569;text-decoration:none;transition:color .15s}
-        .footer-link:hover{color:#a78bfa}
+        .footer-link{font-size:13px;color:var(--c-475569);text-decoration:none;transition:color .15s}
+        .footer-link:hover{color:var(--c-a78bfa)}
       `}</style>
       <div style={{ maxWidth: 720, margin: '0 auto', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 12 }}>
-        <span style={{ fontSize: 12, color: '#334155' }}>{t.copy}</span>
+        <span style={{ fontSize: 12, color: 'var(--c-334155)' }}>{t.copy}</span>
         <div style={{ display: 'flex', gap: 20 }}>
           <Link href="/confidentialite" className="footer-link">{t.confidentialite}</Link>
           <Link href="/conditions-utilisation" className="footer-link">{t.cgu}</Link>
