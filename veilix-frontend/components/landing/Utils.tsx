@@ -2,23 +2,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { useOnScreen } from '@/lib/hooks'
 
-export function ScrollProgress() {
-  const [pct, setPct] = useState(0)
-  useEffect(() => {
-    const h = () => {
-      const el = document.documentElement
-      setPct((el.scrollTop / (el.scrollHeight - el.clientHeight)) * 100)
-    }
-    window.addEventListener('scroll', h, { passive: true })
-    return () => window.removeEventListener('scroll', h)
-  }, [])
-  return (
-    <div style={{ position: 'fixed', top: 0, left: 0, right: 0, height: 2, zIndex: 999, background: 'transparent' }}>
-      <div style={{ height: '100%', width: `${pct}%`, background: '#7c3aed', transition: 'width 0.1s linear' }} />
-    </div>
-  )
-}
-
 export function BackToTop({ label }: { label: string }) {
   const [show, setShow] = useState(false)
   useEffect(() => {

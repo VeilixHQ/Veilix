@@ -98,8 +98,8 @@ export default function MentionsLegales() {
             </h2>
             <p style={{ fontSize: 14, color: 'var(--c-64748b)', lineHeight: 1.8 }}>
               {isFr
-                ? "L'intégralité du code de Veilix, site et backend, est open source et publiquement consultable sur github.com/VeilixHQ/Veilix. La marque \"Veilix\" et son logo restent la propriété de l'éditeur."
-                : 'All of the Veilix code, website and backend, is open source and publicly available at github.com/VeilixHQ/Veilix. The "Veilix" brand and logo remain the property of the publisher.'}
+                ? "L'intégralité du code de Veilix, site et backend, est open source sous licence AGPL-3.0 et publiquement consultable sur github.com/VeilixHQ/Veilix. La marque \"Veilix\" et son logo restent la propriété de l'éditeur."
+                : 'All of the Veilix code, website and backend, is open source under the AGPL-3.0 license and publicly available at github.com/VeilixHQ/Veilix. The "Veilix" brand and logo remain the property of the publisher.'}
             </p>
           </div>
 
