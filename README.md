@@ -43,7 +43,7 @@ Les e-mails reçus sur cet alias sont relayés vers votre vraie boîte, qui n'es
 | **Activation et désactivation** | Un alias désactivé ne relaie plus aucun mail |
 | **Blocage d'expéditeurs** | Par adresse ou par domaine entier, sous-domaines inclus |
 | **Statistiques par alias** | Messages transférés et messages bloqués |
-| **Alertes de fuite** | Après 7 jours, une alerte de fuite est fourni à l'utilisateur s'il y en a eu lieu |
+| **Alertes de fuite** | Après 7 jours, une alerte de fuite est fournie à l'utilisateur s'il y en a eu. |
 | **Chiffrement PGP** | Les e-mails relayés peuvent être chiffrés avec votre clé publique (PGP/MIME) |
 | **Clés API** | Jetons `vlx_…` pour créer et gérer vos alias par programme |
 | **Rapport hebdomadaire** | Résumé de l'activité de vos alias, option désactivable |
