@@ -1,15 +1,15 @@
-<p align="center">
+<h1 align="center">
   <picture>
     <source media="(prefers-color-scheme: dark)" srcset="veilix-frontend/public/vlx-white.svg">
     <img src="veilix-frontend/public/vlx-black.svg" alt="Veilix" width="96">
   </picture>
-</p>
-
-<h1 align="center">Veilix</h1>
+  <br>
+  Veilix
+</h1>
 
 <p align="center">
-  <strong>Des alias e-mail pour protéger votre vraie adresse.</strong><br>
-  Open source, sans mot de passe, hébergé en Europe.
+  <strong>Des alias e-mail pour protéger votre adresse e-mail personnelle.</strong><br>
+  Sans journal d'activité, sans e-mail ni mot de passe, Open source et hébergé en Europe.
 </p>
 
 <p align="center">
@@ -28,26 +28,25 @@
 
 ## Présentation
 
-Veilix vous donne une adresse différente pour chaque site où vous vous inscrivez, par exemple `x7k2m9pl4q@alias.veilix.fr`. Les e-mails reçus sur cet alias sont relayés vers votre vraie boîte, qui n'est jamais communiquée au site. Si un alias reçoit du spam ou fuite, vous le désactivez : votre vraie adresse reste intacte.
+Veilix vous donne une adresse différente pour chaque site où vous vous inscrivez, par exemple `x7k2m9pl4q@alias.veilix.fr`.
+Les e-mails reçus sur cet alias sont relayés vers votre vraie boîte, qui n'est jamais communiquée au site. Si un alias reçoit du spam ou fuite, vous le désactivez : votre vraie adresse reste intacte.
 
-Veilix est en **bêta privée**.
-
-> **English summary.** Veilix is an open-source email alias service. Each alias forwards to your real inbox, which stays private. Accounts are a key generated in your browser, with no email or password. Hosted in the EU. Licensed under AGPL-3.0.
+> Veilix est actuellement en **bêta privée**.
 
 ## Fonctionnalités
 
 | | |
 |---|---|
-| **Alias à la demande** | Une adresse aléatoire par site, avec libellé et tags |
-| **Relais des e-mails** | Pièces jointes incluses, vers une ou plusieurs boîtes de destination confirmées |
-| **Réponse depuis l'alias** | Vous répondez sans dévoiler votre vraie adresse |
-| **Activation et désactivation** | Un alias désactivé ne relaie plus rien |
+| **Alias à la demande** | Une adresse aléatoire par site, avec libellé et tags personnalisés |
+| **Relais des e-mails** | Pièces jointes incluses, vers une ou plusieurs boîtes de destination |
+| **Réponse depuis l'alias** | Vous répondez aux mails sans dévoiler votre adresse personnelle |
+| **Activation et désactivation** | Un alias désactivé ne relaie plus aucun mail |
 | **Blocage d'expéditeurs** | Par adresse ou par domaine entier, sous-domaines inclus |
 | **Statistiques par alias** | Messages transférés et messages bloqués |
-| **Alertes de fuite** | Après 7 jours d'apprentissage, un nouvel expéditeur inattendu est signalé |
+| **Alertes de fuite** | Après 7 jours, une alerte de fuite est fourni à l'utilisateur s'il y en a eu lieu |
 | **Chiffrement PGP** | Les e-mails relayés peuvent être chiffrés avec votre clé publique (PGP/MIME) |
 | **Clés API** | Jetons `vlx_…` pour créer et gérer vos alias par programme |
-| **Rapport hebdomadaire** | Résumé de l'activité de vos alias, désactivable |
+| **Rapport hebdomadaire** | Résumé de l'activité de vos alias, option désactivable |
 | **Export de vos données** | Export RGPD depuis les paramètres |
 | **Domaines personnalisés** | Bientôt disponible |
 
@@ -56,7 +55,7 @@ Veilix est en **bêta privée**.
 - **Pas d'e-mail ni de mot de passe pour créer un compte.** Votre navigateur génère une clé et une phrase de récupération de 12 mots ([bip39](https://github.com/bitcoinjs/bip39)). Veilix ne connaît pas cette phrase.
 - **Adresses chiffrées.** Les adresses de destination sont chiffrées en base (AES-256-GCM).
 - **Contenu non conservé.** Les e-mails sont relayés, pas stockés.
-- **Aucun cookie de suivi**, aucun traceur.
+- **Aucun cookie de suivi**, aucun tracking.
 - **Hébergement en Europe** : API et base de données chez Railway (Amsterdam), site chez Vercel (servi depuis Paris), e-mails par Mailgun (région européenne).
 - **Code public** : tout ce qui tourne en production est dans ce dépôt.
 
@@ -68,14 +67,7 @@ Veilix est en **bêta privée**.
 
 ### Parcours d'un e-mail
 
-```mermaid
-flowchart LR
-    S["Expéditeur"] -->|"écrit à l'alias"| R["Mailgun UE<br>réception"]
-    R -->|"webhook signé"| A["API Veilix<br>Railway, Amsterdam"]
-    A -->|"relaie"| E["Mailgun UE<br>envoi"]
-    E --> B["Votre vraie boîte"]
-    A <--> D[("PostgreSQL<br>adresses chiffrées")]
-```
+<img src=".github/architecture/parcours-email-sombre.png" alt="Parcours d'un e-mail : expéditeur, Mailgun réception, API Veilix, Mailgun envoi, votre vraie boîte" width="100%">
 
 1. Un e-mail arrive sur `…@alias.veilix.fr`. Mailgun le transmet à l'API (`POST /email/inbound`) avec une signature vérifiée.
 2. L'API retrouve l'alias, applique les blocages, les quotas et la détection de fuite, chiffre en PGP si demandé, puis renvoie l'e-mail vers votre boîte.
@@ -84,12 +76,7 @@ flowchart LR
 
 ### Site et compte
 
-```mermaid
-flowchart LR
-    N["Votre navigateur<br>clé générée localement"] -->|"charge les pages"| W["veilix.fr<br>Vercel, Paris"]
-    N -->|"requêtes authentifiées"| A["api.veilix.fr<br>Railway, Amsterdam"]
-    A <--> D[("PostgreSQL")]
-```
+<img src=".github/architecture/site-et-compte-sombre.png" alt="Votre navigateur charge les pages depuis veilix.fr et appelle directement api.veilix.fr" width="70%">
 
 Le site ne fait qu'afficher l'interface : c'est votre navigateur qui parle directement à l'API, avec la clé qu'il a générée.
 
@@ -201,7 +188,9 @@ Les tests de l'API tournent automatiquement sur GitHub Actions à chaque push su
 
 ## Configuration
 
-Toutes les variables de l'API sont listées dans [`Backend/.env.example`](Backend/.env.example). Les principales :
+Toutes les variables de l'API sont listées dans [`Backend/.env.example`](Backend/.env.example). 
+
+Les principales :
 
 | Variable | Rôle |
 |---|---|
@@ -233,19 +222,10 @@ python -c "import secrets; print(secrets.token_hex(32))"
 
 > Conservez `ENCRYPTION_KEY` en lieu sûr : sans elle, les adresses enregistrées deviennent illisibles.
 
-## Administration
-
-Depuis `Backend/`, avec la même configuration que l'API :
-
-| Commande | Usage |
-|---|---|
-| `python -m scripts.beta_codes generate --phase private --count 10` | Générer des codes d'accès bêta |
-| `python -m scripts.set_plan --key-id <id> --show` | Consulter ou modifier le plan, le statut et les crédits d'un compte |
-| `python -m scripts.confirm_destination --key-id <id> --email <adresse>` | Confirmer manuellement une boîte de destination |
-
 ## Contribuer
 
-Les signalements de bugs et les propositions sont les bienvenus dans les [issues](https://github.com/VeilixHQ/Veilix/issues). Pour une pull request :
+Les signalements de bugs et les propositions sont les bienvenus dans les [issues](https://github.com/VeilixHQ/Veilix/issues). 
+Pour une pull request :
 
 1. Les tests de l'API et la compilation du site doivent passer.
 2. Les textes visibles sont rédigés en français et en anglais.
