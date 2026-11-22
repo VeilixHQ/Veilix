@@ -66,17 +66,32 @@ Veilix est en **bêta privée**.
 
 ## Architecture
 
-```
-Expéditeur ──► Mailgun (UE) ──► API Veilix ──► Mailgun (UE) ──► Votre vraie boîte
-                 alias.veilix.fr     │
-                                     ▼
-Navigateur ──► Site Next.js ──► API FastAPI ──► PostgreSQL
-               (Vercel, Paris)   (Railway, Amsterdam)
+### Parcours d'un e-mail
+
+```mermaid
+flowchart LR
+    S["Expéditeur"] -->|"écrit à l'alias"| R["Mailgun UE<br>réception"]
+    R -->|"webhook signé"| A["API Veilix<br>Railway, Amsterdam"]
+    A -->|"relaie"| E["Mailgun UE<br>envoi"]
+    E --> B["Votre vraie boîte"]
+    A <--> D[("PostgreSQL<br>adresses chiffrées")]
 ```
 
-1. Un e-mail arrive sur `…@alias.veilix.fr`. Mailgun le transmet à l'API (`POST /email/inbound`), avec une signature vérifiée.
-2. L'API retrouve l'alias, applique les blocages, les quotas et la détection de fuite, chiffre en PGP si demandé, puis renvoie l'e-mail vers la boîte de destination.
-3. Les échecs et les plaintes remontent par `POST /email/events`.
+1. Un e-mail arrive sur `…@alias.veilix.fr`. Mailgun le transmet à l'API (`POST /email/inbound`) avec une signature vérifiée.
+2. L'API retrouve l'alias, applique les blocages, les quotas et la détection de fuite, chiffre en PGP si demandé, puis renvoie l'e-mail vers votre boîte.
+3. Quand vous répondez, le message repart par le même chemin et l'expéditeur ne voit que l'alias.
+4. Les échecs et les plaintes remontent par `POST /email/events`.
+
+### Site et compte
+
+```mermaid
+flowchart LR
+    N["Votre navigateur<br>clé générée localement"] -->|"charge les pages"| W["veilix.fr<br>Vercel, Paris"]
+    N -->|"requêtes authentifiées"| A["api.veilix.fr<br>Railway, Amsterdam"]
+    A <--> D[("PostgreSQL")]
+```
+
+Le site ne fait qu'afficher l'interface : c'est votre navigateur qui parle directement à l'API, avec la clé qu'il a générée.
 
 ## Pile technique
 
