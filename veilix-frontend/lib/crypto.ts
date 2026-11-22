@@ -150,13 +150,3 @@ export async function getIdentity(): Promise<StoredIdentity | null> {
 export async function forgetIdentity(): Promise<void> {
   await idbDelete(RECORD_KEY)
 }
-
-
-export async function hasIdentity(): Promise<boolean> {
-  const identity = await getIdentity()
-  return identity !== null
-}
-
-export function validateSeedPhrase(phrase: string): boolean {
-  return bip39.validateMnemonic(phrase.trim().toLowerCase().replace(/\s+/g, ' '))
-}
