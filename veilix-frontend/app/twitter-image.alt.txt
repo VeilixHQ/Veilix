@@ -1,1 +1,1 @@
-Veilix : des alias email pour protéger votre adresse e-mail personnelle. Open source, sans mot de passe, hébergé en Europe.
+Veilix : des alias email anonymes et sécurisés. Un alias différent pour chaque site. Open source, sans mot de passe, hébergé en Europe.

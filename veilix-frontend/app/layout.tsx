@@ -8,7 +8,7 @@ const DESCRIPTION = "Créez un alias email pour chaque site et gardez votre adre
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    default: 'Veilix : alias email pour protéger votre adresse e-mail personnelle',
+    default: 'Veilix : alias email anonymes et sécurisés',
     template: '%s | Veilix',
   },
   description: DESCRIPTION,
@@ -20,12 +20,12 @@ export const metadata: Metadata = {
     url: SITE_URL,
     siteName: 'Veilix',
     locale: 'fr_FR',
-    title: 'Veilix : alias email pour protéger votre adresse e-mail personnelle',
+    title: 'Veilix : alias email anonymes et sécurisés',
     description: DESCRIPTION,
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Veilix : alias email pour protéger votre adresse e-mail personnelle',
+    title: 'Veilix : alias email anonymes et sécurisés',
     description: DESCRIPTION,
   },
   robots: { index: true, follow: true, googleBot: { index: true, follow: true, 'max-image-preview': 'large', 'max-snippet': -1 } },

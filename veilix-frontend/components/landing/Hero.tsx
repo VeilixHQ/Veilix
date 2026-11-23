@@ -70,7 +70,7 @@ export function Hero({ t }: { t: Translations }) {
         <span style={{ display: 'block', fontSize: 'clamp(22px, 3.2vw, 40px)', fontWeight: 800, lineHeight: 1.1, letterSpacing: '-1.5px', color: 'var(--c-a78bfa)' }}>{t.h1b}</span>
       </h1>
 
-      <p style={{ fontSize: 16, color: 'var(--c-64748b)', maxWidth: 400, lineHeight: 1.8, marginBottom: 36, marginTop: 18, position: 'relative', zIndex: 1, animation: 'fadeUp 0.6s ease 0.2s both' }}>
+      <p style={{ fontSize: 16, color: 'var(--c-64748b)', maxWidth: 500, lineHeight: 1.8, marginBottom: 36, marginTop: 18, position: 'relative', zIndex: 1, animation: 'fadeUp 0.6s ease 0.2s both' }}>
         {t.sub1}<br />{t.sub2}
       </p>
 
