@@ -159,14 +159,14 @@ export const PT = {
             { q: 'Mes emails sont-ils lus ou stockés ?', a: 'Non, jamais. Nous redirigeons le flux en temps réel.' },
             { q: 'Puis-je répondre depuis un alias ?', a: 'Oui, la réponse est envoyée depuis l\'alias, sans révéler votre vraie adresse.' },
             { q: 'Que se passe-t-il si je désactive un alias ?', a: 'Les emails sont ignorés. Réactivable à tout moment.' },
-            { q: 'Puis-je choisir mon alias ?', a: 'Non, génération aléatoire pour garantir unicité et anonymat.' },
+            { q: 'Puis-je choisir mon alias ?', a: "Sur alias.veilix.fr, chaque adresse est générée aléatoirement pour garantir son unicité et votre anonymat. Choisir le nom de vos adresses sera possible avec les domaines personnalisés du Pack de lancement, bientôt disponibles." },
           ],
         },
         {
           category: 'Sécurité & Vie privée',
           items: [
             { q: 'Veilix vend-il mes données ?', a: 'Non, jamais.' },
-            { q: 'Veilix est-il conforme au RGPD ?', a: 'Oui, hébergement européen strict.' },
+            { q: 'Comment Veilix respecte-t-il le RGPD ?', a: "Veilix est conçu pour collecter le strict minimum : adresses de destination chiffrées, aucun cookie de suivi, aucun journal d'activité. L'API, la base de données et l'acheminement des e-mails sont hébergés dans l'Union européenne. Vous pouvez exporter ou supprimer vos données à tout moment depuis les paramètres, et la politique de confidentialité détaille chaque traitement." },
             { q: 'Que contient la base de données de Veilix ?', a: "key_id anonyme, alias, emails de destination chiffrés AES-256, email de récupération optionnel, identifiant client du prestataire de paiement et statut de l'abonnement." },
             { q: 'Que sait Stripe de moi ?', a: "Le paiement est traité par Stripe, notre prestataire de paiement, qui reçoit votre moyen de paiement et l'email associé au paiement. Veilix ne conserve pas votre numéro de carte." },
           ],
@@ -388,14 +388,14 @@ export const PT = {
             { q: 'Are my emails read or stored?', a: 'No, never. We redirect the flow in real time.' },
             { q: 'Can I reply from an alias?', a: 'Yes, your reply is sent from the alias, without revealing your real address.' },
             { q: 'What happens if I disable an alias?', a: 'Emails are ignored. Reactivatable anytime.' },
-            { q: 'Can I choose my alias?', a: 'No, random generation to guarantee uniqueness and anonymity.' },
+            { q: 'Can I choose my alias?', a: 'On alias.veilix.fr, each address is randomly generated to guarantee uniqueness and anonymity. Choosing your own address names will be possible with custom domains in the Launch pack, coming soon.' },
           ],
         },
         {
           category: 'Security & Privacy',
           items: [
             { q: 'Does Veilix sell my data?', a: 'No, never.' },
-            { q: 'Is Veilix GDPR compliant?', a: 'Yes, strict European hosting.' },
+            { q: 'How does Veilix handle GDPR?', a: 'Veilix is designed to collect the bare minimum: encrypted destination addresses, no tracking cookies, no activity logs. The API, the database and email routing are hosted in the European Union. You can export or delete your data at any time from the settings, and the privacy policy details every processing operation.' },
             { q: "What does Veilix's database contain?", a: 'Anonymous key_id, aliases, AES-256 encrypted destination emails, optional recovery email, payment provider customer identifier and subscription status.' },
             { q: 'What does Stripe know about me?', a: 'Payments are processed by Stripe, our payment provider, which receives your payment method and the email linked to the payment. Veilix does not store your card number.' },
           ],
