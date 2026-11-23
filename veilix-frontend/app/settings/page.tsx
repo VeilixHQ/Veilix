@@ -362,7 +362,7 @@ export default function SettingsPage() {
                       Votre protection travaille pourtant en silence
                     </h3>
                     <p style={{ fontSize: 13, color: 'var(--c-94a3b8)', lineHeight: 1.6, marginBottom: 16 }}>
-                      Vous avez actuellement <strong style={{ color: 'var(--c-8b5cf6)' }}>{activeAliasesCount} alias actif{activeAliasesCount > 1 ? 's' : ''}</strong> sur votre tableau de bord. Même lorsque vous ne créez pas de nouveaux alias, Veilix filtre vos e-mails en arrière-plan et empêche votre vraie adresse d être revendue.
+                      Vous avez actuellement <strong style={{ color: 'var(--c-8b5cf6)' }}>{activeAliasesCount} alias actif{activeAliasesCount > 1 ? 's' : ''}</strong> sur votre tableau de bord. Même lorsque vous ne créez pas de nouveaux alias, Veilix filtre vos e-mails en arrière-plan et empêche votre adresse e-mail personnelle d être revendue.
                     </p>
                     <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
                       <Button variant="primary" size="md" onClick={() => setShowCancelModal(false)} style={{ background: 'var(--c-8b5cf6)', borderColor: 'var(--c-8b5cf6)' }}>

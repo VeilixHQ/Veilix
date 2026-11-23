@@ -3,12 +3,12 @@ import { connection } from 'next/server'
 import './globals.css'
 
 const SITE_URL = 'https://veilix.fr'
-const DESCRIPTION = "Créez un alias email pour chaque site et gardez votre vraie adresse privée. Sans e-mail ni mot de passe, sans journal d'activité, open source et hébergé en Europe."
+const DESCRIPTION = "Créez un alias email pour chaque site et gardez votre adresse e-mail personnelle privée. Sans e-mail ni mot de passe, sans journal d'activité, open source et hébergé en Europe."
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    default: 'Veilix : alias email pour protéger votre vraie adresse',
+    default: 'Veilix : alias email pour protéger votre adresse e-mail personnelle',
     template: '%s | Veilix',
   },
   description: DESCRIPTION,
@@ -20,12 +20,12 @@ export const metadata: Metadata = {
     url: SITE_URL,
     siteName: 'Veilix',
     locale: 'fr_FR',
-    title: 'Veilix : alias email pour protéger votre vraie adresse',
+    title: 'Veilix : alias email pour protéger votre adresse e-mail personnelle',
     description: DESCRIPTION,
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Veilix : alias email pour protéger votre vraie adresse',
+    title: 'Veilix : alias email pour protéger votre adresse e-mail personnelle',
     description: DESCRIPTION,
   },
   robots: { index: true, follow: true, googleBot: { index: true, follow: true, 'max-image-preview': 'large', 'max-snippet': -1 } },

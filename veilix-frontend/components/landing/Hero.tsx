@@ -65,7 +65,7 @@ export function Hero({ t }: { t: Translations }) {
       <Particles />
       <div style={{ position: 'absolute', top: '-80px', left: '50%', transform: 'translateX(-50%)', width: 900, height: 600, background: 'radial-gradient(ellipse at 50% 0%, rgba(124,58,237,0.13) 0%, transparent 65%)', pointerEvents: 'none' }} />
 
-      <h1 className="hero-h1" style={{ position: 'relative', zIndex: 1, maxWidth: 640, animation: 'fadeUp 0.6s ease 0.1s both' }}>
+      <h1 className="hero-h1" style={{ position: 'relative', zIndex: 1, maxWidth: 900, animation: 'fadeUp 0.6s ease 0.1s both' }}>
         <span style={{ display: 'block', fontSize: 'clamp(30px, 4.5vw, 56px)', fontWeight: 900, lineHeight: 1.06, letterSpacing: '-2px', marginBottom: 4 }}>{t.h1a}</span>
         <span style={{ display: 'block', fontSize: 'clamp(22px, 3.2vw, 40px)', fontWeight: 800, lineHeight: 1.1, letterSpacing: '-1.5px', color: 'var(--c-a78bfa)' }}>{t.h1b}</span>
       </h1>

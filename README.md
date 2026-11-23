@@ -29,7 +29,7 @@
 ## Présentation
 
 Veilix vous donne une adresse différente pour chaque site où vous vous inscrivez, par exemple `x7k2m9pl4q@alias.veilix.fr`.
-Les e-mails reçus sur cet alias sont relayés vers votre vraie boîte, qui n'est jamais communiquée au site. Si un alias reçoit du spam ou fuite, vous le désactivez : votre vraie adresse reste intacte.
+Les e-mails reçus sur cet alias sont relayés vers votre boîte e-mail personnelle, qui n'est jamais communiquée au site. Si un alias reçoit du spam ou fuite, vous le désactivez : votre adresse e-mail personnelle reste intacte.
 
 > Veilix est actuellement en **bêta privée**.
 
@@ -67,7 +67,7 @@ Les e-mails reçus sur cet alias sont relayés vers votre vraie boîte, qui n'es
 
 ### Parcours d'un e-mail
 
-<img src=".github/architecture/parcours-email-sombre.png" alt="Parcours d'un e-mail : expéditeur, Mailgun réception, API Veilix, Mailgun envoi, votre vraie boîte" width="100%">
+<img src=".github/architecture/parcours-email-sombre.png" alt="Parcours d'un e-mail : expéditeur, Mailgun réception, API Veilix, Mailgun envoi, votre boîte e-mail personnelle" width="100%">
 
 1. Un e-mail arrive sur `…@alias.veilix.fr`. Mailgun le transmet à l'API (`POST /email/inbound`) avec une signature vérifiée.
 2. L'API retrouve l'alias, applique les blocages, les quotas et la détection de fuite, chiffre en PGP si demandé, puis renvoie l'e-mail vers votre boîte.
