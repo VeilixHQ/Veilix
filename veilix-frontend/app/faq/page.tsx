@@ -36,7 +36,7 @@ export default function FAQPage() {
                         <span style={{ fontSize: 14, fontWeight: 600, color: 'var(--c-e2e8f0)' }}>{faq.q}</span>
                         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#64748b" strokeWidth="2" strokeLinecap="round" style={{ flexShrink: 0, marginLeft: 12, transition: 'transform 0.2s', transform: open === key ? 'rotate(45deg)' : 'rotate(0)' }}><line x1="12" y1="5" x2="12" y2="19" /><line x1="5" y1="12" x2="19" y2="12" /></svg>
                       </button>
-                      {open === key && <div style={{ padding: '0 18px 16px', fontSize: 14, color: 'var(--c-64748b)', lineHeight: 1.75 }}>{faq.a}</div>}
+                      <div hidden={open !== key} style={{ padding: '0 18px 16px', fontSize: 14, color: 'var(--c-64748b)', lineHeight: 1.75 }}>{faq.a}</div>
                     </div>
                   )
                 })}
