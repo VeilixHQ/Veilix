@@ -16,10 +16,8 @@ const PAGES: { path: string; priority: number; changeFrequency: MetadataRoute.Si
 ]
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const lastModified = new Date()
   return PAGES.map(({ path, priority, changeFrequency }) => ({
     url: `${SITE_URL}${path}`,
-    lastModified,
     changeFrequency,
     priority,
   }))

@@ -5,9 +5,15 @@ import { Translations } from '@/lib/translations'
 
 export function FAQ({ t }: { t: Translations }) {
   const [open, setOpen] = useState<number | null>(null)
+  const structuredData = {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: t.faqs.map(faq => ({ '@type': 'Question', name: faq.q, acceptedAnswer: { '@type': 'Answer', text: faq.a } })),
+  }
 
   return (
     <section style={{ padding: '96px 24px', background: 'var(--c-0d0d10)', borderTop: '1px solid rgba(var(--ink),0.06)' }}>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }} />
       <div style={{ maxWidth: 720, margin: '0 auto' }}>
         <FadeInSection>
           <div style={{ fontSize: 11, fontWeight: 700, color: 'var(--c-a78bfa)', textTransform: 'uppercase', letterSpacing: '1.2px', marginBottom: 12, textAlign: 'center' }}>{t.faqKicker}</div>
