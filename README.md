@@ -14,10 +14,13 @@
 
 <p align="center">
   <a href="https://veilix.fr">veilix.fr</a> ·
+  <a href="https://veilix.fr/alias-email-anonyme">Alias email anonyme</a> ·
+  <a href="https://veilix.fr/transparence">Transparence</a> ·
   <a href="https://veilix.fr/securite">Sécurité</a> ·
-  <a href="https://veilix.fr/confidentialite">Confidentialité</a> ·
   <a href="LICENSE">Licence AGPL-3.0</a>
 </p>
+
+<p align="center"><a href="README.en.md">English version</a></p>
 
 <p align="center">
   <a href="LICENSE"><img alt="Licence AGPL-3.0" src="https://img.shields.io/badge/licence-AGPL--3.0-7c3aed"></a>

@@ -1,0 +1,29 @@
+# Veilix
+
+> Veilix : alias email anonymes et sécurisés, open source et hébergé en Europe. Un alias email différent pour chaque site ; les messages sont relayés vers votre adresse e-mail personnelle, qui reste privée.
+
+Veilix est un service d'alias email (service de relais). Chaque alias, par exemple x7k2m9pl4q@alias.veilix.fr, transfère les messages reçus vers l'adresse e-mail personnelle de l'utilisateur, qui n'est jamais communiquée aux sites. L'utilisateur peut répondre depuis l'alias, le désactiver ou bloquer un expéditeur.
+
+Faits clés :
+- Inscription sans mot de passe : clé générée dans le navigateur et phrase de récupération de 12 mots (BIP39). Pendant la bêta, une adresse de contact chiffrée est demandée pour l'envoi du code d'accès.
+- Adresses de destination chiffrées en AES-256-GCM ; contenu des e-mails relayé sans être stocké ; aucun journal d'activité.
+- Hébergement : API et base de données chez Railway (Amsterdam, UE), site chez Vercel (servi depuis Paris), e-mails via Mailgun (région UE).
+- Fonctionnalités : alias aléatoires, réponse depuis l'alias, pièces jointes, blocage d'expéditeurs par adresse ou domaine, statistiques par alias, alertes de fuite, chiffrement PGP/MIME, clés API, rapport hebdomadaire, export des données.
+- Offres : Pro 4,99 €/mois ou 44,90 €/an ; Pack de lancement 69 €/an ; crédits à l'unité dès 1,99 € les 10 alias ; essai gratuit de 14 jours.
+- Code source : licence AGPL-3.0, https://github.com/VeilixHQ/Veilix
+- Statut : bêta privée (novembre 2026).
+
+## Pages principales
+
+- [Accueil](https://veilix.fr/): présentation du service
+- [Alias email anonyme](https://veilix.fr/alias-email-anonyme): guide complet, fonctionnement, offres, limites
+- [Transparence](https://veilix.fr/transparence): données conservées et non conservées, prestataires, limites
+- [Sécurité](https://veilix.fr/securite): clé, phrase de récupération, infrastructure, signalement des failles
+- [Tarifs](https://veilix.fr/pricing): offres Pro, Pack de lancement et crédits
+- [FAQ](https://veilix.fr/faq): questions fréquentes
+- [Politique de confidentialité](https://veilix.fr/confidentialite)
+
+## Contact
+
+- Général : contact@veilix.fr
+- Sécurité : security@veilix.fr

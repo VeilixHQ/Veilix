@@ -25,7 +25,7 @@ export const T = {
     badge: 'Open Source · No Logs · No Account',
     pillars: [
       { label: 'No Account', desc: 'Aucun compte requis' },
-      { label: 'No Logs', desc: 'Aucune donnée conservée' },
+      { label: 'No Logs', desc: "Aucun journal d'activité" },
       { label: 'No Tracking', desc: "Vous n'êtes pas le produit" },
       { label: 'Open Source', desc: 'Code auditable publiquement' },
       { label: 'Privacy First', desc: 'Conçu pour votre vie privée' },
@@ -277,8 +277,10 @@ export const T = {
       {
         title: 'Ressources',
         links: [
+          { label: 'Alias email anonyme', href: '/alias-email-anonyme' },
           { label: 'FAQ', href: '/faq' },
           { label: 'Sécurité', href: '/securite' },
+          { label: 'Transparence', href: '/transparence' },
           { label: 'Discord', href: 'https://discord.gg/Cfze5qmvhV' },
         ],
       },
@@ -330,7 +332,7 @@ export const T = {
     badge: 'Open Source · No Logs · No Account',
     pillars: [
       { label: 'No Account', desc: 'No sign-up required' },
-      { label: 'No Logs', desc: 'No data retained' },
+      { label: 'No Logs', desc: 'No activity logs' },
       { label: 'No Tracking', desc: 'You are not the product' },
       { label: 'Open Source', desc: 'Publicly auditable code' },
       { label: 'Privacy First', desc: 'Built for your privacy' },
@@ -570,8 +572,10 @@ export const T = {
       {
         title: 'Resources',
         links: [
+          { label: 'Anonymous email alias', href: '/alias-email-anonyme' },
           { label: 'FAQ', href: '/faq' },
           { label: 'Security', href: '/securite' },
+          { label: 'Transparency', href: '/transparence' },
           { label: 'Discord', href: 'https://discord.gg/Cfze5qmvhV' },
         ],
       },
