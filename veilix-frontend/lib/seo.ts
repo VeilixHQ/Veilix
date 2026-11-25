@@ -2,7 +2,7 @@ export const SITE_URL = 'https://veilix.fr'
 
 type Faq = { q: string; a: string }
 
-export function articleJsonLd({ path, title, description, published, modified, breadcrumb, faq, parent, type = 'Article' }: { path: string; title: string; description: string; published: string; modified: string; breadcrumb: string; faq?: Faq[]; parent?: { path: string; label: string }; type?: 'Article' | 'NewsArticle' }) {
+export function articleJsonLd({ path, title, description, published, modified, breadcrumb, faq, parent, type = 'Article', image, principles }: { path: string; title: string; description: string; published: string; modified: string; breadcrumb: string; faq?: Faq[]; parent?: { path: string; label: string }; type?: 'Article' | 'NewsArticle'; image?: string; principles?: string }) {
   const url = `${SITE_URL}${path}`
   const trail = [
     { name: 'Accueil', item: SITE_URL },
@@ -19,9 +19,10 @@ export function articleJsonLd({ path, title, description, published, modified, b
       datePublished: published,
       dateModified: modified,
       mainEntityOfPage: url,
-      image: `${SITE_URL}/opengraph-image.png`,
+      image: image ?? `${SITE_URL}/opengraph-image.png`,
       author: { '@id': `${SITE_URL}/#organization` },
       publisher: { '@id': `${SITE_URL}/#organization` },
+      ...(principles ? { publishingPrinciples: principles } : {}),
     },
     {
       '@type': 'BreadcrumbList',

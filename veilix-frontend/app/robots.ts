@@ -9,6 +9,6 @@ export default function robots(): MetadataRoute.Robots {
         disallow: ['/access', '/dashboard', '/settings', '/admin', '/confirm'],
       },
     ],
-    sitemap: 'https://veilix.fr/sitemap.xml',
+    sitemap: ['https://veilix.fr/sitemap.xml', 'https://veilix.fr/news-sitemap.xml'],
   }
 }

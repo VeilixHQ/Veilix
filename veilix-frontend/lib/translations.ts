@@ -16,6 +16,8 @@ export const T = {
       { label: 'Dashboard', desc: 'Gérez tout depuis un seul endroit', href: '/#features' },
     ],
     navExplorer: [
+      { label: 'Mon e-mail a-t-il fuité ?', desc: 'Vérification gratuite et anonyme', href: '/verifier-fuite-email' },
+      { label: 'Fuites de données', desc: 'Actualité et guides pour réagir', href: '/blog' },
       { label: 'FAQ', desc: 'Réponses aux questions fréquentes', href: '/faq' },
       { label: 'Sécurité', desc: 'Ce que Veilix sait de vous', href: '/securite' },
       { label: 'À propos', desc: 'Pourquoi Veilix existe', href: '/a-propos' },
@@ -278,7 +280,9 @@ export const T = {
       {
         title: 'Ressources',
         links: [
+          { label: 'Vérifier une fuite', href: '/verifier-fuite-email' },
           { label: 'Blog', href: '/blog' },
+          { label: 'Guides', href: '/guides' },
           { label: 'FAQ', href: '/faq' },
           { label: 'Transparence', href: '/transparence' },
           { label: 'Open Source', href: 'https://github.com/VeilixHQ/Veilix' },
@@ -321,6 +325,8 @@ export const T = {
       { label: 'Dashboard', desc: 'Manage everything in one place', href: '/#features' },
     ],
     navExplorer: [
+      { label: 'Has my email leaked?', desc: 'Free, anonymous check', href: '/verifier-fuite-email' },
+      { label: 'Data breaches', desc: 'News and guides (in French)', href: '/blog' },
       { label: 'FAQ', desc: 'Answers to common questions', href: '/faq' },
       { label: 'Security', desc: 'What Veilix knows about you', href: '/securite' },
       { label: 'About', desc: 'Why Veilix exists', href: '/a-propos' },
@@ -571,7 +577,9 @@ export const T = {
       {
         title: 'Resources',
         links: [
+          { label: 'Breach check', href: '/verifier-fuite-email' },
           { label: 'Blog', href: '/blog' },
+          { label: 'Guides', href: '/guides' },
           { label: 'FAQ', href: '/faq' },
           { label: 'Transparency', href: '/transparence' },
           { label: 'Open Source', href: 'https://github.com/VeilixHQ/Veilix' },

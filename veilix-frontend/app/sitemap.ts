@@ -10,6 +10,13 @@ const PAGES: { path: string; lastModified: string; priority: number; changeFrequ
   { path: '/transparence', lastModified: '2026-11-25', priority: 0.8, changeFrequency: 'monthly' },
   { path: '/comparatif/meilleurs-alias-email', lastModified: '2026-11-25', priority: 0.8, changeFrequency: 'monthly' },
   { path: '/securite', lastModified: '2026-11-25', priority: 0.8, changeFrequency: 'monthly' },
+  { path: '/verifier-fuite-email', lastModified: '2026-11-25', priority: 0.9, changeFrequency: 'monthly' },
+  { path: '/guides', lastModified: '2026-11-25', priority: 0.7, changeFrequency: 'monthly' },
+  { path: '/guides/que-faire-apres-une-fuite-de-donnees', lastModified: '2026-11-25', priority: 0.8, changeFrequency: 'monthly' },
+  { path: '/guides/iban-fuite-que-faire', lastModified: '2026-11-25', priority: 0.8, changeFrequency: 'monthly' },
+  { path: '/guides/hameconnage-apres-une-fuite', lastModified: '2026-11-25', priority: 0.8, changeFrequency: 'monthly' },
+  { path: '/guides/numero-de-telephone-fuite', lastModified: '2026-11-25', priority: 0.8, changeFrequency: 'monthly' },
+  { path: '/blog/methode', lastModified: '2026-11-25', priority: 0.4, changeFrequency: 'yearly' },
   { path: '/faq', lastModified: '2026-11-23', priority: 0.8, changeFrequency: 'monthly' },
   { path: '/beta', lastModified: '2026-11-23', priority: 0.7, changeFrequency: 'weekly' },
   { path: '/a-propos', lastModified: '2026-11-23', priority: 0.6, changeFrequency: 'monthly' },
@@ -43,5 +50,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
     changeFrequency: 'monthly' as const,
     priority: 0.6,
   }))
-  return [...pages, blog, ...articles]
+  const list = posts.length >= 3 ? [{ url: `${SITE_URL}/fuites-de-donnees`, lastModified: blog.lastModified, changeFrequency: 'daily' as const, priority: 0.9 }] : []
+  return [...pages, ...list, blog, ...articles]
 }

@@ -335,3 +335,24 @@ export async function createApiToken(name: string): Promise<ApiToken & { token: 
 export async function revokeApiToken(id: number): Promise<void> {
   await jsonOrThrow(await fetchWithAuth(`/api-tokens/${id}`, { method: 'DELETE' }), 'Révocation impossible')
 }
+
+export type Breach = {
+  name: string
+  title: string
+  domain: string
+  date: string
+  count: number
+  data: string[]
+  verified: boolean
+}
+
+export async function checkEmailLeaks(email: string, website: string): Promise<{ found: boolean; breaches: Breach[] }> {
+  const res = await fetch(`${API_URL}/leaks/check`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ email, website: website || null }),
+  })
+  if (res.status === 422) throw new ApiError(422, 'Adresse e-mail invalide.')
+  if (!res.ok) throw new ApiError(res.status, await errorDetail(res, 'Vérification impossible pour le moment. Réessayez plus tard.'))
+  return res.json()
+}

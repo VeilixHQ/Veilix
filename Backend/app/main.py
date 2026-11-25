@@ -4,7 +4,7 @@ from contextlib import asynccontextmanager, suppress
 
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
-from app.routes import admin, alias, beta, destination, domain, email, key, pgp, preferences
+from app.routes import admin, alias, beta, destination, domain, email, key, leaks, pgp, preferences
 from app.core import scheduler
 from app.core.config import BETA_SCHEDULER_ENABLED, CORS_ORIGINS, IS_PRODUCTION
 
@@ -62,6 +62,7 @@ app.include_router(domain.router)
 app.include_router(pgp.router)
 app.include_router(preferences.router)
 app.include_router(beta.router)
+app.include_router(leaks.router)
 app.include_router(admin.router)
 
 

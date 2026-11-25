@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import { ContentShell } from '@/components/content/ContentShell'
 import { BLOG_PATH, formatDate, getPosts, jsonLd } from '@/lib/blog'
+import { CHECK_TOOL, GUIDES_PATH, LEAKS_LIST_PATH, METHOD_PATH } from '@/lib/guides'
 import { SITE_URL, pageMetadata } from '@/lib/seo'
 
 const TITLE = 'Fuites de données : actualité et bons réflexes'
@@ -9,7 +10,12 @@ const DESCRIPTION = "Les fuites de données qui touchent les Français, expliqu�
 
 const BASE = pageMetadata({ path: BLOG_PATH, title: `${TITLE} | Veilix`, description: DESCRIPTION })
 
-export const metadata: Metadata = { ...BASE, openGraph: { ...BASE.openGraph, type: 'website' }, ...(getPosts().length === 0 ? { robots: { index: false, follow: true } } : {}) }
+export const metadata: Metadata = {
+  ...BASE,
+  openGraph: { ...BASE.openGraph, type: 'website' },
+  alternates: { ...BASE.alternates, types: { 'application/rss+xml': `${BLOG_PATH}/rss.xml` } },
+  ...(getPosts().length === 0 ? { robots: { index: false, follow: true } } : {}),
+}
 
 export default function Blog() {
   const posts = getPosts()
@@ -36,6 +42,7 @@ export default function Blog() {
 
       <h1>{TITLE}</h1>
       <p className="lead">Chaque fuite de données expose des millions d&apos;adresses e-mail, de numéros et parfois d&apos;IBAN. Nous expliquons chacune simplement, à partir de sources vérifiées : ce qui a fuité, comment savoir si vous êtes touché et ce qu&apos;il faut faire tout de suite.</p>
+      <p>Vous voulez savoir si vous êtes concerné ? <Link href={CHECK_TOOL.path}>Vérifiez votre adresse e-mail</Link>, consultez <Link href={LEAKS_LIST_PATH}>la liste des fuites de données</Link> ou nos <Link href={GUIDES_PATH}>guides pratiques</Link>. <Link href={METHOD_PATH}>Notre méthode</Link> explique comment nous vérifions chaque information.</p>
 
       {posts.length === 0 ? (
         <p>Les premiers articles arrivent très bientôt.</p>

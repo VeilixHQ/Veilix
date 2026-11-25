@@ -2,8 +2,10 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import { ContentShell } from '@/components/content/ContentShell'
+import { VeilixCallout } from '@/components/content/GuideExtras'
 import { BLOG_PATH, formatDate, getPost, getPosts, jsonLd, sourceHost } from '@/lib/blog'
-import { articleJsonLd, pageMetadata } from '@/lib/seo'
+import { EXPOSED_LABELS, LEAKS_LIST_PATH, METHOD_PATH, guidesFor } from '@/lib/guides'
+import { SITE_URL, articleJsonLd, pageMetadata } from '@/lib/seo'
 
 export const dynamicParams = false
 
@@ -15,8 +17,15 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const { slug } = await params
   const post = getPost(slug)
   if (!post) return {}
-  const base = pageMetadata({ path: `${BLOG_PATH}/${post.slug}`, title: `${post.seoTitle} | Veilix`, description: post.description })
-  return { ...base, openGraph: { ...base.openGraph, publishedTime: post.published, modifiedTime: post.modified } }
+  const path = `${BLOG_PATH}/${post.slug}`
+  const base = pageMetadata({ path, title: `${post.seoTitle} | Veilix`, description: post.description })
+  const { images, ...openGraph } = base.openGraph
+  void images
+  return {
+    ...base,
+    openGraph: { ...openGraph, publishedTime: post.published, modifiedTime: post.modified, section: 'Fuites de données' },
+    alternates: { ...base.alternates, types: { 'application/rss+xml': `${BLOG_PATH}/rss.xml` } },
+  }
 }
 
 export default async function BlogPost({ params }: { params: Promise<{ slug: string }> }) {
@@ -26,6 +35,7 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
 
   const path = `${BLOG_PATH}/${post.slug}`
   const related = getPosts().filter(other => other.slug !== post.slug).slice(0, 3)
+  const guides = guidesFor(post.exposed)
   const structured = articleJsonLd({
     path,
     title: post.title,
@@ -36,6 +46,8 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
     faq: post.faq,
     parent: { path: BLOG_PATH, label: 'Blog' },
     type: 'NewsArticle',
+    image: `${SITE_URL}${path}/opengraph-image`,
+    principles: `${SITE_URL}${METHOD_PATH}`,
   })
 
   return (
@@ -47,7 +59,27 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
       <p className="updated">
         Publié le {formatDate(post.published)}
         {post.modified !== post.published && <> · mis à jour le {formatDate(post.modified)}</>}
+        {' · '}<Link href={METHOD_PATH} style={{ color: 'var(--c-64748b)' }}>Notre méthode</Link>
       </p>
+
+      <div className="table-wrap">
+        <table>
+          <tbody>
+            <tr><td style={{ width: '38%' }}><strong>Organisation</strong></td><td>{post.organization}</td></tr>
+            <tr><td><strong>Fuite révélée le</strong></td><td>{formatDate(post.revealed)}</td></tr>
+            <tr><td><strong>Personnes concernées</strong></td><td>{post.affected}</td></tr>
+            <tr><td><strong>Données exposées</strong></td><td>{post.exposed.map(item => EXPOSED_LABELS[item] ?? item).join(', ')}</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      {post.updates.length > 0 && (
+        <div className="note">
+          {[...post.updates].reverse().map(update => (
+            <p key={`${update.date}-${update.text.slice(0, 20)}`}><strong>Mise à jour du {formatDate(update.date)}</strong> : {update.text}</p>
+          ))}
+        </div>
+      )}
 
       {post.sections.map(section => (
         <section key={section.heading}>
@@ -62,13 +94,14 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
       <h2 id="que-faire">Ce qu&apos;il faut faire maintenant</h2>
       <ol>{post.actions.map((action, index) => <li key={index}>{action}</li>)}</ol>
 
-      <h2 id="eviter">Limiter les dégâts lors de la prochaine fuite</h2>
-      <p>Une fuite comme celle-ci expose presque toujours votre adresse e-mail, qui sert ensuite au spam et au hameçonnage ciblé. La parade la plus simple : donner à chaque site une adresse différente, un <strong>alias</strong>, qui relaie les messages vers votre boîte personnelle.</p>
-      <p>Si votre compte {post.organization} utilisait un alias plutôt que votre adresse personnelle, vous sauriez immédiatement d&apos;où viennent les messages suspects, et il suffirait de désactiver cet alias : votre vraie adresse resterait inconnue des fraudeurs.</p>
-      <div className="note">
-        <p><strong>C&apos;est ce que fait Veilix</strong> : un alias e-mail par site, sans mot de passe pour s&apos;inscrire, sans journal d&apos;activité, open source et hébergé en Europe. <Link href="/alias-email-anonyme">Découvrir comment ça marche</Link>.</p>
-      </div>
-      <Link href="/beta" className="cta">Rejoindre la bêta</Link>
+      <h2 id="guides">Nos guides pour aller plus loin</h2>
+      <ul>
+        {guides.map(item => (
+          <li key={item.key}><Link href={item.path}>{item.short}</Link></li>
+        ))}
+      </ul>
+
+      <VeilixCallout />
 
       {post.faq.length > 0 && (
         <>
@@ -90,18 +123,15 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
           </li>
         ))}
       </ul>
-      <p style={{ fontSize: 13 }}>Une information est inexacte ou a changé ? Écrivez à <a href="mailto:contact@veilix.fr">contact@veilix.fr</a> : nous corrigeons rapidement.</p>
+      <p style={{ fontSize: 13 }}>Cet article suit <Link href={METHOD_PATH}>notre méthode éditoriale</Link>. Une information est inexacte ou a changé ? Écrivez à <a href="mailto:contact@veilix.fr">contact@veilix.fr</a> : nous corrigeons rapidement.</p>
 
-      {related.length > 0 && (
-        <>
-          <h2 id="a-lire">À lire aussi</h2>
-          <ul>
-            {related.map(other => (
-              <li key={other.slug}><Link href={`${BLOG_PATH}/${other.slug}`}>{other.title}</Link></li>
-            ))}
-          </ul>
-        </>
-      )}
+      <h2 id="a-lire">À lire aussi</h2>
+      <ul>
+        {related.map(other => (
+          <li key={other.slug}><Link href={`${BLOG_PATH}/${other.slug}`}>{other.title}</Link></li>
+        ))}
+        <li><Link href={LEAKS_LIST_PATH}>Toutes les fuites de données en France</Link></li>
+      </ul>
     </ContentShell>
   )
 }
