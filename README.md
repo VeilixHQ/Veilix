@@ -227,19 +227,28 @@ python -c "import secrets; print(secrets.token_hex(32))"
 
 ## Blog automatique
 
-Chaque matin, le workflow [`blog.yml`](.github/workflows/blog.yml) publie un article d'actualité cybersécurité sur [veilix.fr/blog](https://veilix.fr/blog) :
+Chaque matin, le workflow [`blog.yml`](.github/workflows/blog.yml) publie un article sur [veilix.fr/blog](https://veilix.fr/blog) :
 
-1. [`generate.py`](.github/scripts/blog/generate.py) récupère les actualités des dernières 48 h dans les flux listés dans [`sources.json`](.github/scripts/blog/sources.json), ainsi que les nouvelles fuites de Have I Been Pwned.
-2. Claude choisit un sujet, lit les articles d'origine et rédige un article en français, au format JSON.
-3. Le script vérifie l'article (longueur, sources réellement lues, liens autorisés). En cas d'erreur, rien n'est publié.
-4. Le site est compilé pour vérification, l'article est ajouté dans `veilix-frontend/content/blog/`, puis son URL est envoyée à IndexNow.
+| Jour | Format |
+|---|---|
+| Lundi, mardi, jeudi, vendredi, samedi | Actualité du jour |
+| Mercredi | Guide pratique tiré de la liste `guides` de [`sources.json`](.github/scripts/blog/sources.json) |
+| Dimanche | Récapitulatif de la semaine, avec un lien vers chaque article |
+
+Sans actualité exploitable, un guide pratique est rédigé à la place.
+
+1. [`generate.py`](.github/scripts/blog/generate.py) récupère les actualités des dernières 48 h dans les flux de [`sources.json`](.github/scripts/blog/sources.json) et les nouvelles fuites de Have I Been Pwned.
+2. Un premier agent Claude choisit le sujet, lit les sources, en cherche une seconde, puis rédige l'article en suivant la [charte éditoriale](.github/scripts/blog/charte.md).
+3. Des contrôles automatiques vérifient la longueur, les intertitres, les formules interdites, les liens, les sources réellement lues, les identifiants CVE et les phrases recopiées.
+4. Un second agent, rédacteur en chef, relit l'article face au texte intégral des sources, note l'exactitude, la clarté, l'utilité, l'originalité et le référencement, puis demande des corrections. Rien n'est publié sous 4/5.
+5. La typographie française est appliquée, le site est compilé, l'article est publié dans `veilix-frontend/content/blog/` et son URL est envoyée à IndexNow. Le résumé de la relecture et le coût s'affichent dans l'onglet Actions.
 
 | Réglage GitHub | Rôle |
 |---|---|
 | Secret `ANTHROPIC_API_KEY` | Clé de l'API Claude, obligatoire |
-| Variable `BLOG_REVUE` | `oui` pour recevoir chaque article en pull request à relire au lieu de le publier directement |
+| Variable `BLOG_REVUE` | `oui` pour recevoir chaque article en pull request, avec la relecture en description, au lieu de le publier directement |
 
-Pour retirer un article, supprimez son fichier JSON.
+Pour ajuster le ton, modifiez `charte.md`. Pour ajouter des sujets de guides, des flux ou des formules interdites, modifiez `sources.json`. Pour retirer un article, supprimez son fichier JSON.
 
 ## Contribuer
 

@@ -7,6 +7,9 @@ export type BlogFaq = { q: string; a: string }
 
 export type BlogPost = {
   slug: string
+  format?: 'actu' | 'guide' | 'recap'
+  topicKey?: string | null
+  quality?: { scores: Record<string, number>; resume: string }
   title: string
   metaTitle: string
   description: string
@@ -55,4 +58,14 @@ export function readingMinutes(post: BlogPost): number {
 
 export function plainText(value: string): string {
   return value.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '$1').replace(/\*\*([^*]+)\*\*/g, '$1')
+}
+
+export function slugify(value: string): string {
+  return value.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '')
+}
+
+export function getCategories(): { name: string; slug: string; count: number }[] {
+  const counts = new Map<string, number>()
+  for (const post of getAllPosts()) counts.set(post.category, (counts.get(post.category) ?? 0) + 1)
+  return [...counts.entries()].map(([name, count]) => ({ name, slug: slugify(name), count })).sort((a, b) => b.count - a.count)
 }

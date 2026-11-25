@@ -9,6 +9,11 @@ on:
         description: "Publier même si un article existe déjà aujourd'hui"
         type: boolean
         default: false
+      format:
+        description: "Format de l'article"
+        type: choice
+        options: [auto, actu, guide, recap]
+        default: auto
 
 permissions:
   contents: write
@@ -44,6 +49,8 @@ jobs:
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
           BLOG_FORCE: ${{ inputs.force && '1' || '0' }}
+          BLOG_FORMAT: ${{ inputs.format || 'auto' }}
+          BLOG_RESUME: ${{ runner.temp }}/resume.md
         run: python .github/scripts/blog/generate.py
 
       - uses: actions/setup-node@v4
@@ -74,7 +81,7 @@ jobs:
             git checkout -b "blog/$SLUG"
             git commit -m "Article : $TITLE"
             git push origin "blog/$SLUG"
-            gh pr create --base main --head "blog/$SLUG" --title "Article : $TITLE" --body "Article généré automatiquement, à relire avant fusion : veilix-frontend/content/blog/$SLUG.json"
+            gh pr create --base main --head "blog/$SLUG" --title "Article : $TITLE" --body-file "$RUNNER_TEMP/resume.md"
             echo "review=1" >> "$GITHUB_OUTPUT"
           else
             git commit -m "Article : $TITLE"

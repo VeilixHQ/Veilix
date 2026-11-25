@@ -9,6 +9,10 @@ const eslintConfig = defineConfig([
     files: ["app/layout.tsx"],
     rules: { "@next/next/no-page-custom-font": "off" },
   },
+  {
+    files: ["lib/blogImage.tsx"],
+    rules: { "@next/next/no-img-element": "off" },
+  },
   globalIgnores([
     ".next/**",
     "out/**",

@@ -2,16 +2,43 @@
   "window_hours": 48,
   "max_candidates": 40,
   "feeds": [
-    { "name": "CERT-FR", "url": "https://www.cert.ssi.gouv.fr/feed/" },
-    { "name": "CNIL", "url": "https://www.cnil.fr/fr/rss.xml" },
-    { "name": "Cybermalveillance.gouv.fr", "url": "https://www.cybermalveillance.gouv.fr/feed/atom-flux-actualites" },
-    { "name": "ZATAZ", "url": "https://www.zataz.com/feed/" },
-    { "name": "Le Monde Informatique", "url": "https://www.lemondeinformatique.fr/flux-rss/thematique/securite/rss.xml" },
-    { "name": "BleepingComputer", "url": "https://www.bleepingcomputer.com/feed/" },
-    { "name": "The Hacker News", "url": "https://feeds.feedburner.com/TheHackersNews" },
-    { "name": "Krebs on Security", "url": "https://krebsonsecurity.com/feed/" }
+    {
+      "name": "CERT-FR",
+      "url": "https://www.cert.ssi.gouv.fr/feed/"
+    },
+    {
+      "name": "CNIL",
+      "url": "https://www.cnil.fr/fr/rss.xml"
+    },
+    {
+      "name": "Cybermalveillance.gouv.fr",
+      "url": "https://www.cybermalveillance.gouv.fr/feed/atom-flux-actualites"
+    },
+    {
+      "name": "ZATAZ",
+      "url": "https://www.zataz.com/feed/"
+    },
+    {
+      "name": "Le Monde Informatique",
+      "url": "https://www.lemondeinformatique.fr/flux-rss/thematique/securite/rss.xml"
+    },
+    {
+      "name": "BleepingComputer",
+      "url": "https://www.bleepingcomputer.com/feed/"
+    },
+    {
+      "name": "The Hacker News",
+      "url": "https://feeds.feedburner.com/TheHackersNews"
+    },
+    {
+      "name": "Krebs on Security",
+      "url": "https://krebsonsecurity.com/feed/"
+    }
   ],
-  "hibp": { "enabled": true, "window_hours": 96 },
+  "hibp": {
+    "enabled": true,
+    "window_hours": 96
+  },
   "internal_links": {
     "/alias-email-anonyme": "Alias email anonyme : définition et fonctionnement",
     "/comparatif/meilleurs-alias-email": "Comparatif des services d'alias email",
@@ -21,5 +48,111 @@
     "/faq": "Questions fréquentes sur Veilix",
     "/beta": "Rejoindre la bêta de Veilix"
   },
-  "categories": ["Fuite de données", "Phishing et arnaques", "Vulnérabilité", "Ransomware", "Vie privée", "Réglementation", "Conseils pratiques"]
+  "categories": [
+    "Fuite de données",
+    "Phishing et arnaques",
+    "Vulnérabilité",
+    "Ransomware",
+    "Vie privée",
+    "Réglementation",
+    "Conseils pratiques",
+    "Récap de la semaine"
+  ],
+  "guides": [
+    {
+      "key": "verifier-fuite-adresse-email",
+      "subject": "Comment savoir si son adresse e-mail a fuité et que faire ensuite",
+      "keyword": "adresse email fuite"
+    },
+    {
+      "key": "reconnaitre-email-phishing",
+      "subject": "Reconnaître un e-mail de phishing : les signes qui ne trompent pas",
+      "keyword": "reconnaître phishing"
+    },
+    {
+      "key": "alias-email-pourquoi",
+      "subject": "Pourquoi utiliser une adresse e-mail différente pour chaque site",
+      "keyword": "adresse email différente par site"
+    },
+    {
+      "key": "double-authentification",
+      "subject": "Activer la double authentification : pourquoi et comment, service par service",
+      "keyword": "double authentification"
+    },
+    {
+      "key": "gestionnaire-mots-de-passe",
+      "subject": "Choisir et utiliser un gestionnaire de mots de passe",
+      "keyword": "gestionnaire de mots de passe"
+    },
+    {
+      "key": "bourrage-identifiants",
+      "subject": "Le bourrage d'identifiants (credential stuffing) expliqué simplement",
+      "keyword": "credential stuffing"
+    },
+    {
+      "key": "spam-desinscription",
+      "subject": "Se désinscrire des newsletters et réduire le spam sans risque",
+      "keyword": "réduire le spam"
+    },
+    {
+      "key": "arnaque-colis-sms",
+      "subject": "Arnaques au faux colis et faux SMS : comment les repérer",
+      "keyword": "arnaque colis sms"
+    },
+    {
+      "key": "compte-pirate-que-faire",
+      "subject": "Compte en ligne piraté : les bons réflexes dans la première heure",
+      "keyword": "compte piraté que faire"
+    },
+    {
+      "key": "donnees-personnelles-rgpd-droits",
+      "subject": "Vos droits RGPD : savoir qui détient vos données et les faire supprimer",
+      "keyword": "droit RGPD suppression données"
+    },
+    {
+      "key": "email-jetable-vs-alias",
+      "subject": "E-mail jetable ou alias e-mail : quelle différence et lequel choisir",
+      "keyword": "email jetable"
+    },
+    {
+      "key": "pgp-chiffrement-email",
+      "subject": "Chiffrer ses e-mails avec PGP : à quoi ça sert vraiment",
+      "keyword": "chiffrer email PGP"
+    },
+    {
+      "key": "sim-swapping",
+      "subject": "SIM swapping : comment des pirates volent votre numéro de téléphone",
+      "keyword": "sim swapping"
+    },
+    {
+      "key": "traceurs-email",
+      "subject": "Pixels espions dans les e-mails : comment les marques savent que vous avez lu",
+      "keyword": "pixel espion email"
+    }
+  ],
+  "banned_phrases": [
+    "dans un monde",
+    "à l'ère du numérique",
+    "il est crucial",
+    "il est essentiel de noter",
+    "n'hésitez pas",
+    "en conclusion",
+    "en somme",
+    "force est de constater",
+    "plus que jamais",
+    "il convient de noter",
+    "véritable fléau",
+    "pierre angulaire",
+    "dans le paysage",
+    "tsunami",
+    "séisme numérique",
+    "plongeons",
+    "décryptage complet"
+  ],
+  "schedule": {
+    "guide_weekdays": [
+      2
+    ],
+    "recap_weekday": 6
+  }
 }

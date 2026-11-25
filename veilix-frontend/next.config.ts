@@ -14,6 +14,9 @@ const nextConfig: NextConfig = {
   outputFileTracingIncludes: {
     '/blog': ['./content/blog/**/*'],
     '/blog/[slug]': ['./content/blog/**/*'],
+    '/blog/[slug]/opengraph-image': ['./content/blog/**/*', './public/logo.png'],
+    '/blog/[slug]/twitter-image': ['./content/blog/**/*', './public/logo.png'],
+    '/blog/categorie/[categorie]': ['./content/blog/**/*'],
   },
   async headers() {
     return [
