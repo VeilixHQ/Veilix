@@ -65,7 +65,7 @@ export default function AliasEmailAnonyme() {
 
       <h2 id="sans-mot-de-passe">Une inscription sans mot de passe</h2>
       <p>Veilix ne vous demande ni identifiant ni mot de passe. Votre navigateur génère une clé cryptographique et une phrase de récupération de 12 mots (norme BIP39), que vous seul possédez. Pour retrouver votre accès sur un autre appareil, vous saisissez ces 12 mots.</p>
-      <p>Pendant la bêta, une adresse de contact est demandée pour vous envoyer votre code d&apos;accès. Elle est chiffrée et ne sert jamais à vous connecter. Le détail figure sur la page <Link href="/transparence">Transparence</Link>.</p>
+      <p>Pendant la bêta, une adresse de contact est demandée : elle sert uniquement à communiquer avec vous pendant le test, est chiffrée et ne sert jamais à vous connecter. Il n&apos;existe pas de récupération par e-mail : si vous perdez votre phrase de récupération, Veilix ne peut pas restaurer votre accès. Le détail figure sur la page <Link href="/transparence">Transparence</Link>.</p>
 
       <h2 id="differences">Ce qui distingue Veilix</h2>
       <Table

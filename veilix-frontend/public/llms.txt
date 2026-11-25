@@ -5,7 +5,7 @@
 Veilix est un service d'alias email (service de relais). Chaque alias, par exemple x7k2m9pl4q@alias.veilix.fr, transfère les messages reçus vers l'adresse e-mail personnelle de l'utilisateur, qui n'est jamais communiquée aux sites. L'utilisateur peut répondre depuis l'alias, le désactiver ou bloquer un expéditeur.
 
 Faits clés :
-- Inscription sans mot de passe : clé générée dans le navigateur et phrase de récupération de 12 mots (BIP39). Pendant la bêta, une adresse de contact chiffrée est demandée pour l'envoi du code d'accès.
+- Inscription sans mot de passe : clé générée dans le navigateur et phrase de récupération de 12 mots (BIP39). Pendant la bêta, une adresse de contact chiffrée est demandée, uniquement pour communiquer pendant le test ; pas de récupération de compte par e-mail.
 - Adresses de destination chiffrées en AES-256-GCM ; contenu des e-mails relayé sans être stocké ; aucun journal d'activité.
 - Hébergement : API et base de données chez Railway (Amsterdam, UE), site chez Vercel (servi depuis Paris), e-mails via Mailgun (région UE).
 - Fonctionnalités : alias aléatoires, réponse depuis l'alias, pièces jointes, blocage d'expéditeurs par adresse ou domaine, statistiques par alias, alertes de fuite, chiffrement PGP/MIME, clés API, rapport hebdomadaire, export des données.

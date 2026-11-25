@@ -45,7 +45,8 @@ export default function Transparence() {
 
       <h3>No Account : ni identifiant ni mot de passe</h3>
       <p>Votre accès repose sur une clé cryptographique générée dans votre navigateur, avec une phrase de récupération de 12 mots (norme BIP39). Cette phrase n&apos;est jamais envoyée à Veilix. Le serveur ne conserve qu&apos;une <strong>empreinte SHA-256</strong> de l&apos;identifiant de votre clé.</p>
-      <p>Pendant la bêta, une <strong>adresse e-mail de contact</strong> est demandée à l&apos;inscription pour vous envoyer votre code d&apos;accès et les informations de la bêta. Elle est chiffrée et ne sert jamais d&apos;identifiant de connexion.</p>
+      <p>Pendant la bêta, une <strong>adresse e-mail de contact</strong> est demandée à l&apos;inscription. Elle sert <strong>uniquement à communiquer avec vous pendant la bêta</strong> (code d&apos;accès, informations sur le test). Elle est chiffrée et ne sert jamais d&apos;identifiant de connexion.</p>
+      <p>Il n&apos;existe <strong>pas de récupération de compte par e-mail</strong> : votre phrase de récupération est la seule clé de votre compte. Si vous la perdez, Veilix ne peut pas restaurer votre accès.</p>
 
       <h3>Anonymat : ce que voient les sites</h3>
       <p>Un site ne voit que votre alias, par exemple <code>x7k2m9pl4q@alias.veilix.fr</code>. Lorsque vous répondez depuis un alias, votre adresse e-mail personnelle est retirée du message avant son envoi. Les limites de cet anonymat sont décrites plus bas.</p>
@@ -55,7 +56,7 @@ export default function Transparence() {
         head={['Donnée', 'Pourquoi', 'Protection', 'Durée']}
         rows={[
           ['Empreinte de votre clé', 'Reconnaître votre compte', 'Empreinte SHA-256, la clé reste dans votre navigateur', "Jusqu'à la suppression du compte"],
-          ['Adresse de contact (bêta)', "Code d'accès et informations de la bêta", 'Chiffrée (AES-256-GCM)', "Jusqu'à la suppression du compte"],
+          ['Adresse de contact (bêta)', 'Communiquer avec vous pendant la bêta, uniquement', 'Chiffrée (AES-256-GCM)', "Jusqu'à la suppression du compte"],
           ['Alias', 'Recevoir les messages', 'En clair, nécessaire au routage', "Jusqu'à la suppression de l'alias ou du compte"],
           ["Libellé de l'alias", "Vous aider à l'organiser", 'En clair', "Jusqu'à la suppression de l'alias"],
           ['Adresses de destination', 'Relayer les messages', 'Chiffrées (AES-256-GCM), retrouvées par une empreinte HMAC', "Jusqu'à la suppression de l'alias ou du compte"],

@@ -199,7 +199,7 @@ export const PT = {
       restoreBtn: "J'ai déjà une clé",
       reassurance: [
         { text: 'Clé générée et stockée uniquement dans votre navigateur' },
-        { text: 'Aucune donnée personnelle envoyée à nos serveurs' },
+        { text: 'Votre phrase de récupération n’est jamais envoyée à nos serveurs' },
         { text: 'Vous seul possédez votre phrase de récupération' },
       ],
       generatingText: 'Génération de votre clé...',
@@ -428,7 +428,7 @@ export const PT = {
       restoreBtn: 'I already have a key',
       reassurance: [
         { text: 'Key generated and stored only in your browser' },
-        { text: 'No personal data sent to our servers' },
+        { text: 'Your recovery phrase is never sent to our servers' },
         { text: 'Only you own your recovery phrase' },
       ],
       generatingText: 'Generating your key...',

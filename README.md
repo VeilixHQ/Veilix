@@ -55,7 +55,7 @@ Les e-mails reçus sur cet alias sont relayés vers votre boîte e-mail personne
 
 ## Confidentialité et sécurité
 
-- **Pas d'e-mail ni de mot de passe pour créer un compte.** Votre navigateur génère une clé et une phrase de récupération de 12 mots ([bip39](https://github.com/bitcoinjs/bip39)). Veilix ne connaît pas cette phrase.
+- **Aucun mot de passe.** Votre navigateur génère une clé et une phrase de récupération de 12 mots ([bip39](https://github.com/bitcoinjs/bip39)). Veilix ne connaît pas cette phrase, et il n'existe pas de récupération par e-mail : si vous la perdez, l'accès ne peut pas être restauré. Pendant la bêta, une adresse e-mail de contact, chiffrée, sert uniquement à communiquer avec vous.
 - **Adresses chiffrées.** Les adresses de destination sont chiffrées en base (AES-256-GCM).
 - **Contenu non conservé.** Les e-mails sont relayés, pas stockés.
 - **Aucun cookie de suivi**, aucun tracking.

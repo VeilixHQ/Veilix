@@ -55,7 +55,7 @@ Emails sent to that alias are forwarded to your personal inbox, which is never s
 
 ## Privacy and security
 
-- **No password.** Your browser generates a key and a 12-word recovery phrase ([bip39](https://github.com/bitcoinjs/bip39)). Veilix never sees the phrase. During the beta, a contact email, stored encrypted, is required to send your access code; it is never used to log in.
+- **No password.** Your browser generates a key and a 12-word recovery phrase ([bip39](https://github.com/bitcoinjs/bip39)). Veilix never sees the phrase. There is no email-based recovery: if you lose the phrase, access cannot be restored. During the beta, a contact email, stored encrypted, is used only to communicate with you during the test; it is never used to log in.
 - **Encrypted addresses.** Destination addresses are encrypted at rest (AES-256-GCM).
 - **Content not stored.** Emails are forwarded, not stored. No activity logs.
 - **No tracking cookies**, no trackers.

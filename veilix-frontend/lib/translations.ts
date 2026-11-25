@@ -38,7 +38,7 @@ export const T = {
       restoreBtn: "J'ai déjà une clé",
       bullets: [
         'Clé générée et stockée uniquement dans votre navigateur',
-        'Aucune donnée personnelle envoyée à nos serveurs',
+        'Votre phrase de récupération n’est jamais envoyée à nos serveurs',
         'Vous seul possédez votre phrase de récupération',
       ],
       revealTitle: 'Votre phrase de récupération',
@@ -345,7 +345,7 @@ export const T = {
       restoreBtn: 'I already have a key',
       bullets: [
         'Key generated and stored only in your browser',
-        'No personal data sent to our servers',
+        'Your recovery phrase is never sent to our servers',
         'Only you hold your recovery phrase',
       ],
       revealTitle: 'Your recovery phrase',
