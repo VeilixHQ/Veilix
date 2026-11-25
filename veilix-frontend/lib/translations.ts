@@ -278,7 +278,6 @@ export const T = {
       {
         title: 'Ressources',
         links: [
-          { label: 'Blog', href: '/blog' },
           { label: 'FAQ', href: '/faq' },
           { label: 'Transparence', href: '/transparence' },
           { label: 'Open Source', href: 'https://github.com/VeilixHQ/Veilix' },
@@ -290,7 +289,7 @@ export const T = {
         links: [
           { label: 'À propos', href: '/a-propos' },
           { label: 'Feuille de route', href: '/feuille-de-route' },
-          { label: 'Kit média', href: '/kit-media' },
+          { label: 'Blog', href: '/blog' },
           { label: 'Contact', href: '/contact' },
         ],
       },
@@ -571,7 +570,6 @@ export const T = {
       {
         title: 'Resources',
         links: [
-          { label: 'Blog', href: '/blog' },
           { label: 'FAQ', href: '/faq' },
           { label: 'Transparency', href: '/transparence' },
           { label: 'Open Source', href: 'https://github.com/VeilixHQ/Veilix' },
@@ -583,7 +581,7 @@ export const T = {
         links: [
           { label: 'About', href: '/a-propos' },
           { label: 'Roadmap', href: '/feuille-de-route' },
-          { label: 'Press kit', href: '/kit-media' },
+          { label: 'Blog', href: '/blog' },
           { label: 'Contact', href: '/contact' },
         ],
       },

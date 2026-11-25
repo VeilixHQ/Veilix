@@ -23,7 +23,7 @@ Faits clés :
 - [Tarifs](https://veilix.fr/pricing): offres Pro, Pack de lancement et crédits
 - [FAQ](https://veilix.fr/faq): questions fréquentes
 - [Feuille de route](https://veilix.fr/feuille-de-route): fonctionnalités disponibles et en préparation
-- [Kit média](https://veilix.fr/kit-media): logos, couleurs, présentation et faits clés pour la presse
+- [Blog](https://veilix.fr/blog): actualité cybersécurité et vie privée, guides pratiques
 - [Politique anti-abus](https://veilix.fr/politique-anti-abus): usages interdits, limites et signalement
 - [Politique de confidentialité](https://veilix.fr/confidentialite)
 

@@ -26,7 +26,10 @@ const CARD: React.CSSProperties = { border: '1px solid rgba(var(--ink),0.07)', b
 const GRID: React.CSSProperties = { display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(190px, 1fr))', gap: 12, margin: '8px 0 22px' }
 const COLOR_GRID: React.CSSProperties = { ...GRID, gridTemplateColumns: 'repeat(auto-fit, minmax(130px, 1fr))' }
 
-export const metadata: Metadata = pageMetadata({ path: PATH, title: 'Kit média | Veilix', description: DESCRIPTION })
+export const metadata: Metadata = {
+  ...pageMetadata({ path: PATH, title: 'Kit média | Veilix', description: DESCRIPTION }),
+  robots: { index: false, follow: false, googleBot: { index: false, follow: false } },
+}
 
 export default function KitMedia() {
   return (
