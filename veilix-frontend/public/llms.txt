@@ -17,6 +17,7 @@ Faits clés :
 
 - [Accueil](https://veilix.fr/): présentation du service
 - [Alias email anonyme](https://veilix.fr/alias-email-anonyme): guide complet, fonctionnement, offres, limites
+- [Comparatif des services d'alias email](https://veilix.fr/comparatif/meilleurs-alias-email): Veilix face à SimpleLogin, addy.io, Firefox Relay et DuckDuckGo
 - [Transparence](https://veilix.fr/transparence): données conservées et non conservées, prestataires, limites
 - [Sécurité](https://veilix.fr/securite): clé, phrase de récupération, infrastructure, signalement des failles
 - [Tarifs](https://veilix.fr/pricing): offres Pro, Pack de lancement et crédits

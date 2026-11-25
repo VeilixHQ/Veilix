@@ -7,6 +7,7 @@ const PAGES: { path: string; priority: number; changeFrequency: MetadataRoute.Si
   { path: '/pricing', priority: 0.9, changeFrequency: 'monthly' },
   { path: '/alias-email-anonyme', priority: 0.9, changeFrequency: 'monthly' },
   { path: '/transparence', priority: 0.8, changeFrequency: 'monthly' },
+  { path: '/comparatif/meilleurs-alias-email', priority: 0.8, changeFrequency: 'monthly' },
   { path: '/securite', priority: 0.8, changeFrequency: 'monthly' },
   { path: '/faq', priority: 0.8, changeFrequency: 'monthly' },
   { path: '/beta', priority: 0.7, changeFrequency: 'weekly' },
