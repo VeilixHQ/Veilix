@@ -1,0 +1,28 @@
+name: IndexNow
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'veilix-frontend/**'
+  workflow_dispatch:
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Attente du déploiement
+        if: github.event_name == 'push'
+        run: sleep 300
+
+      - name: Envoi des URL à IndexNow
+        run: |
+          set -euo pipefail
+          KEY=780c24ab83dc432dcefdb32571693a13
+          curl -fsS "https://veilix.fr/$KEY.txt" | grep -qx "$KEY"
+          URLS=$(curl -fsS https://veilix.fr/sitemap.xml | grep -o '<loc>[^<]*</loc>' | sed 's#<loc>##;s#</loc>##' | jq -R . | jq -sc .)
+          echo "$URLS"
+          BODY=$(jq -nc --arg key "$KEY" --argjson urls "$URLS" '{host:"veilix.fr",key:$key,keyLocation:("https://veilix.fr/"+$key+".txt"),urlList:$urls}')
+          CODE=$(curl -sS -o /dev/null -w '%{http_code}' -X POST https://api.indexnow.org/indexnow -H 'Content-Type: application/json; charset=utf-8' -d "$BODY")
+          echo "Réponse IndexNow : $CODE"
+          [ "$CODE" = "200" ] || [ "$CODE" = "202" ]
