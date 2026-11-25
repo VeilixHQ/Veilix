@@ -95,6 +95,7 @@ export default function AliasEmailAnonyme() {
 
       <h2 id="anonymat">Un alias email est-il vraiment anonyme ?</h2>
       <p>Pour les sites auxquels vous le donnez, oui : ils ne voient que l&apos;alias. Il existe toutefois des limites propres au protocole e-mail : le contenu d&apos;un message (une signature, un nom) peut vous identifier, et votre fournisseur de messagerie voit les messages relayés. Veilix les explique sans détour sur la page <Link href="/transparence">Transparence</Link>, et détaille ses mesures de protection sur la page <Link href="/securite">Sécurité</Link>.</p>
+      <p>Vous hésitez avec un autre service ? Consultez notre <Link href="/comparatif/meilleurs-alias-email">comparatif des services d&apos;alias email</Link> : Veilix face à SimpleLogin, addy.io, Firefox Relay et DuckDuckGo.</p>
 
       <h2 id="faq">Questions fréquentes</h2>
       {FAQ.map(item => (
