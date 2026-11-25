@@ -3,7 +3,7 @@ import { connection } from 'next/server'
 import './globals.css'
 
 const SITE_URL = 'https://veilix.fr'
-const DESCRIPTION = "Créez un alias email pour chaque site et gardez votre adresse e-mail personnelle privée. Sans e-mail ni mot de passe, sans journal d'activité, open source et hébergé en Europe."
+const DESCRIPTION = "Un alias email par site, votre adresse personnelle reste privée. Sans e-mail ni mot de passe, sans journal d'activité, open source et hébergé en Europe."
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),

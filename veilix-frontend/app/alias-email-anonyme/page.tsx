@@ -5,7 +5,7 @@ import { articleJsonLd, pageMetadata } from '@/lib/seo'
 
 const PATH = '/alias-email-anonyme'
 const TITLE = 'Alias email anonyme : protégez votre adresse e-mail personnelle'
-const DESCRIPTION = "Qu'est-ce qu'un alias email anonyme, à quoi il sert et comment il fonctionne. Veilix : un alias par site, sans mot de passe, open source et hébergé en Europe."
+const DESCRIPTION = "Qu'est-ce qu'un alias email anonyme, à quoi il sert et comment il marche. Veilix : un alias par site, sans mot de passe, open source et hébergé en Europe."
 const UPDATED = '2026-11-24'
 
 const FAQ = [
