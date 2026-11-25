@@ -38,7 +38,8 @@ Après lecture, le lecteur sait :
 - Titres de section informatifs (« Comment savoir si votre adresse a fuité »), jamais génériques (« Contexte », « Conclusion »).
 
 ## Veilix dans les articles
-- Veilix n'est cité que lorsqu'un alias e-mail répond réellement au problème (fuite d'adresse, spam, phishing, traçage).
+- La promotion de Veilix se fait dans l'encart de fin d'article, qui mène aux offres. Le corps de l'article reste informatif.
+- Dans le corps, Veilix n'est cité que lorsqu'un alias e-mail répond réellement au problème (fuite d'adresse, spam, phishing, traçage).
 - Toujours aux côtés d'autres conseils (mots de passe uniques, double authentification, gestionnaire de mots de passe).
 - Jamais présenté comme une protection absolue : un alias ne protège ni un mot de passe réutilisé ni un appareil infecté.
 

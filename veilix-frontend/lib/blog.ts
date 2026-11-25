@@ -10,6 +10,7 @@ export type BlogPost = {
   format?: 'actu' | 'guide' | 'recap'
   topicKey?: string | null
   quality?: { scores: Record<string, number>; resume: string }
+  cta?: { accroche: string; texte: string }
   title: string
   metaTitle: string
   description: string
@@ -68,4 +69,43 @@ export function getCategories(): { name: string; slug: string; count: number }[]
   const counts = new Map<string, number>()
   for (const post of getAllPosts()) counts.set(post.category, (counts.get(post.category) ?? 0) + 1)
   return [...counts.entries()].map(([name, count]) => ({ name, slug: slugify(name), count })).sort((a, b) => b.count - a.count)
+}
+
+export const PAGE_SIZE = 12
+
+export function paginate<T>(items: T[], page: number) {
+  const pages = Math.max(1, Math.ceil(items.length / PAGE_SIZE))
+  return { items: items.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE), pages }
+}
+
+const CATEGORY_COLORS: Record<string, string> = {
+  'Fuite de données': '#f87171',
+  'Phishing et arnaques': '#fb923c',
+  'Vulnérabilité': '#facc15',
+  'Ransomware': '#f472b6',
+  'Vie privée': '#a78bfa',
+  'Réglementation': '#60a5fa',
+  'Conseils pratiques': '#34d399',
+  'Récap de la semaine': '#22d3ee',
+}
+
+export function categoryColor(name: string): string {
+  return CATEGORY_COLORS[name] ?? '#a78bfa'
+}
+
+export function adjacentPosts(post: BlogPost): { older?: BlogPost; newer?: BlogPost } {
+  const posts = getAllPosts()
+  const index = posts.findIndex(p => p.slug === post.slug)
+  return { newer: index > 0 ? posts[index - 1] : undefined, older: index >= 0 ? posts[index + 1] : undefined }
+}
+
+export function homeSections() {
+  const posts = getAllPosts()
+  const [featured, ...others] = posts
+  const highlights = others.slice(0, 2)
+  const top = new Set([featured, ...highlights].filter(Boolean).map(p => p.slug))
+  const guides = posts.filter(p => p.format === 'guide' && !top.has(p.slug)).slice(0, 3)
+  const recap = posts.find(p => p.format === 'recap' && !top.has(p.slug))
+  const shown = new Set([...top, ...guides.map(p => p.slug), ...(recap ? [recap.slug] : [])])
+  return { featured, highlights, guides, recap, latest: posts.filter(p => !shown.has(p.slug)) }
 }

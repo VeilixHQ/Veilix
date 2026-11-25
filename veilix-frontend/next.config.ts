@@ -17,6 +17,8 @@ const nextConfig: NextConfig = {
     '/blog/[slug]/opengraph-image': ['./content/blog/**/*', './public/logo.png'],
     '/blog/[slug]/twitter-image': ['./content/blog/**/*', './public/logo.png'],
     '/blog/categorie/[categorie]': ['./content/blog/**/*'],
+    '/blog/categorie/[categorie]/page/[page]': ['./content/blog/**/*'],
+    '/blog/page/[page]': ['./content/blog/**/*'],
   },
   async headers() {
     return [

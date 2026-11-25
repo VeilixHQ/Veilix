@@ -3,7 +3,9 @@ import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import { ContentShell } from '@/components/content/ContentShell'
 import { RichText } from '@/components/content/RichText'
-import { formatDate, getAllPosts, getPost, plainText, readingMinutes, relatedPosts, slugify } from '@/lib/blog'
+import { BlogMeta, BlogGrid } from '@/components/content/BlogList'
+import { BlogCta, BlogInlineCta } from '@/components/content/BlogCta'
+import { adjacentPosts, formatDate, getAllPosts, getPost, plainText, relatedPosts, slugify } from '@/lib/blog'
 import { blogPostingJsonLd, pageMetadata } from '@/lib/seo'
 
 type Props = { params: Promise<{ slug: string }> }
@@ -31,17 +33,15 @@ export default async function BlogPostPage({ params }: Props) {
   const path = `/blog/${post.slug}`
   const related = relatedPosts(post)
   const faq = post.faq.map(item => ({ q: item.q, a: plainText(item.a) }))
+  const { older, newer } = adjacentPosts(post)
+  const inlineAfter = post.sections.length >= 4 ? Math.floor(post.sections.length / 2) : -1
   const anchors = post.sections.map(section => ({ heading: plainText(section.heading), id: slugify(plainText(section.heading)) }))
 
   return (
     <ContentShell breadcrumb="Article" parents={[{ href: '/blog', label: 'Blog' }, { href: `/blog/categorie/${slugify(post.category)}`, label: post.category }]}>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(blogPostingJsonLd({ path, title: post.title, category: { name: post.category, path: `/blog/categorie/${slugify(post.category)}` }, description: post.description, published: post.published, modified: post.modified, keywords: post.tags, faq })) }} />
 
-      <p className="blog-meta">
-        <Link href={`/blog/categorie/${slugify(post.category)}`} className="blog-category">{post.category}</Link>
-        <time dateTime={post.published}>{formatDate(post.published)}</time>
-        <span>{readingMinutes(post)} min de lecture</span>
-      </p>
+      <BlogMeta post={post} />
       <h1>{post.title}</h1>
       <p className="lead"><RichText text={post.lead} /></p>
       <p className="updated">Publié le {formatDate(post.published)}{post.modified !== post.published ? `, mis à jour le ${formatDate(post.modified)}` : ''} par l&apos;équipe Veilix</p>
@@ -65,8 +65,11 @@ export default async function BlogPostPage({ params }: Props) {
           <h2 id={anchors[i].id}>{section.heading}</h2>
           {section.paragraphs.map(text => <p key={text}><RichText text={text} /></p>)}
           {section.bullets.length > 0 && <ul>{section.bullets.map(item => <li key={item}><RichText text={item} /></li>)}</ul>}
+          {i === inlineAfter && <BlogInlineCta post={post} />}
         </section>
       ))}
+
+      <BlogCta post={post} />
 
       {post.faq.length > 0 && (
         <>
@@ -87,19 +90,18 @@ export default async function BlogPostPage({ params }: Props) {
         ))}
       </ul>
 
-      <div className="note">
-        <p><strong>Protégez votre adresse e-mail avec Veilix</strong></p>
-        <p>Un alias différent pour chaque site : si l&apos;un d&apos;eux fuit ou vous envoie du spam, vous le coupez, et votre adresse personnelle reste intacte. Sans mot de passe, open source et hébergé en Europe.</p>
-        <Link href="/alias-email-anonyme" className="cta">Découvrir les alias email</Link>
-      </div>
-
       {related.length > 0 && (
         <>
           <h2>À lire aussi</h2>
-          <ul>
-            {related.map(p => <li key={p.slug}><Link href={`/blog/${p.slug}`}>{p.title}</Link></li>)}
-          </ul>
+          <BlogGrid posts={related} />
         </>
+      )}
+
+      {(older || newer) && (
+        <nav aria-label="Articles précédent et suivant" className="blog-adjacent">
+          {older ? <Link href={`/blog/${older.slug}`}><span>← Article précédent</span>{older.title}</Link> : <span />}
+          {newer ? <Link href={`/blog/${newer.slug}`} className="blog-adjacent-next"><span>Article suivant →</span>{newer.title}</Link> : <span />}
+        </nav>
       )}
     </ContentShell>
   )

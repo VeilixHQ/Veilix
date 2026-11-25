@@ -1,8 +1,9 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
-import { BlogCategories, BlogList } from '@/components/content/BlogList'
+import { BlogCard, BlogCategories, BlogGrid, BlogList, Pagination } from '@/components/content/BlogList'
+import { BlogSearch } from '@/components/content/BlogSearch'
 import { ContentShell } from '@/components/content/ContentShell'
-import { getAllPosts } from '@/lib/blog'
+import { getAllPosts, homeSections, paginate } from '@/lib/blog'
 import { pageMetadata, SITE_URL } from '@/lib/seo'
 
 const TITLE = 'Blog Veilix : actualité cybersécurité et vie privée'
@@ -20,6 +21,8 @@ export function generateMetadata(): Metadata {
 
 export default function BlogIndex() {
   const posts = getAllPosts()
+  const { featured, highlights, guides, recap, latest } = homeSections()
+  const { items, pages } = paginate(latest, 1)
   const jsonLd = {
     '@context': 'https://schema.org',
     '@type': 'Blog',
@@ -38,8 +41,42 @@ export default function BlogIndex() {
       <p className="lead">Chaque jour, un fait marquant de la cybersécurité expliqué simplement : fuites de données, failles, campagnes de phishing, et ce que vous pouvez faire concrètement pour protéger votre adresse e-mail.</p>
       <p className="updated"><a href="/blog/rss.xml">Flux RSS</a> · <a href="#methode">Notre méthode</a></p>
 
-      <BlogCategories />
-      {posts.length === 0 ? <p>Le premier article arrive très bientôt.</p> : <BlogList posts={posts} />}
+      {posts.length === 0 ? (
+        <p>Le premier article arrive très bientôt.</p>
+      ) : (
+        <>
+          <BlogSearch />
+          <BlogCategories />
+
+          <section aria-labelledby="une">
+            <h2 id="une" className="blog-section-title">À la une</h2>
+            <BlogCard post={featured} size="large" />
+            {highlights.length > 0 && <BlogGrid posts={highlights} />}
+          </section>
+
+          {guides.length > 0 && (
+            <section aria-labelledby="guides">
+              <h2 id="guides" className="blog-section-title">Guides pratiques <Link href="/blog/categorie/conseils-pratiques" className="blog-section-link">Tous les guides →</Link></h2>
+              <BlogGrid posts={guides} />
+            </section>
+          )}
+
+          {recap && (
+            <section aria-labelledby="recap">
+              <h2 id="recap" className="blog-section-title">La semaine en bref <Link href="/blog/categorie/recap-de-la-semaine" className="blog-section-link">Tous les récaps →</Link></h2>
+              <BlogCard post={recap} />
+            </section>
+          )}
+
+          {items.length > 0 && (
+            <section aria-labelledby="derniers">
+              <h2 id="derniers" className="blog-section-title">Derniers articles</h2>
+              <BlogList posts={items} />
+              <Pagination base="/blog" page={1} pages={pages} />
+            </section>
+          )}
+        </>
+      )}
 
       <h2 id="methode">Notre méthode</h2>
       <ul>

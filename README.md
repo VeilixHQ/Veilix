@@ -248,6 +248,10 @@ Sans actualité exploitable, un guide pratique est rédigé à la place.
 | Secret `ANTHROPIC_API_KEY` | Clé de l'API Claude, obligatoire |
 | Variable `BLOG_REVUE` | `oui` pour recevoir chaque article en pull request, avec la relecture en description, au lieu de le publier directement |
 
+Chaque article se termine par un encart Veilix rédigé pour le sujet traité et relu comme le reste, avec un bouton vers les offres (`/pricing`). Un rappel discret apparaît aussi au milieu des articles longs.
+
+La page `/blog` présente l'article à la une, les deux suivants, les derniers guides pratiques, le dernier récapitulatif puis tous les autres articles, 12 par page. Une recherche, des filtres par catégorie et des pages de catégorie paginées permettent de retrouver les anciens articles.
+
 Pour ajuster le ton, modifiez `charte.md`. Pour ajouter des sujets de guides, des flux ou des formules interdites, modifiez `sources.json`. Pour retirer un article, supprimez son fichier JSON.
 
 ## Contribuer

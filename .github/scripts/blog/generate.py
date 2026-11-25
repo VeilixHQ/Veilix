@@ -73,8 +73,14 @@ ARTICLE_SCHEMA = {
                 "additionalProperties": False,
             },
         },
+        "cta": {
+            "type": "object",
+            "properties": {"accroche": {"type": "string"}, "texte": {"type": "string"}},
+            "required": ["accroche", "texte"],
+            "additionalProperties": False,
+        },
     },
-    "required": ["status", "skipReason", "slug", "title", "metaTitle", "description", "category", "tags", "lead", "takeaways", "sections", "faq", "sources"],
+    "required": ["status", "skipReason", "slug", "title", "metaTitle", "description", "category", "tags", "lead", "takeaways", "sections", "faq", "sources", "cta"],
     "additionalProperties": False,
 }
 
@@ -136,7 +142,11 @@ Format attendu
 - sources : uniquement les pages lues avec web_fetch, avec leur URL exacte.
 - Mise en forme autorisée : **gras** et liens [texte](url). Rien d'autre.
 - Liens externes : uniquement vers les URL des sources.
-- Liens internes : vers les pages Veilix listées ou d'anciens articles du blog (/blog/<slug>), uniquement là où c'est naturel. Un encart Veilix est ajouté automatiquement en fin d'article : ne termine pas par un paragraphe commercial.
+- Liens internes : vers les pages Veilix listées ou d'anciens articles du blog (/blog/<slug>), uniquement là où c'est naturel. Le corps de l'article reste informatif : ne termine pas par un paragraphe commercial.
+- cta : l'encart Veilix affiché en fin d'article, avec un bouton vers les offres. C'est ici, et seulement ici, que tu fais la promotion de Veilix.
+  - accroche : 35 à 70 caractères, sans point final, qui relie le sujet de l'article au bénéfice concret d'un alias e-mail (exemple : « La prochaine fuite ne touchera qu'un alias »).
+  - texte : 1 ou 2 phrases, 120 à 260 caractères, qui expliquent comment un alias par site aurait limité le problème décrit ou aide à s'en protéger. Concret, au présent, sans lien.
+  - Honnêteté obligatoire : un alias protège l'adresse e-mail personnelle, aide à repérer l'origine d'une fuite et à couper le spam ou le phishing qui arrive par un site. Il ne protège ni un mot de passe réutilisé, ni un numéro de téléphone, ni une carte bancaire, ni un appareil infecté. N'affirme jamais que Veilix aurait empêché une fuite. Si le lien avec l'e-mail est faible, reste sur un bénéfice général (moins de spam, adresse personnelle préservée).
 
 {CHARTE}"""
 
@@ -152,6 +162,7 @@ Vérifie, dans cet ordre :
 5. Originalité : apporte-t-il plus que les sources (contexte, explication, conseils) ? Recopie-t-il des phrases ?
 6. Clarté et style : respect de la charte, phrases courtes, pas de formules creuses ni de sensationnalisme.
 7. Référencement : title, metaTitle, description, intertitres informatifs, mot-clé principal naturel.
+8. Encart cta : accrocheur, en lien avec le sujet, mais honnête. Toute promesse excessive sur ce que fait un alias e-mail (empêcher une fuite, protéger un mot de passe, une carte bancaire ou un téléphone) est un problème bloquant.
 
 Notes de 1 à 5 pour chaque critère. Verdict :
 - "publier" uniquement s'il n'y a aucun problème bloquant ou important et que toutes les notes sont au moins à 4 ;
@@ -393,6 +404,9 @@ def fields(article):
     for item in article["faq"]:
         yield item["q"]
         yield item["a"]
+    if article.get("cta"):
+        yield article["cta"]["accroche"]
+        yield article["cta"]["texte"]
 
 
 def body(article):
@@ -454,6 +468,13 @@ def validate(article, fmt, texts, slugs, week):
     for phrase in CONFIG["banned_phrases"]:
         if normalize(phrase) in text:
             errors.append(f"formule interdite par la charte : « {phrase} »")
+    accroche, texte = article["cta"]["accroche"].strip(), article["cta"]["texte"].strip()
+    if not 25 <= len(accroche) <= 80:
+        errors.append(f"cta.accroche doit faire 35 à 70 caractères (actuellement {len(accroche)})")
+    if not 80 <= len(texte) <= 300:
+        errors.append(f"cta.texte doit faire 120 à 260 caractères (actuellement {len(texte)})")
+    if LINK.search(texte):
+        errors.append("cta.texte ne doit pas contenir de lien, le bouton vers les offres est ajouté automatiquement")
     if text.count("—") > 1:
         errors.append("remplace les tirets cadratins (—) par des virgules, deux-points ou parenthèses")
     if "!" in text:
@@ -577,6 +598,7 @@ def finalize(article, fmt, verdict, posts):
         "sections": [{"heading": typography(s["heading"]), "paragraphs": [typography(p) for p in s["paragraphs"]], "bullets": [typography(b) for b in s["bullets"]]} for s in article["sections"]],
         "faq": [{"q": typography(f["q"]), "a": typography(f["a"])} for f in article["faq"]],
         "sources": [{"title": s["title"].strip(), "url": s["url"].strip(), "publisher": s["publisher"].strip()} for s in article["sources"]],
+        "cta": {"accroche": typography(article["cta"]["accroche"].strip().rstrip(".")), "texte": typography(article["cta"]["texte"].strip())},
         "quality": {"scores": verdict["scores"], "resume": verdict["resume"]},
     }
 

@@ -1,5 +1,5 @@
 import type { MetadataRoute } from 'next'
-import { getAllPosts } from '@/lib/blog'
+import { getAllPosts, getCategories } from '@/lib/blog'
 
 const SITE_URL = 'https://veilix.fr'
 
@@ -34,6 +34,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   return [
     ...pages,
     { url: `${SITE_URL}/blog`, lastModified: posts.map(post => post.modified).sort().at(-1), changeFrequency: 'daily', priority: 0.7 },
+    ...getCategories().filter(c => c.count >= 2).map(c => ({ url: `${SITE_URL}/blog/categorie/${c.slug}`, lastModified: posts.filter(p => p.category === c.name).map(p => p.modified).sort().at(-1), changeFrequency: 'weekly' as const, priority: 0.5 })),
     ...posts.map(post => ({ url: `${SITE_URL}/blog/${post.slug}`, lastModified: post.modified, changeFrequency: 'monthly' as const, priority: 0.6 })),
   ]
 }
