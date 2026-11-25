@@ -49,7 +49,7 @@ const CONTENT: Record<Lang, {
       ],
       cgv: [
         { title: '1. Objet', content: "Les présentes conditions régissent la vente des abonnements Veilix et des crédits d'alias. Le paiement en ligne ouvre le 1er février 2027." },
-        { title: '2. Offres et prix', content: "Pro : 4,99 € par mois ou 44,90 € par an, 100 alias inclus, alias désactivés compris. Pack de lancement : 69 € par an, alias illimités, limité aux 100 premières ventes. Il n'existe pas de plan gratuit. Prix en euros, [mention TVA à compléter selon le régime fiscal de l'éditeur]." },
+        { title: '2. Offres et prix', content: "Pro : 4,99 € par mois ou 44,90 € par an, 100 alias inclus, alias désactivés compris. Pack de lancement : 69 € par an, alias illimités, limité aux 100 premières ventes. Il n'existe pas de plan gratuit." },
         { title: '3. Crédits', content: "Un crédit permet de créer un alias. Il est consommé à la création et n'est pas rendu si l'alias est supprimé. Les crédits restent utilisables au-delà du quota d'un abonnement Pro." },
         { title: "4. Période d'essai", content: "Les abonnements commencent par un essai de 14 jours. Un moyen de paiement est demandé à l'inscription, sans débit pendant l'essai. Sans résiliation avant la fin de l'essai, l'abonnement démarre automatiquement." },
         { title: '5. Paiement et renouvellement', content: "Les paiements sont traités par Stripe par carte, Google Pay ou Apple Pay. Les abonnements se renouvellent automatiquement à chaque échéance. En cas d'échec de paiement, l'accès est suspendu jusqu'à régularisation." },
@@ -58,7 +58,6 @@ const CONTENT: Record<Lang, {
         { title: '8. Résiliation', content: "Les abonnements sont sans engagement. Vous pouvez résilier à tout moment depuis les paramètres ; la résiliation prend effet à la fin de la période déjà payée." },
         { title: '9. Évolution des prix', content: "Les prix peuvent évoluer avec un préavis de 30 jours par e-mail ou sur le site, sans effet sur un Pack de lancement payé et toujours actif." },
         { title: '10. Factures', content: "Les factures sont disponibles dans votre espace de paiement Stripe." },
-        { title: '11. Médiation', content: "En cas de litige non résolu avec Veilix, vous pouvez recourir gratuitement au médiateur de la consommation : [médiateur à désigner par l'éditeur]." },
       ],
       beta: [
         { title: '1. Calendrier', content: "Bêta privée du 1er décembre 2026 au 15 janvier 2027, sur invitation, inscriptions jusqu'au 31 décembre 2026. Bêta publique du 1er au 28 février 2027, ouverte par vagues. Lancement officiel le 1er mars 2027. Ces dates peuvent évoluer ; tout changement est annoncé par e-mail." },
@@ -108,7 +107,7 @@ const CONTENT: Record<Lang, {
       ],
       cgv: [
         { title: '1. Purpose', content: 'These terms govern the sale of Veilix subscriptions and alias credits. Online payment opens on February 1, 2027.' },
-        { title: '2. Offers and prices', content: 'Pro: €4.99 per month or €44.90 per year, 100 aliases included, disabled aliases counted. Launch pack: €69 per year, unlimited aliases, limited to the first 100 sales. There is no free plan. Prices in euros, [VAT statement to be completed according to the publisher\'s tax status].' },
+        { title: '2. Offers and prices', content: 'Pro: €4.99 per month or €44.90 per year, 100 aliases included, disabled aliases counted. Launch pack: €69 per year, unlimited aliases, limited to the first 100 sales. There is no free plan.' },
         { title: '3. Credits', content: 'One credit creates one alias. It is used when the alias is created and is not refunded if the alias is deleted. Credits remain usable beyond the quota of a Pro subscription.' },
         { title: '4. Trial', content: 'Subscriptions start with a 14-day trial. A payment method is required at signup, with no charge during the trial. Unless cancelled before the trial ends, the subscription starts automatically.' },
         { title: '5. Payment and renewal', content: 'Payments are processed by Stripe by card, Google Pay or Apple Pay. Subscriptions renew automatically at each term. If a payment fails, access is suspended until it is settled.' },
@@ -117,7 +116,6 @@ const CONTENT: Record<Lang, {
         { title: '8. Cancellation', content: 'Subscriptions have no commitment. You can cancel at any time from settings; cancellation takes effect at the end of the period already paid.' },
         { title: '9. Price changes', content: 'Prices may change with 30 days\' notice by email or on the site, with no effect on a paid and still active Launch pack.' },
         { title: '10. Invoices', content: 'Invoices are available in your Stripe payment portal.' },
-        { title: '11. Mediation', content: 'If a dispute with Veilix remains unresolved, you may refer it free of charge to the consumer mediator: [mediator to be appointed by the publisher].' },
       ],
       beta: [
         { title: '1. Schedule', content: 'Private beta from December 1, 2026 to January 15, 2027, by invitation, signups until December 31, 2026. Public beta from February 1 to 28, 2027, opened in waves. Official launch on March 1, 2027. These dates may change; any change is announced by email.' },
