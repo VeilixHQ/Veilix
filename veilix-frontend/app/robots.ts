@@ -10,6 +10,5 @@ export default function robots(): MetadataRoute.Robots {
       },
     ],
     sitemap: 'https://veilix.fr/sitemap.xml',
-    host: 'https://veilix.fr',
   }
 }
