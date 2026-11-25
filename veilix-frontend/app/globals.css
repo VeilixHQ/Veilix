@@ -206,3 +206,12 @@ body {
 .content-article details p{margin:10px 0 0}
 .content-article .cta{display:inline-block;margin-top:8px;padding:13px 24px;border-radius:9px;background:#7c3aed;color:#fff;font-weight:600;font-size:14px;text-decoration:none}
 .content-article .compare-table th,.content-article .compare-table td{padding:9px 9px;font-size:12.5px}
+.content-article .blog-list{display:flex;flex-direction:column;gap:14px;margin-top:8px}
+.content-article .blog-card{border:1px solid rgba(var(--ink),0.07);border-radius:14px;padding:20px 22px;background:var(--c-0d0d10)}
+.content-article .blog-card h2{font-size:19px;margin:6px 0 8px}
+.content-article .blog-card h2 a{color:var(--c-f1f5f9);text-decoration:none}
+.content-article .blog-card h2 a:hover{color:var(--c-a78bfa)}
+.content-article .blog-card p:last-child{margin-bottom:0}
+.content-article .blog-meta{display:flex;flex-wrap:wrap;align-items:center;gap:6px 14px;font-size:12.5px;color:var(--c-64748b);margin-bottom:10px}
+.content-article .blog-category{color:var(--c-a78bfa);font-weight:600;text-decoration:none;text-transform:uppercase;letter-spacing:.6px;font-size:11.5px}
+.content-article .blog-sources li{font-size:14px;word-break:break-word}

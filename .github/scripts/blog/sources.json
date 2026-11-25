@@ -1,0 +1,25 @@
+{
+  "window_hours": 48,
+  "max_candidates": 40,
+  "feeds": [
+    { "name": "CERT-FR", "url": "https://www.cert.ssi.gouv.fr/feed/" },
+    { "name": "CNIL", "url": "https://www.cnil.fr/fr/rss.xml" },
+    { "name": "Cybermalveillance.gouv.fr", "url": "https://www.cybermalveillance.gouv.fr/feed/atom-flux-actualites" },
+    { "name": "ZATAZ", "url": "https://www.zataz.com/feed/" },
+    { "name": "Le Monde Informatique", "url": "https://www.lemondeinformatique.fr/flux-rss/thematique/securite/rss.xml" },
+    { "name": "BleepingComputer", "url": "https://www.bleepingcomputer.com/feed/" },
+    { "name": "The Hacker News", "url": "https://feeds.feedburner.com/TheHackersNews" },
+    { "name": "Krebs on Security", "url": "https://krebsonsecurity.com/feed/" }
+  ],
+  "hibp": { "enabled": true, "window_hours": 96 },
+  "internal_links": {
+    "/alias-email-anonyme": "Alias email anonyme : définition et fonctionnement",
+    "/comparatif/meilleurs-alias-email": "Comparatif des services d'alias email",
+    "/securite": "Mesures de sécurité de Veilix",
+    "/transparence": "Ce que Veilix conserve et ne conserve pas",
+    "/pricing": "Tarifs de Veilix",
+    "/faq": "Questions fréquentes sur Veilix",
+    "/beta": "Rejoindre la bêta de Veilix"
+  },
+  "categories": ["Fuite de données", "Phishing et arnaques", "Vulnérabilité", "Ransomware", "Vie privée", "Réglementation", "Conseils pratiques"]
+}

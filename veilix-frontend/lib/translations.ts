@@ -278,6 +278,7 @@ export const T = {
       {
         title: 'Ressources',
         links: [
+          { label: 'Blog', href: '/blog' },
           { label: 'FAQ', href: '/faq' },
           { label: 'Transparence', href: '/transparence' },
           { label: 'Open Source', href: 'https://github.com/VeilixHQ/Veilix' },
@@ -570,6 +571,7 @@ export const T = {
       {
         title: 'Resources',
         links: [
+          { label: 'Blog', href: '/blog' },
           { label: 'FAQ', href: '/faq' },
           { label: 'Transparency', href: '/transparence' },
           { label: 'Open Source', href: 'https://github.com/VeilixHQ/Veilix' },

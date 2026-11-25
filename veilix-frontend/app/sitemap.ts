@@ -1,4 +1,5 @@
 import type { MetadataRoute } from 'next'
+import { getAllPosts } from '@/lib/blog'
 
 const SITE_URL = 'https://veilix.fr'
 
@@ -22,10 +23,17 @@ const PAGES: { path: string; lastModified: string; priority: number; changeFrequ
 ]
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  return PAGES.map(({ path, lastModified, priority, changeFrequency }) => ({
+  const pages: MetadataRoute.Sitemap = PAGES.map(({ path, lastModified, priority, changeFrequency }) => ({
     url: `${SITE_URL}${path}`,
     lastModified,
     changeFrequency,
     priority,
   }))
+  const posts = getAllPosts()
+  if (!posts.length) return pages
+  return [
+    ...pages,
+    { url: `${SITE_URL}/blog`, lastModified: posts.map(post => post.modified).sort().at(-1), changeFrequency: 'daily', priority: 0.7 },
+    ...posts.map(post => ({ url: `${SITE_URL}/blog/${post.slug}`, lastModified: post.modified, changeFrequency: 'monthly' as const, priority: 0.6 })),
+  ]
 }

@@ -225,6 +225,22 @@ python -c "import secrets; print(secrets.token_hex(32))"
 
 > Conservez `ENCRYPTION_KEY` en lieu sûr : sans elle, les adresses enregistrées deviennent illisibles.
 
+## Blog automatique
+
+Chaque matin, le workflow [`blog.yml`](.github/workflows/blog.yml) publie un article d'actualité cybersécurité sur [veilix.fr/blog](https://veilix.fr/blog) :
+
+1. [`generate.py`](.github/scripts/blog/generate.py) récupère les actualités des dernières 48 h dans les flux listés dans [`sources.json`](.github/scripts/blog/sources.json), ainsi que les nouvelles fuites de Have I Been Pwned.
+2. Claude choisit un sujet, lit les articles d'origine et rédige un article en français, au format JSON.
+3. Le script vérifie l'article (longueur, sources réellement lues, liens autorisés). En cas d'erreur, rien n'est publié.
+4. Le site est compilé pour vérification, l'article est ajouté dans `veilix-frontend/content/blog/`, puis son URL est envoyée à IndexNow.
+
+| Réglage GitHub | Rôle |
+|---|---|
+| Secret `ANTHROPIC_API_KEY` | Clé de l'API Claude, obligatoire |
+| Variable `BLOG_REVUE` | `oui` pour recevoir chaque article en pull request à relire au lieu de le publier directement |
+
+Pour retirer un article, supprimez son fichier JSON.
+
 ## Contribuer
 
 Les signalements de bugs et les propositions sont les bienvenus dans les [issues](https://github.com/VeilixHQ/Veilix/issues). 

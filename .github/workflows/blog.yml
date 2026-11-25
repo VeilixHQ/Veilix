@@ -1,0 +1,112 @@
+name: Blog
+
+on:
+  schedule:
+    - cron: '23 5 * * *'
+  workflow_dispatch:
+    inputs:
+      force:
+        description: "Publier même si un article existe déjà aujourd'hui"
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+  pull-requests: write
+
+concurrency:
+  group: blog
+  cancel-in-progress: false
+
+jobs:
+  article:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    outputs:
+      slug: ${{ steps.generate.outputs.slug }}
+      review: ${{ steps.publish.outputs.review }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+          cache-dependency-path: .github/scripts/blog/requirements.txt
+
+      - name: Dépendances
+        run: pip install -r .github/scripts/blog/requirements.txt
+
+      - name: Rédaction de l'article
+        id: generate
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          BLOG_FORCE: ${{ inputs.force && '1' || '0' }}
+        run: python .github/scripts/blog/generate.py
+
+      - uses: actions/setup-node@v4
+        if: steps.generate.outputs.slug != ''
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: veilix-frontend/package-lock.json
+
+      - name: Vérification du build
+        if: steps.generate.outputs.slug != ''
+        working-directory: veilix-frontend
+        run: npm ci && npm run build
+
+      - name: Publication
+        id: publish
+        if: steps.generate.outputs.slug != ''
+        env:
+          GH_TOKEN: ${{ github.token }}
+          SLUG: ${{ steps.generate.outputs.slug }}
+          TITLE: ${{ steps.generate.outputs.title }}
+          REVIEW: ${{ vars.BLOG_REVUE }}
+        run: |
+          git config user.name VeilixHQ
+          git config user.email unknown.13kr@gmail.com
+          git add "veilix-frontend/content/blog/$SLUG.json"
+          if [ "$REVIEW" = "oui" ]; then
+            git checkout -b "blog/$SLUG"
+            git commit -m "Article : $TITLE"
+            git push origin "blog/$SLUG"
+            gh pr create --base main --head "blog/$SLUG" --title "Article : $TITLE" --body "Article généré automatiquement, à relire avant fusion : veilix-frontend/content/blog/$SLUG.json"
+            echo "review=1" >> "$GITHUB_OUTPUT"
+          else
+            git commit -m "Article : $TITLE"
+            git pull --rebase origin main
+            git push origin HEAD:main
+            echo "review=0" >> "$GITHUB_OUTPUT"
+          fi
+
+  indexnow:
+    needs: article
+    if: needs.article.outputs.slug != '' && needs.article.outputs.review == '0'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Attente de la mise en ligne
+        env:
+          SLUG: ${{ needs.article.outputs.slug }}
+        run: |
+          for i in $(seq 1 40); do
+            CODE=$(curl -s -o /dev/null -w '%{http_code}' "https://veilix.fr/blog/$SLUG")
+            echo "Tentative $i : $CODE"
+            [ "$CODE" = "200" ] && exit 0
+            sleep 30
+          done
+          exit 1
+
+      - name: Envoi à IndexNow
+        env:
+          SLUG: ${{ needs.article.outputs.slug }}
+        run: |
+          set -euo pipefail
+          KEY=780c24ab83dc432dcefdb32571693a13
+          BODY=$(jq -nc --arg key "$KEY" --arg slug "$SLUG" '{host:"veilix.fr",key:$key,keyLocation:("https://veilix.fr/"+$key+".txt"),urlList:["https://veilix.fr/blog/"+$slug,"https://veilix.fr/blog"]}')
+          CODE=$(curl -sS -o /dev/null -w '%{http_code}' -X POST https://api.indexnow.org/indexnow -H 'Content-Type: application/json; charset=utf-8' -d "$BODY")
+          echo "Réponse IndexNow : $CODE"
+          [ "$CODE" = "200" ] || [ "$CODE" = "202" ]
