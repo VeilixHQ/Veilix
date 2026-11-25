@@ -29,6 +29,10 @@ export const metadata: Metadata = {
     description: DESCRIPTION,
   },
   robots: { index: true, follow: true, googleBot: { index: true, follow: true, 'max-image-preview': 'large', 'max-snippet': -1 } },
+  verification: {
+    google: process.env.GOOGLE_SITE_VERIFICATION || undefined,
+    other: process.env.BING_SITE_VERIFICATION ? { 'msvalidate.01': process.env.BING_SITE_VERIFICATION } : undefined,
+  },
 }
 
 const STRUCTURED_DATA = {
@@ -43,7 +47,7 @@ const STRUCTURED_DATA = {
       email: 'contact@veilix.fr',
       description: "Service d'alias email anonymes et sécurisés, open source et hébergé en Europe.",
       slogan: 'Des alias email anonymes et sécurisés.',
-      sameAs: ['https://github.com/VeilixHQ/Veilix'],
+      sameAs: ['https://github.com/VeilixHQ/Veilix', 'https://x.com/VeilixHQ'],
     },
     {
       '@type': 'WebApplication',
@@ -77,6 +81,7 @@ const STRUCTURED_DATA = {
       '@type': 'WebSite',
       '@id': `${SITE_URL}/#website`,
       name: 'Veilix',
+      alternateName: ['veilix.fr', 'Veilix alias email'],
       url: SITE_URL,
       inLanguage: 'fr-FR',
       publisher: { '@id': `${SITE_URL}/#organization` },
