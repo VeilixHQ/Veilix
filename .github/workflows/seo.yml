@@ -1,0 +1,74 @@
+name: SEO
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'veilix-frontend/**'
+      - '.github/scripts/sitemap_dates.py'
+      - '.github/workflows/seo.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: seo
+  cancel-in-progress: false
+
+jobs:
+  sitemap:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Mise à jour des dates du sitemap
+        run: python .github/scripts/sitemap_dates.py
+
+      - name: Commit des dates
+        run: |
+          if git diff --quiet; then
+            echo "Aucun changement"
+            exit 0
+          fi
+          git config user.name VeilixHQ
+          git config user.email unknown.13kr@gmail.com
+          git add veilix-frontend/app/sitemap.ts .github/sitemap-hashes.json
+          git commit -m "Mise à jour des dates du sitemap"
+          git push origin HEAD:main
+
+  indexnow:
+    needs: sitemap
+    runs-on: ubuntu-latest
+    steps:
+      - name: Attente du déploiement
+        if: github.event_name == 'push'
+        run: sleep 300
+
+      - name: Vérification du sitemap en ligne
+        run: |
+          set -euo pipefail
+          SITEMAP=$(curl -fsS https://veilix.fr/sitemap.xml)
+          URLS=$(echo "$SITEMAP" | grep -o '<loc>' | wc -l)
+          DATES=$(echo "$SITEMAP" | grep -o '<lastmod>' | wc -l)
+          echo "$SITEMAP" | grep -oE '<loc>[^<]*</loc>|<lastmod>[^<]*</lastmod>' | paste - -
+          echo "URL : $URLS, dates : $DATES"
+          [ "$URLS" -gt 0 ] && [ "$URLS" = "$DATES" ]
+
+      - name: Envoi des URL à IndexNow
+        run: |
+          set -euo pipefail
+          KEY=780c24ab83dc432dcefdb32571693a13
+          curl -fsS "https://veilix.fr/$KEY.txt" | grep -qx "$KEY"
+          URLS=$(curl -fsS https://veilix.fr/sitemap.xml | grep -o '<loc>[^<]*</loc>' | sed 's#<loc>##;s#</loc>##' | jq -R . | jq -sc .)
+          echo "$URLS"
+          BODY=$(jq -nc --arg key "$KEY" --argjson urls "$URLS" '{host:"veilix.fr",key:$key,keyLocation:("https://veilix.fr/"+$key+".txt"),urlList:$urls}')
+          CODE=$(curl -sS -o /dev/null -w '%{http_code}' -X POST https://api.indexnow.org/indexnow -H 'Content-Type: application/json; charset=utf-8' -d "$BODY")
+          echo "Réponse IndexNow : $CODE"
+          [ "$CODE" = "200" ] || [ "$CODE" = "202" ]
