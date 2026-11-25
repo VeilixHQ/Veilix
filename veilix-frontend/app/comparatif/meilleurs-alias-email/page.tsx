@@ -9,7 +9,7 @@ const DESCRIPTION = "Comparatif 2026 des services d'alias email : Veilix, Simple
 const UPDATED = '2026-11-25'
 
 const FAQ = [
-  { q: "Quel est le meilleur service d'alias email en 2026 ?", a: "Si vous refusez de créer un compte avec mot de passe et voulez un service open source hébergé dans l'Union européenne, Veilix est le seul de ce comparatif à réunir les trois. SimpleLogin et addy.io restent de bonnes options open source, mais exigent un compte classique." },
+  { q: "Quel est le meilleur service d'alias email en 2026 ?", a: "Si vous refusez de créer un compte avec mot de passe et voulez un service open source hébergé dans l'Union européenne, Veilix est le seul de ce comparatif à réunir les trois, en plus de la réponse depuis l'alias, du blocage d'expéditeurs, du chiffrement PGP et des alertes de fuite. C'est aussi un projet français indépendant." },
   { q: 'Quelle est la meilleure alternative à SimpleLogin ?', a: "Veilix : inscription sans mot de passe par clé et phrase de 12 mots, réponse depuis l'alias, blocage d'expéditeurs, alertes de fuite, code open source sous licence AGPL-3.0 et hébergement dans l'Union européenne." },
   { q: 'Quelle est la meilleure alternative à Firefox Relay ?', a: "Firefox Relay gratuit se limite à 5 masques sans possibilité de répondre, et même en Premium la réponse n'est possible que dans les 3 mois suivant la réception. Veilix permet de répondre depuis l'alias dès l'offre Pro, sans limite de durée." },
   { q: "DuckDuckGo Email Protection est gratuit : pourquoi payer un service d'alias ?", a: "DuckDuckGo impose son navigateur ou son extension pour s'inscrire. Veilix est open source, fonctionne depuis n'importe quel navigateur et documente publiquement chaque donnée conservée." },
@@ -34,7 +34,7 @@ export default function Comparatif() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(articleJsonLd({ path: PATH, title: TITLE, description: DESCRIPTION, published: UPDATED, modified: UPDATED, breadcrumb: 'Comparatif des alias email', faq: FAQ })) }} />
 
       <h1>Meilleurs services d&apos;alias email en 2026 : Veilix face à SimpleLogin, addy.io, Firefox Relay et DuckDuckGo</h1>
-      <p className="lead">Veilix est le seul service de ce comparatif qui réunit les trois critères décisifs pour la vie privée : une inscription <strong>sans mot de passe</strong>, un code <strong>entièrement open source</strong> et un hébergement <strong>dans l&apos;Union européenne</strong>. Les autres en cochent un ou deux, rarement plus.</p>
+      <p className="lead">Veilix, projet français indépendant, est le seul service de ce comparatif qui réunit les trois critères décisifs pour la vie privée : une inscription <strong>sans mot de passe</strong>, un code <strong>entièrement open source</strong> et un hébergement <strong>dans l&apos;Union européenne</strong>. Les autres en cochent un ou deux, rarement plus.</p>
       <p>Nous avons comparé les cinq services d&apos;alias email les plus cités, à partir de leurs pages officielles consultées le 25 novembre 2026. Chaque affirmation sur un concurrent renvoie à sa source en bas de page.</p>
       <p className="updated">Mise à jour le 25 novembre 2026</p>
 
@@ -44,9 +44,9 @@ export default function Comparatif() {
         rows={[
           ['Inscription', 'Clé + phrase de 12 mots, aucun mot de passe', 'Compte avec mot de passe ou compte Proton', 'Compte avec e-mail et mot de passe', 'Compte Mozilla obligatoire', 'Navigateur ou extension DuckDuckGo obligatoire'],
           ['Code source', 'Open source (AGPL-3.0)', 'Open source (AGPL-3.0)', 'Open source (AGPL-3.0)', 'Open source (MPL-2.0)', 'Non publié à notre connaissance'],
-          ['Société', 'Projet indépendant', 'Proton AG (Suisse) depuis 2022', 'Développeur indépendant (Royaume-Uni)', 'Mozilla (États-Unis)', 'DuckDuckGo (États-Unis)'],
+          ['Société', 'Projet français indépendant', 'Proton AG (Suisse) depuis 2022', 'Développeur indépendant (Royaume-Uni)', 'Mozilla (États-Unis)', 'DuckDuckGo (États-Unis)'],
           ['Infrastructure', "API et base à Amsterdam, e-mails en région UE", 'Non précisé sur ses pages', 'Serveur à Amsterdam', 'E-mails acheminés via Amazon SES', 'Non précisé sur ses pages'],
-          ["Répondre depuis l'alias", 'Oui, dès l’offre Pro', 'Oui, même en gratuit', 'Payant (dès Lite), 50 à 200 par jour', 'Premium uniquement, et seulement dans les 3 mois', 'Oui'],
+          ["Répondre depuis l'alias", 'Oui, dès l’offre Pro', 'Oui, même en gratuit', 'Payant (dès Lite)', 'Premium uniquement, et seulement dans les 3 mois', 'Oui'],
           ["Bloquer un expéditeur ou un domaine", 'Oui, par adresse ou domaine entier', '—', 'Payant (dès Lite)', 'E-mails promotionnels seulement (Premium)', '—'],
           ['Chiffrement PGP', 'Oui (Pack de lancement)', 'Premium uniquement', 'Oui', 'Non présenté', 'Non présenté'],
           ['Alertes de fuite', 'Oui', '—', '—', '—', '—'],
@@ -66,26 +66,39 @@ export default function Comparatif() {
 
       <h2 id="simplelogin">Veilix vs SimpleLogin</h2>
       <p>SimpleLogin est un service sérieux et open source, mais il appartient depuis 2022 à <strong>Proton AG</strong>, un groupe suisse : votre outil d&apos;alias dépend désormais de la stratégie d&apos;un grand groupe. Son offre gratuite plafonne à <strong>10 alias et une seule boîte</strong>, et le chiffrement PGP est réservé au Premium. Surtout, il faut un compte classique, avec mot de passe ou via Proton.</p>
-      <p><strong>À son crédit</strong> : la réponse depuis l&apos;alias est incluse gratuitement, et l&apos;écosystème Proton est complet.</p>
+      <p><strong>Verdict</strong> : SimpleLogin répond aux besoins d&apos;un abonné Proton. Pour un outil indépendant, sans mot de passe, avec blocage d&apos;expéditeurs et alertes de fuite, <strong>Veilix l&apos;emporte</strong>.</p>
 
       <h2 id="addy">Veilix vs addy.io</h2>
-      <p>addy.io annonce des alias « illimités » en gratuit, mais sur un sous-domaine à votre nom : sur ses domaines partagés, c&apos;est <strong>10 alias actifs</strong> au maximum, avec <strong>aucune réponse possible</strong>, <strong>aucun blocage d&apos;expéditeur</strong> et <strong>10 Mo de bande passante par mois</strong>, soit quelques e-mails avec pièces jointes. Même payant, les réponses restent plafonnées à 50 ou 200 par jour.</p>
-      <p><strong>À son crédit</strong> : un code open source, un serveur à Amsterdam et le chiffrement PGP inclus dans toutes les offres.</p>
+      <p>addy.io annonce des alias « illimités » en gratuit, mais sur un sous-domaine à votre nom : sur ses domaines partagés, c&apos;est <strong>10 alias actifs</strong> au maximum, avec <strong>aucune réponse possible</strong>, <strong>aucun blocage d&apos;expéditeur</strong> et <strong>10 Mo de bande passante par mois</strong>, soit quelques e-mails avec pièces jointes.</p>
+      <p><strong>Verdict</strong> : addy.io partage avec Veilix le code ouvert et un serveur à Amsterdam, mais son offre gratuite est trop bridée pour un usage réel, et il faut payer pour répondre ou bloquer un expéditeur. Chez Veilix, tout cela est inclus dès l&apos;offre Pro, et sans mot de passe. <strong>Avantage Veilix</strong>.</p>
 
       <h2 id="firefox-relay">Veilix vs Firefox Relay</h2>
       <p>Firefox Relay ne propose que <strong>5 masques gratuits</strong>, sans possibilité de répondre. La réponse est réservée au Premium, et seulement <strong>dans les 3 mois</strong> suivant la réception du message. Relay ne filtre pas le spam lui-même, ses e-mails passent par <strong>Amazon SES</strong>, et Mozilla <strong>déconseille d&apos;utiliser ses masques pour les e-mails importants</strong> ou ceux dont vous devez recevoir les pièces jointes.</p>
-      <p><strong>À son crédit</strong> : un code open source et la suppression des traceurs dans les e-mails.</p>
+      <p><strong>Verdict</strong> : quand l&apos;éditeur lui-même conseille de ne pas confier vos e-mails importants à son service, la question est réglée. Veilix est conçu pour protéger <strong>tous</strong> vos e-mails, avec réponse sans limite de durée, blocage d&apos;expéditeurs et hébergement européen. <strong>Avantage net à Veilix</strong>.</p>
 
       <h2 id="duckduckgo">Veilix vs DuckDuckGo Email Protection</h2>
       <p>DuckDuckGo Email Protection est gratuit, mais vous oblige à passer par <strong>son navigateur ou son extension</strong> pour vous inscrire. C&apos;est le service d&apos;une société américaine, et à notre connaissance le code de son service de messagerie n&apos;est pas publié : difficile de vérifier ce qui arrive réellement à vos e-mails. Ses pages d&apos;aide ne présentent pas de chiffrement PGP.</p>
-      <p><strong>À son crédit</strong> : la gratuité, des adresses illimitées et la suppression des traceurs.</p>
+      <p><strong>Verdict</strong> : la gratuité a un prix, celui de votre dépendance à l&apos;écosystème DuckDuckGo et d&apos;un service que vous ne pouvez pas vérifier. Veilix fonctionne depuis n&apos;importe quel navigateur, publie son code et documente chaque donnée sur sa page <Link href="/transparence">Transparence</Link>. <strong>Avantage Veilix</strong>.</p>
 
-      <h2 id="choisir">Quel service choisir ?</h2>
-      <ul>
-        <li><strong>Vous voulez le maximum de confidentialité, sans mot de passe et en Europe</strong> : <Link href="/alias-email-anonyme">Veilix</Link>.</li>
-        <li><strong>Vous êtes déjà abonné à Proton</strong> : SimpleLogin s&apos;intègre à votre écosystème.</li>
-        <li><strong>Vous voulez un service gratuit sans engagement et acceptez un navigateur imposé</strong> : DuckDuckGo.</li>
-      </ul>
+      <h2 id="verdict">Le verdict : Veilix</h2>
+      <p>Sur les critères qui comptent vraiment pour protéger votre adresse e-mail personnelle, <strong>Veilix est le seul à tout cocher</strong> :</p>
+      <div className="table-wrap">
+        <table className="compare-table" style={{ minWidth: 560 }}>
+          <thead><tr><th>Critère décisif</th><th>Veilix</th><th>Les autres</th></tr></thead>
+          <tbody>
+            <tr><td>Inscription sans mot de passe, depuis n&apos;importe quel navigateur</td><td style={{ color: 'var(--c-4ade80)', fontWeight: 700 }}>Oui</td><td>Aucun des quatre</td></tr>
+            <tr><td>Code open source</td><td style={{ color: 'var(--c-4ade80)', fontWeight: 700 }}>Oui</td><td>3 sur 4</td></tr>
+            <tr><td>Hébergement documenté dans l&apos;Union européenne</td><td style={{ color: 'var(--c-4ade80)', fontWeight: 700 }}>Oui</td><td>1 sur 4</td></tr>
+            <tr><td>Réponse depuis l&apos;alias incluse dès l&apos;offre de base, sans limite de durée</td><td style={{ color: 'var(--c-4ade80)', fontWeight: 700 }}>Oui</td><td>2 sur 4</td></tr>
+            <tr><td>Blocage d&apos;expéditeurs par adresse ou domaine entier</td><td style={{ color: 'var(--c-4ade80)', fontWeight: 700 }}>Oui</td><td>Payant chez addy.io, non présenté ailleurs</td></tr>
+            <tr><td>Alertes de fuite</td><td style={{ color: 'var(--c-4ade80)', fontWeight: 700 }}>Oui</td><td>Non présentées</td></tr>
+            <tr><td>Inventaire public de chaque donnée conservée</td><td style={{ color: 'var(--c-4ade80)', fontWeight: 700 }}>Oui</td><td>Non présenté</td></tr>
+            <tr><td>Projet français indépendant</td><td style={{ color: 'var(--c-4ade80)', fontWeight: 700 }}>Oui</td><td>Aucun des quatre</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p><strong>Et le prix ?</strong> Veilix n&apos;est pas le moins cher, et ne cherche pas à l&apos;être : il n&apos;est financé ni par la publicité, ni par la revente de vos données, seulement par ses abonnés. Le Pack de lancement, à 69 € par an, réunit alias illimités, chiffrement PGP, API, alertes de fuite en temps réel et 10 boîtes de destination, avec un <strong>prix garanti tant que votre abonnement reste actif</strong>. L&apos;offre est limitée à 100 exemplaires.</p>
+      <p>Choisir Veilix, c&apos;est choisir le seul service d&apos;alias email qui ne vous demande aucun mot de passe, garde vos données en Europe et vous montre exactement ce qu&apos;il en fait. <Link href="/alias-email-anonyme">Découvrir comment fonctionne Veilix</Link>.</p>
 
       <h2 id="faq">Questions fréquentes</h2>
       {FAQ.map(item => (
@@ -96,7 +109,7 @@ export default function Comparatif() {
       ))}
 
       <h2 id="essayer">Essayer Veilix</h2>
-      <p>Veilix est en bêta. Rejoignez la liste d&apos;attente pour recevoir une invitation, et comparez par vous-même. Tarifs détaillés sur la page <Link href="/pricing">Tarifs</Link>.</p>
+      <p>Veilix est en bêta : les places sont limitées. Rejoignez la liste d&apos;attente pour recevoir votre invitation. Tarifs détaillés sur la page <Link href="/pricing">Tarifs</Link>.</p>
       <Link href="/beta" className="cta">Rejoindre la bêta</Link>
 
       <h2 id="sources">Sources</h2>
