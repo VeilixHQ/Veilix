@@ -2,11 +2,16 @@ export const SITE_URL = 'https://veilix.fr'
 
 type Faq = { q: string; a: string }
 
-export function articleJsonLd({ path, title, description, published, modified, breadcrumb, faq }: { path: string; title: string; description: string; published: string; modified: string; breadcrumb: string; faq?: Faq[] }) {
+export function articleJsonLd({ path, title, description, published, modified, breadcrumb, faq, parent, type = 'Article' }: { path: string; title: string; description: string; published: string; modified: string; breadcrumb: string; faq?: Faq[]; parent?: { path: string; label: string }; type?: 'Article' | 'NewsArticle' }) {
   const url = `${SITE_URL}${path}`
+  const trail = [
+    { name: 'Accueil', item: SITE_URL },
+    ...(parent ? [{ name: parent.label, item: `${SITE_URL}${parent.path}` }] : []),
+    { name: breadcrumb, item: url },
+  ]
   const graph: Record<string, unknown>[] = [
     {
-      '@type': 'Article',
+      '@type': type,
       '@id': `${url}#article`,
       headline: title,
       description,
@@ -20,10 +25,7 @@ export function articleJsonLd({ path, title, description, published, modified, b
     },
     {
       '@type': 'BreadcrumbList',
-      itemListElement: [
-        { '@type': 'ListItem', position: 1, name: 'Accueil', item: SITE_URL },
-        { '@type': 'ListItem', position: 2, name: breadcrumb, item: url },
-      ],
+      itemListElement: trail.map((entry, index) => ({ '@type': 'ListItem', position: index + 1, ...entry })),
     },
   ]
   if (faq?.length) {

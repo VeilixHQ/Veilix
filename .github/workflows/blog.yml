@@ -1,0 +1,82 @@
+name: Blog
+
+on:
+  schedule:
+    - cron: '23 6 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: blog
+  cancel-in-progress: false
+
+jobs:
+  article:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Installation
+        run: pip install anthropic
+
+      - name: Recherche, rédaction et relecture
+        id: article
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          BLOG_MODEL: ${{ vars.BLOG_MODEL }}
+        run: python .github/scripts/blog_article.py
+
+      - uses: actions/setup-node@v4
+        if: steps.article.outputs.published == 'true'
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: veilix-frontend/package-lock.json
+
+      - name: Vérification du build
+        if: steps.article.outputs.published == 'true'
+        working-directory: veilix-frontend
+        run: |
+          npm ci
+          npm run build
+
+      - name: Publication
+        if: steps.article.outputs.published == 'true'
+        env:
+          ORGANIZATION: ${{ steps.article.outputs.organization }}
+        run: |
+          git config user.name VeilixHQ
+          git config user.email unknown.13kr@gmail.com
+          git add veilix-frontend/content/blog
+          git commit -m "Article sur la fuite de données chez $ORGANIZATION"
+          git pull --rebase origin main
+          git push origin HEAD:main
+
+      - name: Indexation
+        if: steps.article.outputs.published == 'true'
+        env:
+          SLUG: ${{ steps.article.outputs.slug }}
+        run: |
+          set -euo pipefail
+          URL="https://veilix.fr/blog/$SLUG"
+          for i in $(seq 1 30); do
+            if curl -fsS -o /dev/null "$URL"; then
+              break
+            fi
+            sleep 30
+          done
+          curl -fsS -o /dev/null "$URL"
+          KEY=780c24ab83dc432dcefdb32571693a13
+          BODY=$(jq -nc --arg key "$KEY" --arg url "$URL" '{host:"veilix.fr",key:$key,keyLocation:("https://veilix.fr/"+$key+".txt"),urlList:[$url,"https://veilix.fr/blog","https://veilix.fr/sitemap.xml"]}')
+          CODE=$(curl -sS -o /dev/null -w '%{http_code}' -X POST https://api.indexnow.org/indexnow -H 'Content-Type: application/json; charset=utf-8' -d "$BODY")
+          echo "Réponse IndexNow : $CODE"
+          [ "$CODE" = "200" ] || [ "$CODE" = "202" ]
