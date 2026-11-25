@@ -14,7 +14,7 @@ const PAGES: { path: string; lastModified: string; priority: number; changeFrequ
   { path: '/a-propos', lastModified: '2026-11-23', priority: 0.6, changeFrequency: 'monthly' },
   { path: '/contact', lastModified: '2026-11-23', priority: 0.5, changeFrequency: 'yearly' },
   { path: '/confidentialite', lastModified: '2026-11-23', priority: 0.4, changeFrequency: 'yearly' },
-  { path: '/conditions-utilisation', lastModified: '2026-11-23', priority: 0.3, changeFrequency: 'yearly' },
+  { path: '/conditions-utilisation', lastModified: '2026-11-25', priority: 0.3, changeFrequency: 'yearly' },
   { path: '/mentions-legales', lastModified: '2026-11-23', priority: 0.3, changeFrequency: 'yearly' },
 ]
 
