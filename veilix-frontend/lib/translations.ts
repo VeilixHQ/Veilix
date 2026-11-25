@@ -280,6 +280,7 @@ export const T = {
         links: [
           { label: 'FAQ', href: '/faq' },
           { label: 'Transparence', href: '/transparence' },
+          { label: 'Statut', href: 'https://status.veilix.fr' },
           { label: 'Open Source', href: 'https://github.com/VeilixHQ/Veilix' },
           { label: 'Discord', href: 'https://discord.gg/Cfze5qmvhV' },
         ],
@@ -572,6 +573,7 @@ export const T = {
         links: [
           { label: 'FAQ', href: '/faq' },
           { label: 'Transparency', href: '/transparence' },
+          { label: 'Status', href: 'https://status.veilix.fr' },
           { label: 'Open Source', href: 'https://github.com/VeilixHQ/Veilix' },
           { label: 'Discord', href: 'https://discord.gg/Cfze5qmvhV' },
         ],
