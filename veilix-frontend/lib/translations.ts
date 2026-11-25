@@ -269,19 +269,18 @@ export const T = {
       {
         title: 'Produit',
         links: [
-          { label: 'Fonctionnalités', href: '/#features' },
-          { label: 'Fonctionnement', href: '/#how' },
+          { label: 'Alias email anonyme', href: '/alias-email-anonyme' },
           { label: 'Tarifs', href: '/pricing' },
+          { label: 'Comparatif', href: '/comparatif/meilleurs-alias-email' },
+          { label: 'Sécurité', href: '/securite' },
         ],
       },
       {
         title: 'Ressources',
         links: [
-          { label: 'Alias email anonyme', href: '/alias-email-anonyme' },
           { label: 'FAQ', href: '/faq' },
-          { label: 'Sécurité', href: '/securite' },
           { label: 'Transparence', href: '/transparence' },
-          { label: 'Comparatif', href: '/comparatif/meilleurs-alias-email' },
+          { label: 'Open Source', href: 'https://github.com/VeilixHQ/Veilix' },
           { label: 'Discord', href: 'https://discord.gg/Cfze5qmvhV' },
         ],
       },
@@ -289,8 +288,9 @@ export const T = {
         title: 'Entreprise',
         links: [
           { label: 'À propos', href: '/a-propos' },
+          { label: 'Feuille de route', href: '/feuille-de-route' },
+          { label: 'Kit média', href: '/kit-media' },
           { label: 'Contact', href: '/contact' },
-          { label: 'Open Source', href: 'https://github.com/VeilixHQ/Veilix' },
         ],
       },
       {
@@ -299,15 +299,11 @@ export const T = {
           { label: 'Mentions légales', href: '/mentions-legales' },
           { label: 'Confidentialité', href: '/confidentialite' },
           { label: "Conditions d'utilisation", href: '/conditions-utilisation' },
+          { label: 'Politique anti-abus', href: '/politique-anti-abus' },
         ],
       },
     ],
     footerCopy: '© 2026 Veilix. Tous droits réservés.',
-    footerLegal: [
-      { label: 'Confidentialité', href: '/confidentialite' },
-      { label: 'CGU', href: '/conditions-utilisation' },
-      { label: 'Contact', href: '/contact' },
-    ],
   },
   en: {
     nav: {
@@ -565,19 +561,18 @@ export const T = {
       {
         title: 'Product',
         links: [
-          { label: 'Features', href: '/#features' },
-          { label: 'How it works', href: '/#how' },
+          { label: 'Anonymous email alias', href: '/alias-email-anonyme' },
           { label: 'Pricing', href: '/pricing' },
+          { label: 'Comparison', href: '/comparatif/meilleurs-alias-email' },
+          { label: 'Security', href: '/securite' },
         ],
       },
       {
         title: 'Resources',
         links: [
-          { label: 'Anonymous email alias', href: '/alias-email-anonyme' },
           { label: 'FAQ', href: '/faq' },
-          { label: 'Security', href: '/securite' },
           { label: 'Transparency', href: '/transparence' },
-          { label: 'Comparison', href: '/comparatif/meilleurs-alias-email' },
+          { label: 'Open Source', href: 'https://github.com/VeilixHQ/Veilix' },
           { label: 'Discord', href: 'https://discord.gg/Cfze5qmvhV' },
         ],
       },
@@ -585,8 +580,9 @@ export const T = {
         title: 'Company',
         links: [
           { label: 'About', href: '/a-propos' },
+          { label: 'Roadmap', href: '/feuille-de-route' },
+          { label: 'Press kit', href: '/kit-media' },
           { label: 'Contact', href: '/contact' },
-          { label: 'Open Source', href: 'https://github.com/VeilixHQ/Veilix' },
         ],
       },
       {
@@ -595,15 +591,11 @@ export const T = {
           { label: 'Legal Notice', href: '/mentions-legales' },
           { label: 'Privacy Policy', href: '/confidentialite' },
           { label: 'Terms of Use', href: '/conditions-utilisation' },
+          { label: 'Anti-abuse policy', href: '/politique-anti-abus' },
         ],
       },
     ],
     footerCopy: '© 2026 Veilix. All rights reserved.',
-    footerLegal: [
-      { label: 'Privacy', href: '/confidentialite' },
-      { label: 'Terms', href: '/conditions-utilisation' },
-      { label: 'Contact', href: '/contact' },
-    ],
   },
 } as const
 

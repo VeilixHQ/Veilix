@@ -3,7 +3,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { Translations } from '@/lib/translations'
 
-const LOGO_SIZE = 48
+const LOGO_SCALE = 54
 
 const SOCIAL_LINKS = [
   {
@@ -38,15 +38,15 @@ const SOCIAL_LINKS = [
 export function SiteFooter({ t }: { t: Translations }) {
   return (
     <footer style={{ borderTop: '1px solid rgba(var(--ink),0.06)', background: 'var(--c-0a0a0c)' }}>
-      <div className="footer-grid" style={{ maxWidth: 1060, margin: '0 auto', padding: '48px 48px 40px', display: 'grid', gridTemplateColumns: '1.4fr repeat(4, 1fr)', gap: 40, alignItems: 'start' }}>
-        <div>
-          <Link href="/" style={{ display: 'flex', alignItems: 'center', gap: 7, textDecoration: 'none', marginBottom: 10 }}>
-            <div style={{ width: LOGO_SIZE, height: LOGO_SIZE, flexShrink: 0, position: 'relative' }}>
-              <Image src="/vlx-white.svg" alt="Veilix" fill style={{ objectFit: 'contain' }} />
-            </div>
-            <span style={{ fontSize: 20, fontWeight: 800, letterSpacing: '-0.3px', color: 'var(--c-heading)' }}>Veilix</span>
+      <div className="footer-inner footer-grid" style={{ paddingTop: 48, paddingBottom: 40 }}>
+        <div className="footer-brand">
+          <Link href="/" aria-label="Veilix" style={{ display: 'flex', alignItems: 'center', gap: 9, height: 24, marginBottom: 16, textDecoration: 'none', width: 'fit-content' }}>
+            <span aria-hidden style={{ width: 23, height: 21, flexShrink: 0, position: 'relative', overflow: 'hidden' }}>
+              <Image src="/vlx-white.svg" alt="" width={LOGO_SCALE} height={LOGO_SCALE} style={{ position: 'absolute', left: -16, top: -16, width: LOGO_SCALE, height: LOGO_SCALE, maxWidth: 'none' }} />
+            </span>
+            <span style={{ fontSize: 20, lineHeight: '24px', fontWeight: 800, letterSpacing: '-0.3px', color: 'var(--c-heading)' }}>Veilix</span>
           </Link>
-          <p style={{ fontSize: 13, color: 'var(--c-475569)', lineHeight: 1.75, marginBottom: 18, maxWidth: 200 }}>{t.footerDesc}</p>
+          <p style={{ fontSize: 13, color: 'var(--c-475569)', lineHeight: 1.75, marginBottom: 18, maxWidth: 220 }}>{t.footerDesc}</p>
           <div style={{ display: 'flex', flexDirection: 'column', gap: 6, marginBottom: 18 }}>
             {['No Account', 'No Logs', 'Open Source'].map((pill, i) => (
               <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 11, color: 'var(--c-334155)', fontWeight: 500 }}>
@@ -74,23 +74,22 @@ export function SiteFooter({ t }: { t: Translations }) {
         </div>
         {t.footerCols.map((col, i) => (
           <div key={i}>
-            <div style={{ fontSize: 13, fontWeight: 700, color: 'var(--c-94a3b8)', textTransform: 'uppercase', letterSpacing: '0.6px', marginBottom: 16 }}>{col.title}</div>
+            <div style={{ fontSize: 13, lineHeight: '24px', fontWeight: 700, color: 'var(--c-94a3b8)', textTransform: 'uppercase', letterSpacing: '0.6px', marginBottom: 16 }}>{col.title}</div>
             <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: 10 }}>
               {col.links.map((link, j) => (
-                <li key={j}><Link href={link.href} className="footer-link">{link.label}</Link></li>
+                <li key={j}>
+                  {link.href.startsWith('http')
+                    ? <a href={link.href} target="_blank" rel="noopener noreferrer" className="footer-link">{link.label}</a>
+                    : <Link href={link.href} className="footer-link">{link.label}</Link>}
+                </li>
               ))}
             </ul>
           </div>
         ))}
       </div>
-      <div style={{ borderTop: '1px solid rgba(var(--ink),0.04)', padding: '20px 48px' }}>
-        <div style={{ maxWidth: 1060, margin: '0 auto', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 12 }}>
+      <div style={{ borderTop: '1px solid rgba(var(--ink),0.04)' }}>
+        <div className="footer-inner" style={{ paddingTop: 20, paddingBottom: 20, textAlign: 'center' }}>
           <span style={{ fontSize: 12, color: 'var(--c-1e293b)' }}>{t.footerCopy}</span>
-          <div style={{ display: 'flex', gap: 20 }}>
-            {t.footerLegal.map((l, i) => (
-              <Link key={i} href={l.href} style={{ fontSize: 12, color: 'var(--c-1e293b)', textDecoration: 'none' }}>{l.label}</Link>
-            ))}
-          </div>
         </div>
       </div>
     </footer>
