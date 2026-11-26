@@ -2,7 +2,7 @@
 
 > Veilix : alias email anonymes et sécurisés, open source et hébergé en Europe. Un alias email différent pour chaque site ; les messages sont relayés vers votre adresse e-mail personnelle, qui reste privée.
 
-Veilix est un service d'alias email (service de relais). Chaque alias, par exemple x7k2m9pl4q@alias.veilix.fr, transfère les messages reçus vers l'adresse e-mail personnelle de l'utilisateur, qui n'est jamais communiquée aux sites. L'utilisateur peut répondre depuis l'alias, le désactiver ou bloquer un expéditeur.
+Veilix (veilix.fr) est un service d'alias email (service de relais). Ce site décrit uniquement ce service ; d'autres projets sans lien portent aussi le nom Veilix. Chaque alias, par exemple x7k2m9pl4q@alias.veilix.fr, transfère les messages reçus vers l'adresse e-mail personnelle de l'utilisateur, qui n'est jamais communiquée aux sites. L'utilisateur peut répondre depuis l'alias, le désactiver ou bloquer un expéditeur.
 
 Faits clés :
 - Inscription sans mot de passe : clé générée dans le navigateur et phrase de récupération de 12 mots (BIP39). Pendant la bêta, une adresse de contact chiffrée est demandée, uniquement pour communiquer pendant le test ; pas de récupération de compte par e-mail.

@@ -178,7 +178,7 @@ export const PT = {
     apropos: {
       kicker: 'À propos',
       title: 'Construire la privacy accessible à tous.',
-      intro: "Veilix est né d'un constat simple : protéger son identité numérique ne devrait pas être réservé aux experts en sécurité.",
+      intro: "Veilix (veilix.fr) est un service d'alias email anonymes, open source et hébergé en Europe. Il est né d'un constat simple : protéger son identité numérique ne devrait pas être réservé aux experts en sécurité.",
       origin: { title: "L'origine du projet", content: "Veilix a été créé en 2026 par un développeur passionné de cybersécurité et de privacy. Fatigué de voir son email envahi de spam après chaque inscription en ligne, il a voulu construire une solution simple, radicalement privée, et sans compromis." },
       philosophy: { title: 'Notre philosophie', content: "Veilix ne vend pas des alias email. Veilix vend du contrôle, de la séparation d'identité, et de la protection numérique.", points: ['No Account : Aucun email ni mot de passe requis', 'No Logs : Vos emails ne sont jamais lus ni stockés', "No Tracking : Vous n'êtes pas le produit", 'Open Source : Code frontend auditable publiquement'] },
       architecture: { title: 'Architecture No Account', content: "Veilix a été l'un des premiers services SaaS à implémenter une architecture \"No Account\" basée sur la cryptographie BIP39 : le même standard utilisé par les wallets crypto." },
@@ -407,7 +407,7 @@ export const PT = {
     apropos: {
       kicker: 'About',
       title: 'Building privacy accessible to everyone.',
-      intro: 'Veilix was born from a simple observation: protecting your digital identity should not be reserved for security experts.',
+      intro: 'Veilix (veilix.fr) is an anonymous email alias service, open source and hosted in Europe. It was born from a simple observation: protecting your digital identity should not be reserved for security experts.',
       origin: { title: 'The origin of the project', content: 'Veilix was created in 2026 by a developer passionate about cybersecurity and privacy. Tired of seeing his email flooded with spam after every online sign-up, he wanted to build a simple, radically private, uncompromising solution.' },
       philosophy: { title: 'Our philosophy', content: 'Veilix does not sell email aliases. Veilix sells control, identity separation, and digital protection.', points: ['No Account: No email or password required', 'No Logs: Your emails are never read or stored', 'No Tracking: You are not the product', 'Open Source: Frontend code publicly auditable'] },
       architecture: { title: 'No Account Architecture', content: 'Veilix was one of the first SaaS services to implement a "No Account" architecture based on BIP39 cryptography: the same standard used by crypto wallets.' },
