@@ -1,14 +1,14 @@
 'use client'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { SiteNav } from '@/components/landing/SiteNav'
 import { SiteFooter } from '@/components/landing/SiteFooter'
 import { Button } from '@/components/Button'
 import { T, Lang } from '@/lib/translations'
 import { PT } from '@/lib/translations-pages'
+import { PackAvailability, getPackAvailability } from '@/lib/api'
 
-const PACK_TOTAL = 100
-const PACK_REMAINING = 100
+const PACK_REFRESH_MS = 60_000
 
 type Price = { price: string; period: string; sub: string }
 
@@ -119,8 +119,9 @@ const PLANS: Record<'fr' | 'en', PlanData[]> = {
 
 const TEXT = {
   fr: {
-    left: (n: number) => `${n} packs restants sur ${PACK_TOTAL}`,
+    left: (n: number, total: number) => `${n} packs restants sur ${total}`,
     full: 'Complet',
+    reserved: 'Packs de lancement déjà réservés',
     monthly: 'Mensuel',
     yearlyLabel: 'Annuel',
     payment: 'Moyen de paiement requis',
@@ -130,8 +131,9 @@ const TEXT = {
     close: 'Compris',
   },
   en: {
-    left: (n: number) => `${n} of ${PACK_TOTAL} packs left`,
+    left: (n: number, total: number) => `${n} of ${total} packs left`,
     full: 'Sold out',
+    reserved: 'Launch packs already reserved',
     monthly: 'Monthly',
     yearlyLabel: 'Yearly',
     payment: 'Payment method required',
@@ -162,7 +164,7 @@ const FAQS: Record<'fr' | 'en', { q: string; a: string }[]> = {
     },
     {
       q: 'Combien de packs sont disponibles ?',
-      a: "L'offre est limitée à 100 exemplaires. Le compteur affiché sur la carte du Pack montre le nombre de places restantes. Une fois les 100 packs réservés, l'offre n'est plus disponible.",
+      a: "L'offre est limitée à 100 exemplaires, numérotés de 1 à 100. Les Packs offerts aux testeurs de la bêta privée font partie de ces 100 exemplaires. Le compteur affiché sur la carte du Pack montre en temps réel le nombre de places restantes. Une fois les 100 packs réservés, l'offre n'est plus disponible.",
     },
     {
       q: 'Puis-je annuler mon abonnement ?',
@@ -188,7 +190,7 @@ const FAQS: Record<'fr' | 'en', { q: string; a: string }[]> = {
     },
     {
       q: 'How many packs are available?',
-      a: 'The offer is limited to 100 copies. The counter on the pack card shows how many are left. Once all 100 packs are reserved, the offer is no longer available.',
+      a: 'The offer is limited to 100 numbered copies. Packs given to our private beta testers are part of these 100 copies. The counter on the pack card shows in real time how many are left. Once all 100 packs are reserved, the offer is no longer available.',
     },
     {
       q: 'Can I cancel my subscription?',
@@ -206,7 +208,26 @@ export default function Pricing() {
   const plans = (PLANS as Record<string, PlanData[]>)[lang] ?? PLANS.fr
   const tx = (TEXT as Record<string, typeof TEXT.fr>)[lang] ?? TEXT.fr
   const faqs = (FAQS as Record<string, { q: string; a: string }[]>)[lang] ?? FAQS.fr
-  const soldOut = PACK_REMAINING <= 0
+  const [pack, setPack] = useState<PackAvailability | null>(null)
+  const soldOut = pack !== null && pack.remaining <= 0
+
+  useEffect(() => {
+    let active = true
+    const refresh = () => {
+      if (document.visibilityState !== 'visible') return
+      getPackAvailability()
+        .then(data => { if (active) setPack(data) })
+        .catch(() => {})
+    }
+    refresh()
+    const timer = window.setInterval(refresh, PACK_REFRESH_MS)
+    document.addEventListener('visibilitychange', refresh)
+    return () => {
+      active = false
+      window.clearInterval(timer)
+      document.removeEventListener('visibilitychange', refresh)
+    }
+  }, [])
 
   return (
     <div style={{ minHeight: '100vh', background: 'var(--c-060608)', color: 'var(--c-f1f5f9)', fontFamily: 'Inter, sans-serif' }}>
@@ -281,9 +302,9 @@ export default function Pricing() {
                 <div style={{ height: 44, marginTop: 18 }} aria-live="polite">
                   {isPack && (
                     <>
-                      <div style={{ fontSize: 12, color: 'var(--c-94a3b8)', marginBottom: 6 }}>{soldOut ? tx.full : tx.left(PACK_REMAINING)}</div>
-                      <div style={{ height: 5, borderRadius: 100, background: 'rgba(var(--ink),0.08)', overflow: 'hidden' }}>
-                        <div style={{ height: '100%', width: `${((PACK_TOTAL - PACK_REMAINING) / PACK_TOTAL) * 100}%`, borderRadius: 100, background: '#7c3aed' }} />
+                      <div style={{ fontSize: 12, color: 'var(--c-94a3b8)', marginBottom: 6, minHeight: 18 }}>{pack ? (soldOut ? tx.full : tx.left(pack.remaining, pack.total)) : '\u00a0'}</div>
+                      <div role="progressbar" aria-valuemin={0} aria-valuemax={pack?.total ?? 100} aria-valuenow={pack?.taken ?? 0} aria-label={tx.reserved} style={{ height: 5, borderRadius: 100, background: 'rgba(var(--ink),0.08)', overflow: 'hidden' }}>
+                        <div style={{ height: '100%', width: pack ? `${(pack.taken / pack.total) * 100}%` : '0%', borderRadius: 100, background: '#7c3aed', transition: 'width .8s ease' }} />
                       </div>
                     </>
                   )}
