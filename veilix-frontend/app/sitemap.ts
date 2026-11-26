@@ -3,7 +3,7 @@ import type { MetadataRoute } from 'next'
 const SITE_URL = 'https://veilix.fr'
 
 const PAGES: { path: string; lastModified: string; priority: number; changeFrequency: MetadataRoute.Sitemap[number]['changeFrequency'] }[] = [
-  { path: '', lastModified: '2026-11-25', priority: 1, changeFrequency: 'weekly' },
+  { path: '', lastModified: '2026-11-26', priority: 1, changeFrequency: 'weekly' },
   { path: '/pricing', lastModified: '2026-11-23', priority: 0.9, changeFrequency: 'monthly' },
   { path: '/alias-email-anonyme', lastModified: '2026-11-25', priority: 0.9, changeFrequency: 'monthly' },
   { path: '/transparence', lastModified: '2026-11-25', priority: 0.8, changeFrequency: 'monthly' },
@@ -11,7 +11,7 @@ const PAGES: { path: string; lastModified: string; priority: number; changeFrequ
   { path: '/securite', lastModified: '2026-11-25', priority: 0.8, changeFrequency: 'monthly' },
   { path: '/faq', lastModified: '2026-11-23', priority: 0.8, changeFrequency: 'monthly' },
   { path: '/beta', lastModified: '2026-11-23', priority: 0.7, changeFrequency: 'weekly' },
-  { path: '/a-propos', lastModified: '2026-11-23', priority: 0.6, changeFrequency: 'monthly' },
+  { path: '/a-propos', lastModified: '2026-11-26', priority: 0.6, changeFrequency: 'monthly' },
   { path: '/feuille-de-route', lastModified: '2026-11-25', priority: 0.5, changeFrequency: 'monthly' },
   { path: '/kit-media', lastModified: '2026-11-25', priority: 0.4, changeFrequency: 'yearly' },
   { path: '/contact', lastModified: '2026-11-23', priority: 0.5, changeFrequency: 'yearly' },
