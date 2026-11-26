@@ -164,7 +164,7 @@ const FAQS: Record<'fr' | 'en', { q: string; a: string }[]> = {
     },
     {
       q: 'Combien de packs sont disponibles ?',
-      a: "L'offre est limitée à 100 exemplaires. Le compteur affiché sur la carte du Pack montre le nombre de places restantes. Une fois les 100 packs réservés, l'offre n'est plus disponible.",
+      a: "L'offre est limitée à 100 exemplaires, numérotés de 1 à 100. Les Packs offerts aux testeurs de la bêta privée font partie de ces 100 exemplaires. Le compteur affiché sur la carte du Pack montre en temps réel le nombre de places restantes. Une fois les 100 packs réservés, l'offre n'est plus disponible.",
     },
     {
       q: 'Puis-je annuler mon abonnement ?',
@@ -190,7 +190,7 @@ const FAQS: Record<'fr' | 'en', { q: string; a: string }[]> = {
     },
     {
       q: 'How many packs are available?',
-      a: 'The offer is limited to 100 copies. The counter on the pack card shows how many are left. Once all 100 packs are reserved, the offer is no longer available.',
+      a: 'The offer is limited to 100 numbered copies. Packs given to our private beta testers are part of these 100 copies. The counter on the pack card shows in real time how many are left. Once all 100 packs are reserved, the offer is no longer available.',
     },
     {
       q: 'Can I cancel my subscription?',
