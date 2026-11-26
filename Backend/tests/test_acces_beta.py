@@ -45,7 +45,7 @@ def test_beta_privee_donne_le_pack_sans_paiement(client, db):
 
     compte = client.get("/key/me", headers=entetes(cle)).json()
     assert compte["plan"] == "pack"
-    assert compte["badges"] == [{"id": "pionnier", "number": None}]
+    assert compte["badges"] == [{"id": "pionnier", "number": None}, {"id": "fondateur", "number": 1}]
     assert db.query(AccessCode).one().status == "used"
 
 

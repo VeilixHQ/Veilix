@@ -2,11 +2,12 @@ import argparse
 
 from app.db.session import SessionLocal
 from app.plans import STORED_PLANS
+from app.services import pack_service
 from app.services.key_service import get_key_by_id
 
 
 def _describe(key) -> str:
-    return f"plan={key.plan!r}, status={key.status!r}, credits={key.credits}"
+    return f"plan={key.plan!r}, status={key.status!r}, credits={key.credits}, fondateur={key.founder_number}"
 
 
 def main() -> None:
@@ -33,7 +34,15 @@ def main() -> None:
             print("Refusé : le solde de crédits deviendrait négatif.")
             return
 
-        if args.plan:
+        if args.plan == "pack" and key.plan != "pack" and not key.is_admin:
+            try:
+                numero = pack_service.grant_pack(db, key)
+            except pack_service.PackSoldOut:
+                db.rollback()
+                print(f"Refusé : les {pack_service.PACK_TOTAL} Packs de lancement sont tous attribués.")
+                return
+            print(f"Pack de lancement n° {numero} attribué.")
+        elif args.plan:
             key.plan = args.plan
         if args.status:
             key.status = args.status
