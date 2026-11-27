@@ -24,7 +24,7 @@ export const T = {
     ],
     badge: 'Open Source · No Logs · No Account',
     pillars: [
-      { label: 'No Account', desc: 'Aucun compte requis' },
+      { label: 'No Account', desc: 'Ni e-mail ni mot de passe' },
       { label: 'No Logs', desc: "Aucun journal d'activité" },
       { label: 'No Tracking', desc: "Vous n'êtes pas le produit" },
       { label: 'Open Source', desc: 'Code auditable publiquement' },
@@ -33,7 +33,7 @@ export const T = {
     access: {
       badge: 'No Account · No Logs',
       title: 'Accédez à Veilix',
-      subtitle: 'Aucun email, aucun mot de passe.\nUne clé générée localement dans votre navigateur, qui vous appartient entièrement.',
+      subtitle: "Ni e-mail ni mot de passe pour vous connecter.\nUne clé générée localement dans votre navigateur, qui vous appartient entièrement.\nPendant la bêta, une adresse de contact chiffrée vous est demandée, jamais pour vous connecter.",
       generateBtn: 'Générer ma clé',
       restoreBtn: "J'ai déjà une clé",
       bullets: [
@@ -200,7 +200,7 @@ export const T = {
       {
         n: '3',
         title: 'Répondez et bloquez',
-        desc: 'Répondez aux emails directement depuis votre alias en restant 100% anonyme.\nSpam ? Bloquez en un clic.',
+        desc: 'Répondez aux emails directement depuis votre alias sans dévoiler votre adresse réelle.\nSpam ? Bloquez en un clic.',
       },
     ],
     howVisualTitle: 'Alias email',
@@ -220,9 +220,9 @@ export const T = {
     features: [
       { title: 'Alias en un clic', desc: "Génération immédiate.\nPrêts à l'emploi sans configuration.", tag: 'Instant' },
       { title: 'Blocage instantané', desc: 'Un spammeur vous harcèle ?\nCoupez les accès en un clic.', tag: '1-Click' },
-      { title: 'Réponse anonyme', desc: 'Répondez directement via vos alias\ntout en gardant votre adresse privée.', tag: '100% Anonyme' },
+      { title: 'Réponse anonyme', desc: 'Répondez directement via vos alias\ntout en gardant votre adresse privée.', tag: 'Adresse masquée' },
       { title: 'Pièces jointes incluses', desc: 'Recevez et envoyez vos PDF,\ndocuments et images en toute sécurité.', tag: 'PDF, Docs, Img' },
-      { title: 'Adresse 100% privée', desc: 'Votre adresse e-mail personnelle reste sous clé.\nProtection totale en arrière-plan.', tag: 'Privacy First' },
+      { title: 'Adresse personnelle privée', desc: 'Votre adresse e-mail personnelle reste sous clé.\nProtection permanente en arrière-plan.', tag: 'Privacy First' },
       { title: 'Labels & Organisation', desc: 'Shopping, gaming ou travail :\nchaque alias reste à sa place.', tag: 'Sur-mesure' },
     ],
     whyKicker: 'Pourquoi Choisir Veilix ?',
@@ -289,7 +289,7 @@ export const T = {
         title: 'Entreprise',
         links: [
           { label: 'À propos', href: '/a-propos' },
-          { label: 'Feuille de route', href: '/feuille-de-route' },
+          { label: 'Statut', href: 'https://status.veilix.fr' },
           { label: 'Kit média', href: '/kit-media' },
           { label: 'Contact', href: '/contact' },
         ],
@@ -329,7 +329,7 @@ export const T = {
     ],
     badge: 'Open Source · No Logs · No Account',
     pillars: [
-      { label: 'No Account', desc: 'No sign-up required' },
+      { label: 'No Account', desc: 'No email, no password' },
       { label: 'No Logs', desc: 'No activity logs' },
       { label: 'No Tracking', desc: 'You are not the product' },
       { label: 'Open Source', desc: 'Publicly auditable code' },
@@ -338,7 +338,7 @@ export const T = {
     access: {
       badge: 'No Account · No Logs',
       title: 'Access Veilix',
-      subtitle: 'No email, no password.\nA locally generated key in your browser that belongs entirely to you.',
+      subtitle: 'No email or password to sign in.\nA locally generated key in your browser that belongs entirely to you.\nDuring the beta, an encrypted contact address is requested, never to sign in.',
       generateBtn: 'Generate my key',
       restoreBtn: 'I already have a key',
       bullets: [
@@ -494,7 +494,7 @@ export const T = {
     howSteps: [
       { n: '1', title: 'Generate a key', desc: 'No email or password required.\nA unique cryptographic key generated locally.' },
       { n: '2', title: 'Create aliases', desc: 'Generate your aliases in one click.\nKeep your personal email address private and send attachments (PDFs, docs...).' },
-      { n: '3', title: 'Block in one click', desc: 'Reply to incoming emails directly from your alias while remaining 100% anonymous.\nSpam? Block with one click.' },
+      { n: '3', title: 'Block in one click', desc: 'Reply to incoming emails directly from your alias without revealing your real address.\nSpam? Block with one click.' },
     ],
     howVisualTitle: 'Email aliases',
     howVisualBtn: '+ New alias',
@@ -513,9 +513,9 @@ export const T = {
     features: [
       { title: 'Aliases in one click', desc: 'Instant generation.\nReady to use with zero configuration.', tag: 'Instant' },
       { title: 'Instant blocking', desc: 'Spammer harassing you?\nCut access in one click.', tag: '1-Click' },
-      { title: 'Anonymous reply', desc: 'Reply directly through your aliases\nwhile keeping your personal email address private.', tag: '100% Anonymous' },
+      { title: 'Anonymous reply', desc: 'Reply directly through your aliases\nwhile keeping your personal email address private.', tag: 'Address hidden' },
       { title: 'Attachments supported', desc: 'Receive and send your PDFs,\ndocuments, and images securely.', tag: 'PDF, Docs, Img' },
-      { title: '100% private address', desc: 'Your personal email address stays locked.\nTotal background protection.', tag: 'Privacy First' },
+      { title: 'Private personal address', desc: 'Your personal email address stays locked.\nAlways-on background protection.', tag: 'Privacy First' },
       { title: 'Labels & Organization', desc: 'Shopping, gaming, or work:\nevery alias in its place.', tag: 'Custom' },
     ],
     whyKicker: 'Why Choose Veilix?',
@@ -582,7 +582,7 @@ export const T = {
         title: 'Company',
         links: [
           { label: 'About', href: '/a-propos' },
-          { label: 'Roadmap', href: '/feuille-de-route' },
+          { label: 'Status', href: 'https://status.veilix.fr' },
           { label: 'Press kit', href: '/kit-media' },
           { label: 'Contact', href: '/contact' },
         ],
