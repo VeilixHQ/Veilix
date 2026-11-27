@@ -17,6 +17,7 @@ from app.schemas.key import (
     VerifyKeyRequest,
     VerifyKeyResponse,
 )
+from app.services import acquisition_service
 from app.services.access_service import badges_for, check_code, register_with_code
 from app.services.alias_service import count_aliases, destinations_in_use
 from app.services.key_service import get_key_by_id
@@ -35,6 +36,7 @@ def check(body: CheckCodeRequest, db: Session = Depends(get_db)):
 @router.post("/key/register", response_model=KeyResponse, dependencies=[Depends(ip_limit("register", 20, 3600))])
 def register(body: RegisterKeyRequest, db: Session = Depends(get_db)):
     key = register_with_code(db, body.key_id, body.access_code, body.contact_email, body.accept_terms)
+    acquisition_service.record_safely(db, "register", body.channel)
     return KeyResponse(key_id=body.key_id, plan=key.plan, status=key.status, credits=key.credits, created_at=key.created_at)
 
 

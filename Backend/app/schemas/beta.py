@@ -11,6 +11,7 @@ class SignupRequest(BaseModel):
     consent: bool
     invitation: Optional[str] = Field(default=None, max_length=128)
     website: Optional[str] = Field(default=None, max_length=200)
+    channel: Optional[str] = Field(default=None, max_length=40)
 
 
 class PhaseStatus(BaseModel):

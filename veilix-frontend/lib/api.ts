@@ -1,4 +1,5 @@
 import { getIdentity } from './crypto'
+import { getChannel } from './channel'
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://127.0.0.1:8000'
 
@@ -72,7 +73,7 @@ export async function registerKey(keyId: string, accessCode: string, contactEmai
   const res = await fetch(`${API_URL}/key/register`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ key_id: keyId, access_code: accessCode, contact_email: contactEmail || null, accept_terms: true }),
+    body: JSON.stringify({ key_id: keyId, access_code: accessCode, contact_email: contactEmail || null, accept_terms: true, channel: getChannel() }),
   })
   if (!res.ok) {
     throw new ApiError(res.status, await errorDetail(res, 'Enregistrement de la clé impossible'))
@@ -174,7 +175,7 @@ export async function joinBeta(email: string, invitation: string | null, website
   const res = await fetch(`${API_URL}/beta/signup`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ email, consent: true, invitation, website: website || null }),
+    body: JSON.stringify({ email, consent: true, invitation, website: website || null, channel: getChannel() }),
   })
   if (!res.ok) throw new ApiError(res.status, await errorDetail(res, 'Inscription impossible'))
   return res.json()

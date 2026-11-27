@@ -1,4 +1,4 @@
-﻿import os
+import os
 from dotenv import load_dotenv
 
 load_dotenv(encoding="utf-8-sig")
@@ -13,6 +13,7 @@ MAILGUN_SIGNING_KEY = os.getenv("MAILGUN_SIGNING_KEY", "").strip()
 MAILGUN_API_URL     = os.getenv("MAILGUN_API_URL", "https://api.eu.mailgun.net").rstrip("/")
 REPLY_DOMAIN        = (os.getenv("REPLY_DOMAIN") or MAILGUN_DOMAIN or DOMAIN).strip().lower()
 INTERNAL_DOMAINS    = {d.strip().lower() for d in (DOMAIN, MAILGUN_DOMAIN, REPLY_DOMAIN) if d and d.strip()}
+STATS_API_TOKEN = os.getenv("STATS_API_TOKEN", "").strip()
 CUSTOM_DOMAINS_ENABLED = os.getenv("CUSTOM_DOMAINS_ENABLED", "false").strip().lower() in ("1", "true", "yes")
 FRONTEND_URL        = os.getenv("FRONTEND_URL", "http://localhost:3000").rstrip("/")
 ENCRYPTION_KEY      = os.getenv("ENCRYPTION_KEY")

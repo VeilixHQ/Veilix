@@ -79,7 +79,7 @@ def etat_propre(base_de_test):
     from app.db.session import engine
 
     with engine.begin() as conn:
-        conn.execute(text("TRUNCATE beta_feedback, access_codes, beta_signups, destination_verifications, aliases, keys, rate_limits, webhook_tokens, inbound_messages, destination_health RESTART IDENTITY CASCADE"))
+        conn.execute(text("TRUNCATE acquisition_daily, beta_feedback, access_codes, beta_signups, destination_verifications, aliases, keys, rate_limits, webhook_tokens, inbound_messages, destination_health RESTART IDENTITY CASCADE"))
     yield
 
 

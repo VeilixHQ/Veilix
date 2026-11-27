@@ -9,6 +9,7 @@ class RegisterKeyRequest(BaseModel):
     access_code: str = Field(min_length=1, max_length=40)
     contact_email: Optional[EmailStr] = None
     accept_terms: bool
+    channel: Optional[str] = Field(default=None, max_length=40)
 
 class CheckCodeRequest(BaseModel):
     access_code: str = Field(min_length=1, max_length=40)

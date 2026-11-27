@@ -8,7 +8,7 @@ from app.core.security import KEY_ID_HEADER, KEY_ID_LENGTH
 from app.db.session import get_db
 from app.models.key import Key
 from app.schemas.beta import BetaKeyStatus, BetaPublicStatus, FeedbackRequest, PhaseStatus, SignupRequest
-from app.services import beta_service
+from app.services import acquisition_service, beta_service
 from app.services.key_service import get_key_by_id
 
 router = APIRouter(tags=["Beta"])
@@ -65,6 +65,7 @@ def signup(body: SignupRequest, request: Request, db: Session = Depends(get_db))
     rate_limit.hit("beta-signup-global", "all", limits.BETA_SIGNUP_GLOBAL_PER_HOUR, 3600, "Trop de demandes en ce moment. Réessayez dans une heure.")
     phase = "private" if body.invitation else "public"
     beta_service.signup(db, phase, str(body.email), body.consent, body.invitation)
+    acquisition_service.record_safely(db, "waitlist", body.channel)
     return {"status": "ok"}
 
 

@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import { connection } from 'next/server'
 import './globals.css'
+import { ChannelCapture } from '@/components/ChannelCapture'
 
 const SITE_URL = 'https://veilix.fr'
 const DESCRIPTION = "Un alias email par site, votre adresse personnelle reste privée. Sans e-mail ni mot de passe, sans journal d'activité, open source et hébergé en Europe."
@@ -100,6 +101,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
       </head>
       <body>
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(STRUCTURED_DATA) }} />
+        <ChannelCapture />
         {children}
       </body>
     </html>
