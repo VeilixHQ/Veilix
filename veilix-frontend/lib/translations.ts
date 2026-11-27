@@ -288,7 +288,7 @@ export const T = {
         title: 'Entreprise',
         links: [
           { label: 'À propos', href: '/a-propos' },
-          { label: 'Feuille de route', href: '/feuille-de-route' },
+          { label: 'Statut', href: 'https://status.veilix.fr' },
           { label: 'Kit média', href: '/kit-media' },
           { label: 'Contact', href: '/contact' },
         ],
@@ -580,7 +580,7 @@ export const T = {
         title: 'Company',
         links: [
           { label: 'About', href: '/a-propos' },
-          { label: 'Roadmap', href: '/feuille-de-route' },
+          { label: 'Status', href: 'https://status.veilix.fr' },
           { label: 'Press kit', href: '/kit-media' },
           { label: 'Contact', href: '/contact' },
         ],
