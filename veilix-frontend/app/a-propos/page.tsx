@@ -5,6 +5,7 @@ import { SiteNav } from '@/components/landing/SiteNav'
 import { SiteFooter } from '@/components/landing/SiteFooter'
 import { T, Lang } from '@/lib/translations'
 import { PT } from '@/lib/translations-pages'
+import { SIGNUP_OPEN, START_HREF } from '@/lib/launch'
 
 export default function APropos() {
   const [lang, setLang] = useState<Lang>('fr')
@@ -47,8 +48,8 @@ export default function APropos() {
 
           <div style={{ textAlign: 'center', padding: '32px', background: 'rgba(124,58,237,0.05)', border: '1px solid rgba(124,58,237,0.15)', borderRadius: 14 }}>
             <h2 style={{ fontSize: 18, fontWeight: 800, letterSpacing: '-0.4px', marginBottom: 10 }}>{pt.ctaTitle}</h2>
-            <p style={{ fontSize: 13, color: 'var(--c-64748b)', marginBottom: 20 }}>{pt.ctaSub}</p>
-            <Link href="/access" style={{ padding: '11px 24px', borderRadius: 9, background: '#7c3aed', color: '#fff', textDecoration: 'none', fontSize: 14, fontWeight: 600 }}>{pt.ctaBtn}</Link>
+            <p style={{ fontSize: 13, color: 'var(--c-64748b)', marginBottom: 20 }}>{SIGNUP_OPEN ? pt.ctaSub : t.waitlist.sub}</p>
+            <Link href={START_HREF} style={{ padding: '11px 24px', borderRadius: 9, background: '#7c3aed', color: '#fff', textDecoration: 'none', fontSize: 14, fontWeight: 600 }}>{SIGNUP_OPEN ? pt.ctaBtn : t.waitlist.cta}</Link>
           </div>
 
           <p style={{ fontSize: 13, color: 'var(--c-64748b)', textAlign: 'center' }}>

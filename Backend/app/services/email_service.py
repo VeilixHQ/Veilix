@@ -211,6 +211,29 @@ def send_beta_closing(to_email: str, phase: str, launch_on: str | None = None) -
     ))
 
 
+def send_launch_waitlist(to_email: str, launch_on: str | None, leave_url: str) -> None:
+    when = f"le {launch_on}" if launch_on else "très bientôt"
+    _send_text(to_email, "Vous serez prévenu du lancement de Veilix", (
+        "Bonjour,\n\n"
+        "Merci pour votre intérêt. Votre adresse est bien inscrite sur la liste d'attente de Veilix.\n\n"
+        f"Veilix ouvre {when}. Nous vous écrirons ce jour-là, une seule fois, puis votre adresse sera effacée de la liste. "
+        "D'ici là, elle reste chiffrée et ne sert à rien d'autre.\n\n"
+        f"Pour quitter la liste à tout moment :\n{leave_url}"
+    ))
+
+
+def send_launch_open(to_email: str, pricing_url: str) -> None:
+    _send_text(to_email, "Veilix est ouvert", (
+        "Bonjour,\n\n"
+        "Vous nous aviez demandé de vous prévenir : Veilix est ouvert à tous.\n\n"
+        "Un alias différent pour chaque site, sans e-mail ni mot de passe pour vous connecter, "
+        "avec un essai gratuit de 14 jours (moyen de paiement requis). "
+        "Le Pack de lancement est limité à 100 exemplaires.\n\n"
+        f"Choisir votre offre :\n{pricing_url}\n\n"
+        "Votre adresse vient d'être effacée de la liste d'attente : vous ne recevrez pas d'autre message de notre part."
+    ))
+
+
 def send_reply_undelivered(to_email: str, alias_email: str, correspondent: str) -> None:
     _send_text(to_email, "Votre réponse via Veilix n'a pas pu être remise", (
         "Bonjour,\n\n"

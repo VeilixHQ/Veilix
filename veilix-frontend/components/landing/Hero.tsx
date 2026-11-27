@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { Particles } from './Particles'
 import { Translations } from '@/lib/translations'
+import { SIGNUP_OPEN, START_HREF } from '@/lib/launch'
 
 function HeroDemo({ t }: { t: Translations }) {
   const [count, setCount] = useState(99)
@@ -75,7 +76,7 @@ export function Hero({ t }: { t: Translations }) {
       </p>
 
       <div style={{ display: 'flex', gap: 10, position: 'relative', zIndex: 1, flexWrap: 'wrap', justifyContent: 'center', marginBottom: 64, animation: 'fadeUp 0.6s ease 0.3s both' }}>
-        <Link href="/access" style={{ padding: '12px 24px', borderRadius: 9, fontSize: 14, fontWeight: 600, color: '#fff', background: '#7c3aed', textDecoration: 'none', boxShadow: '0 0 0 1px rgba(124,58,237,0.3)' }}>{t.cta1}</Link>
+        <Link href={START_HREF} style={{ padding: '12px 24px', borderRadius: 9, fontSize: 14, fontWeight: 600, color: '#fff', background: '#7c3aed', textDecoration: 'none', boxShadow: '0 0 0 1px rgba(124,58,237,0.3)' }}>{SIGNUP_OPEN ? t.cta1 : t.waitlist.cta}</Link>
         <a href="#how" style={{ padding: '12px 24px', borderRadius: 9, fontSize: 14, fontWeight: 600, color: 'var(--c-94a3b8)', border: '1px solid rgba(var(--ink),0.07)', textDecoration: 'none' }}>{t.cta2}</a>
       </div>
 

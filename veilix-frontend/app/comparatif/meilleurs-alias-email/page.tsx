@@ -109,7 +109,7 @@ export default function Comparatif() {
       ))}
 
       <h2 id="essayer">Essayer Veilix</h2>
-      <p>Veilix est en bêta : les places sont limitées. Rejoignez la liste d&apos;attente pour recevoir votre invitation. Tarifs détaillés sur la page <Link href="/pricing">Tarifs</Link>.</p>
+      <p>Veilix ouvre à tous le 1er février 2027. Rejoignez la liste d&apos;attente pour être prévenu de l&apos;ouverture. Tarifs détaillés sur la page <Link href="/pricing">Tarifs</Link>.</p>
       <Link href="/beta" className="cta">Rejoindre la bêta</Link>
 
       <h2 id="sources">Sources</h2>

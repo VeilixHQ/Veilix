@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from 'react'
 import Link from 'next/link'
 import { useOnScreen } from '@/lib/hooks'
 import { Translations } from '@/lib/translations'
+import { SIGNUP_OPEN, START_HREF } from '@/lib/launch'
 
 export function TypewriterCTA({ t }: { t: Translations }) {
   const ref = useRef<HTMLDivElement>(null)
@@ -42,9 +43,9 @@ export function TypewriterCTA({ t }: { t: Translations }) {
           <span>{displayed.slice(0, split)}{!done && displayed.length <= split && cursor}</span>
           {displayed.length > split && <span style={{ display: 'block', color: 'var(--c-a78bfa)' }}>{displayed.slice(split)}{!done && cursor}</span>}
         </h2>
-        <p style={{ fontSize: 15, color: 'var(--c-64748b)', marginBottom: 28, lineHeight: 1.7, opacity: done ? 1 : 0, transition: 'opacity 0.6s ease 0.3s' }}>{t.ctaSub}</p>
+        <p style={{ fontSize: 15, color: 'var(--c-64748b)', marginBottom: 28, lineHeight: 1.7, opacity: done ? 1 : 0, transition: 'opacity 0.6s ease 0.3s' }}>{SIGNUP_OPEN ? t.ctaSub : t.waitlist.sub}</p>
         <div style={{ opacity: done ? 1 : 0, transition: 'opacity 0.6s ease 0.6s, transform 0.6s ease 0.6s', transform: done ? 'translateY(0)' : 'translateY(8px)' }}>
-          <Link href="/access" style={{ padding: '13px 28px', borderRadius: 9, fontSize: 14, fontWeight: 600, color: '#fff', background: '#7c3aed', textDecoration: 'none', display: 'inline-block' }}>{t.ctaBtn}</Link>
+          <Link href={START_HREF} style={{ padding: '13px 28px', borderRadius: 9, fontSize: 14, fontWeight: 600, color: '#fff', background: '#7c3aed', textDecoration: 'none', display: 'inline-block' }}>{SIGNUP_OPEN ? t.ctaBtn : t.waitlist.cta}</Link>
         </div>
       </div>
     </section>

@@ -14,7 +14,7 @@ from app.models.beta import BetaFeedback, BetaSignup
 from app.models.key import Key
 from app.plans import ADMIN_KEYS
 from app.routes.beta import get_existing_key
-from app.services import beta_service
+from app.services import beta_service, launch_service
 from app.services.access_service import revoke_code
 
 router = APIRouter(prefix="/admin/beta", tags=["Admin"], dependencies=[Depends(ip_limit("admin", 120, 60))])
@@ -79,6 +79,7 @@ def overview(admin: Key = Depends(require_admin), db: Session = Depends(get_db))
 
     registered = [t for t in testers if t["key_id"]]
     metrics = {
+        "launch_waitlist": launch_service.count(db),
         "testers": len(registered),
         "with_alias": sum(1 for t in registered if t["aliases"] > 0),
         "aliases": sum(t["aliases"] for t in registered),

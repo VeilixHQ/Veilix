@@ -3,6 +3,7 @@ import { useEffect, useState, useSyncExternalStore } from 'react'
 import Link from 'next/link'
 import { SiteNav } from '@/components/landing/SiteNav'
 import { SiteFooter } from '@/components/landing/SiteFooter'
+import { LaunchWaitlist } from '@/components/LaunchWaitlist'
 import { Button } from '@/components/Button'
 import { Input } from '@/components/Input'
 import { ApiError, BetaPublicStatus, getBetaStatus, joinBeta } from '@/lib/api'
@@ -41,8 +42,9 @@ export default function BetaPage() {
   const [error, setError] = useState('')
 
   useEffect(() => {
+    if (!isPrivate) return
     getBetaStatus().then(setStatus).catch(() => setFailed(true))
-  }, [])
+  }, [isPrivate])
 
   const view = betaView(status, failed, isPrivate)
   const shown = isPrivate ? 'private' : view === 'form' || view === 'closed' ? 'public' : null
@@ -82,6 +84,7 @@ export default function BetaPage() {
         <div style={{ position: 'absolute', top: '-80px', left: '50%', transform: 'translateX(-50%)', width: 900, height: 600, background: 'radial-gradient(ellipse at 50% 0%, rgba(124,58,237,0.13) 0%, transparent 65%)', pointerEvents: 'none' }} />
 
         <div style={{ width: '100%', maxWidth: 480, position: 'relative', zIndex: 1, display: 'flex', flexDirection: 'column', gap: 24 }}>
+          {isPrivate ? (<>
           <div style={{ textAlign: 'center' }}>
             <div style={{ display: 'inline-flex', padding: '5px 14px', borderRadius: 100, background: 'rgba(124,58,237,0.08)', border: '1px solid rgba(124,58,237,0.2)', fontSize: 12, color: 'var(--c-a78bfa)', fontWeight: 600, marginBottom: 20 }}>
               {shown === 'private' ? 'Bêta privée · sur invitation' : shown === 'public' ? 'Bêta publique' : view === 'invitation' ? 'Bêta sur invitation' : 'Bêta Veilix'}
@@ -215,6 +218,7 @@ export default function BetaPage() {
               </p>
             </form>
           )}
+          </>) : <LaunchWaitlist />}
         </div>
       </section>
 

@@ -5,7 +5,7 @@ import { articleJsonLd, pageMetadata } from '@/lib/seo'
 
 const PATH = '/feuille-de-route'
 const TITLE = 'Feuille de route de Veilix'
-const DESCRIPTION = 'Ce qui est disponible sur Veilix, ce qui arrive bientôt et comment proposer une idée : domaines personnalisés, catch-all, lancement public.'
+const DESCRIPTION = 'Ce qui est disponible sur Veilix, ce qui arrive bientôt et comment proposer une idée : domaines personnalisés, catch-all, lancement le 1er février 2027.'
 const UPDATED = '2026-11-25'
 
 const AVAILABLE = [
@@ -23,7 +23,7 @@ const NEXT = [
   ['Domaines personnalisés', "Jusqu'à 3 domaines avec le Pack de lancement, pour choisir le nom de vos adresses."],
   ['Catch-all', "Toute adresse de votre domaine personnalisé devient un alias, sans la créer à l'avance."],
   ['Paiements en ligne', 'Abonnements et crédits réglés par carte, Google Pay ou Apple Pay, via Stripe.'],
-  ['Lancement public', 'Fin de la bêta privée et ouverture des inscriptions à tous.'],
+  ['Lancement le 1er février 2027', 'Ouverture des inscriptions à tous, avec un essai gratuit de 14 jours.'],
 ]
 
 export const metadata: Metadata = pageMetadata({ path: PATH, title: 'Feuille de route | Veilix', description: DESCRIPTION })

@@ -27,8 +27,8 @@ export default function MentionsLegales() {
   const editor = EDITOR_INFO[lang]
   const isFr = lang === 'fr'
   const pending = isFr
-    ? "Les informations relatives à l'éditeur seront publiées lors du lancement officiel de la bêta publique."
-    : 'Information about the publisher will be published at the official launch of the public beta.'
+    ? "Les informations relatives à l'éditeur seront publiées lors du lancement officiel de Veilix."
+    : 'Information about the publisher will be published at the official launch of Veilix.'
 
   return (
     <div style={{ minHeight: '100vh', background: 'var(--c-060608)', color: 'var(--c-f1f5f9)', fontFamily: 'Inter, sans-serif' }}>

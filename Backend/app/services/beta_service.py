@@ -116,7 +116,7 @@ def capacity(phase: str, now: datetime) -> int | None:
         if not config.BETA_PRIVATE_INVITE_TOKEN or (opens and now < opens):
             return None
         return config.BETA_PRIVATE_SEATS
-    if not opens or now < opens:
+    if not config.BETA_PUBLIC_ENABLED or not opens or now < opens:
         return None
     seats = config.BETA_PUBLIC_WAVE1_SEATS
     second = wave2_opens_at()
@@ -496,4 +496,7 @@ def tick(db: Session, now: datetime | None = None) -> dict:
     }
     report["purged_signups"] = purge_finished_signups(db, now)
     report["invited"] = sum(process_queue(db, phase, now) for phase in PHASES)
+    from app.services import launch_service
+
+    report["launch_notified"] = launch_service.notify_launch(db, now)
     return report

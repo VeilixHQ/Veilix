@@ -326,7 +326,7 @@ function AccessContent() {
                   {lang === 'fr' ? 'Pas encore de code ? ' : 'No code yet? '}
                   {publicBetaOpen
                     ? <a href="/beta" style={{ color: 'var(--c-a78bfa)', fontWeight: 600, textDecoration: 'none' }}>{lang === 'fr' ? 'Rejoindre la bêta' : 'Join the beta'}</a>
-                    : (lang === 'fr' ? "La bêta est sur invitation : utilisez le lien reçu avec votre invitation." : 'The beta is invitation-only: use the link you received with your invitation.')}
+                    : <a href="/beta" style={{ color: 'var(--c-a78bfa)', fontWeight: 600, textDecoration: 'none' }}>{lang === 'fr' ? 'Être prévenu du lancement' : 'Get notified at launch'}</a>}
                 </p>
 
                 <div style={{ display: 'flex', gap: 10 }}>

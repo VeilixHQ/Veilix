@@ -9,6 +9,11 @@ export const T = {
       login: 'Connexion',
       start: 'Essayer 14 jours',
     },
+    waitlist: {
+      nav: "Liste d'attente",
+      cta: 'Être prévenu du lancement',
+      sub: 'Veilix ouvre le 1er février 2027. Laissez votre adresse : nous vous écrirons ce jour-là, une seule fois.',
+    },
     navServices: [
       { label: 'Alias email', desc: 'Créez des adresses instantanément', href: '/#features' },
       { label: 'Protection spam', desc: 'Bloquez les sources indésirables', href: '/#features' },
@@ -313,6 +318,11 @@ export const T = {
       pricing: 'Pricing',
       login: 'Sign in',
       start: 'Try 14 days',
+    },
+    waitlist: {
+      nav: 'Waitlist',
+      cta: 'Get notified at launch',
+      sub: 'Veilix opens on February 1, 2027. Leave your address: we will write to you that day, only once.',
     },
     navServices: [
       { label: 'Email aliases', desc: 'Create addresses instantly', href: '/#features' },

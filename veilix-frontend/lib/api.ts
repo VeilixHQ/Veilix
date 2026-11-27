@@ -181,6 +181,26 @@ export async function joinBeta(email: string, invitation: string | null, website
   return res.json()
 }
 
+export async function joinLaunchList(email: string, website: string) {
+  const res = await fetch(`${API_URL}/launch/signup`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ email, consent: true, website: website || null }),
+  })
+  if (!res.ok) throw new ApiError(res.status, await errorDetail(res, 'Inscription impossible'))
+  return res.json()
+}
+
+export async function leaveLaunchList(token: string) {
+  const res = await fetch(`${API_URL}/launch/leave`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ token }),
+  })
+  if (!res.ok) throw new ApiError(res.status, await errorDetail(res, 'Désinscription impossible'))
+  return res.json()
+}
+
 export type BetaKeyStatus = {
   phase: BetaPhase | null
   ends_at: string | null

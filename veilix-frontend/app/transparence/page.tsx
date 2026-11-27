@@ -68,7 +68,8 @@ export default function Transparence() {
           ['Clés API', 'Accès programmatique', 'Empreinte SHA-256 uniquement', "Jusqu'à leur révocation"],
           ['Dates (création, dernière activité, acceptation des conditions)', 'Fonctionnement et bêta', '-', "Jusqu'à la suppression du compte"],
           ['Plan, crédits et préférences', 'Fournir le service', '-', "Jusqu'à la suppression du compte"],
-          ['Inscription à la liste d’attente bêta', 'Vous inviter', 'Adresse chiffrée', 'Effacée à la fin de la phase de bêta'],
+          ['Inscription à la bêta privée', 'Vous inviter', 'Adresse chiffrée', 'Effacée à la fin de la phase de bêta'],
+          ['Inscription à la liste d’attente du lancement', 'Vous prévenir de l’ouverture', 'Adresse chiffrée', 'Effacée dès l’envoi de l’e-mail d’ouverture, ou à tout moment par le lien de désinscription'],
           ['Compteurs anti-abus', 'Limiter les requêtes abusives', 'Identifiants, dont l’adresse IP, réduits à une empreinte HMAC', '2 jours au maximum'],
           ['Empreintes des messages reçus', 'Éviter les doublons', 'Empreintes uniquement', '3 jours au maximum'],
         ]}

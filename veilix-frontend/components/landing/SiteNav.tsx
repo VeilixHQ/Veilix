@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { Lang, Translations } from '@/lib/translations'
+import { SIGNUP_OPEN, START_HREF } from '@/lib/launch'
 
 function NavDropdown({ label, items }: { label: string; items: { label: string; desc: string; href: string }[] }) {
   const [open, setOpen] = useState(false)
@@ -110,8 +111,8 @@ export function SiteNav({ t, lang, setLang, mode = 'public', hideNavLinks = fals
             <Link href="/access?mode=restore" className="btn-access" style={{ padding: '8px 14px', borderRadius: 8, fontSize: 13, fontWeight: 600, color: 'var(--c-94a3b8)', textDecoration: 'none', transition: 'color .15s' }}>
               {t.nav.login}
             </Link>
-            <Link href="/access" className="btn-start" style={{ padding: '8px 16px', borderRadius: 8, fontSize: 13, fontWeight: 600, color: '#fff', background: '#7c3aed', textDecoration: 'none', boxShadow: '0 4px 12px rgba(124,58,237,0.25)' }}>
-              {t.nav.start}
+            <Link href={START_HREF} className="btn-start" style={{ padding: '8px 16px', borderRadius: 8, fontSize: 13, fontWeight: 600, color: '#fff', background: '#7c3aed', textDecoration: 'none', boxShadow: '0 4px 12px rgba(124,58,237,0.25)' }}>
+              {SIGNUP_OPEN ? t.nav.start : t.waitlist.nav}
             </Link>
           </>
         )}

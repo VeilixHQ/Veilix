@@ -107,7 +107,7 @@ export default function AliasEmailAnonyme() {
       <p style={{ marginTop: 18 }}>D&apos;autres réponses sur la page <Link href="/faq">FAQ</Link>.</p>
 
       <h2 id="essayer">Essayer Veilix</h2>
-      <p>Veilix est actuellement en bêta. Rejoignez la liste d&apos;attente pour recevoir une invitation.</p>
+      <p>Veilix ouvre à tous le 1er février 2027. Rejoignez la liste d&apos;attente pour être prévenu de l&apos;ouverture.</p>
       <Link href="/beta" className="cta">Rejoindre la bêta</Link>
     </ContentShell>
   )

@@ -29,6 +29,7 @@ def beta(monkeypatch):
     monkeypatch.setattr(config, "BETA_PRIVATE_INVITE_TOKEN", INVITATION)
     monkeypatch.setattr(config, "BETA_PRIVATE_SEATS", 2)
     monkeypatch.setattr(config, "BETA_PRIVATE_ENDS_AT", None)
+    monkeypatch.setattr(config, "BETA_PUBLIC_ENABLED", True)
     monkeypatch.setattr(config, "BETA_PUBLIC_OPENS_AT", None)
     monkeypatch.setattr(config, "BETA_PUBLIC_ENDS_AT", None)
     monkeypatch.setattr(config, "BETA_PUBLIC_WAVE1_SEATS", 2)

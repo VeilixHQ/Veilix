@@ -24,6 +24,7 @@ def beta(monkeypatch):
         "BETA_PRIVATE_OPENS_AT": None,
         "BETA_PRIVATE_SIGNUPS_CLOSE_AT": None,
         "BETA_PRIVATE_ENDS_AT": None,
+        "BETA_PUBLIC_ENABLED": True,
         "BETA_PUBLIC_OPENS_AT": None,
         "BETA_PUBLIC_SIGNUPS_CLOSE_AT": None,
         "BETA_PUBLIC_ENDS_AT": None,

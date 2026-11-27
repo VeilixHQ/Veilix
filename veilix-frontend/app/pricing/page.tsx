@@ -7,6 +7,7 @@ import { Button } from '@/components/Button'
 import { T, Lang } from '@/lib/translations'
 import { PT } from '@/lib/translations-pages'
 import { PackAvailability, getPackAvailability } from '@/lib/api'
+import { SIGNUP_OPEN, START_HREF } from '@/lib/launch'
 
 const PACK_REFRESH_MS = 60_000
 
@@ -127,7 +128,7 @@ const TEXT = {
     payment: 'Moyen de paiement requis',
     buyCredits: (amount: string, price: string) => `Acheter ${amount} pour ${price}`,
     creditsSoonTitle: (amount: string, price: string) => `${amount} pour ${price}`,
-    creditsSoonText: "Le paiement en ligne ouvre avec la bêta publique, le 1er février 2027 : vous pourrez alors acheter vos crédits ici en quelques secondes, par carte, Google Pay ou Apple Pay. Pendant la bêta privée, le Pack de lancement inclut des alias illimités : aucun crédit n'est nécessaire.",
+    creditsSoonText: "Le paiement en ligne ouvre au lancement de Veilix, le 1er février 2027 : vous pourrez alors acheter vos crédits ici en quelques secondes, par carte, Google Pay ou Apple Pay. Pendant la bêta privée, le Pack de lancement inclut des alias illimités : aucun crédit n'est nécessaire.",
     close: 'Compris',
   },
   en: {
@@ -139,7 +140,7 @@ const TEXT = {
     payment: 'Payment method required',
     buyCredits: (amount: string, price: string) => `Buy ${amount} for ${price}`,
     creditsSoonTitle: (amount: string, price: string) => `${amount} for ${price}`,
-    creditsSoonText: 'Online payment opens with the public beta on February 1, 2027: you will then be able to buy credits here in a few seconds, by card, Google Pay or Apple Pay. During the private beta, the Launch pack includes unlimited aliases, so no credits are needed.',
+    creditsSoonText: 'Online payment opens when Veilix launches on February 1, 2027: you will then be able to buy credits here in a few seconds, by card, Google Pay or Apple Pay. During the private beta, the Launch pack includes unlimited aliases, so no credits are needed.',
     close: 'Got it',
   },
 }
@@ -256,7 +257,7 @@ export default function Pricing() {
             const isPack = highlight
             const hasToggle = !!plan.monthly
             const cur = hasToggle && !proYearly ? plan.monthly! : plan.yearly
-            const href = hasToggle ? `${plan.href}&billing=${proYearly ? 'yearly' : 'monthly'}` : plan.href
+            const href = !SIGNUP_OPEN ? START_HREF : hasToggle ? `${plan.href}&billing=${proYearly ? 'yearly' : 'monthly'}` : plan.href
 
             return (
               <div key={i} className="plan-card" style={{ position: 'relative', background: highlight ? 'linear-gradient(180deg, rgba(124,58,237,0.08), rgba(124,58,237,0.02))' : 'var(--c-0d0d10)', border: highlight ? '1px solid rgba(124,58,237,0.35)' : '1px solid rgba(var(--ink),0.07)', borderRadius: 16, padding: '32px 26px', display: 'flex', flexDirection: 'column' }}>
@@ -327,7 +328,7 @@ export default function Pricing() {
                     <Button variant="secondary" size="md" disabled style={{ width: '100%', cursor: 'not-allowed' }}>{tx.full}</Button>
                   ) : (
                     <Link href={href} style={{ textDecoration: 'none' }}>
-                      <Button variant={highlight ? 'primary' : 'secondary'} size="md" style={{ width: '100%' }}>{plan.cta}</Button>
+                      <Button variant={highlight ? 'primary' : 'secondary'} size="md" style={{ width: '100%' }}>{SIGNUP_OPEN ? plan.cta : t.waitlist.cta}</Button>
                     </Link>
                   )}
 

@@ -50,7 +50,7 @@ export default function KitMedia() {
               ['Nom', 'Veilix (avec une majuscule, sans espace)'],
               ['Site', 'veilix.fr'],
               ['Catégorie', "Service d'alias email (relais)"],
-              ['Statut', 'Bêta privée sur invitation à partir du 1er décembre 2026'],
+              ['Statut', 'Bêta privée sur invitation à partir du 1er décembre 2026, lancement officiel le 1er février 2027'],
               ['Hébergement', 'Union européenne : Railway (Amsterdam), Vercel (Paris), Mailgun (région UE)'],
               ['Code source', 'Open source, licence AGPL-3.0'],
               ['Engagements', 'No Account, No Logs, Open Source'],
