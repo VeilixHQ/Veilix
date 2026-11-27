@@ -24,7 +24,7 @@ export const T = {
     ],
     badge: 'Open Source · No Logs · No Account',
     pillars: [
-      { label: 'No Account', desc: 'Aucun compte requis' },
+      { label: 'No Account', desc: 'Ni e-mail ni mot de passe' },
       { label: 'No Logs', desc: "Aucun journal d'activité" },
       { label: 'No Tracking', desc: "Vous n'êtes pas le produit" },
       { label: 'Open Source', desc: 'Code auditable publiquement' },
@@ -33,7 +33,7 @@ export const T = {
     access: {
       badge: 'No Account · No Logs',
       title: 'Accédez à Veilix',
-      subtitle: 'Aucun email, aucun mot de passe.\nUne clé générée localement dans votre navigateur, qui vous appartient entièrement.',
+      subtitle: "Ni e-mail ni mot de passe pour vous connecter.\nUne clé générée localement dans votre navigateur, qui vous appartient entièrement.\nPendant la bêta, une adresse de contact chiffrée vous est demandée, jamais pour vous connecter.",
       generateBtn: 'Générer ma clé',
       restoreBtn: "J'ai déjà une clé",
       bullets: [
@@ -328,7 +328,7 @@ export const T = {
     ],
     badge: 'Open Source · No Logs · No Account',
     pillars: [
-      { label: 'No Account', desc: 'No sign-up required' },
+      { label: 'No Account', desc: 'No email, no password' },
       { label: 'No Logs', desc: 'No activity logs' },
       { label: 'No Tracking', desc: 'You are not the product' },
       { label: 'Open Source', desc: 'Publicly auditable code' },
@@ -337,7 +337,7 @@ export const T = {
     access: {
       badge: 'No Account · No Logs',
       title: 'Access Veilix',
-      subtitle: 'No email, no password.\nA locally generated key in your browser that belongs entirely to you.',
+      subtitle: 'No email or password to sign in.\nA locally generated key in your browser that belongs entirely to you.\nDuring the beta, an encrypted contact address is requested, never to sign in.',
       generateBtn: 'Generate my key',
       restoreBtn: 'I already have a key',
       bullets: [

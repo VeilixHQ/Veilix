@@ -138,8 +138,8 @@ export const PT = {
         {
           category: 'Général',
           items: [
-            { q: "Qu'est-ce que Veilix ?", a: "Veilix est un service de protection d'identité numérique par alias email. Il vous permet de créer des adresses email jetables qui redirigent les messages vers votre boîte e-mail personnelle." },
-            { q: 'Veilix est-il gratuit ?', a: "Veilix propose un essai de 14 jours, avec un moyen de paiement requis. Ensuite, le plan Pro (100 alias) coûte 4,99€/mois ou 44,90€/an, et le Pack de lancement (alias illimités, offre limitée à 100 exemplaires) 69€/an." },
+            { q: "Qu'est-ce que Veilix ?", a: "Veilix est un service d'alias email. Il vous permet de créer un alias différent pour chaque site : les messages reçus sont relayés vers votre boîte e-mail personnelle, dont l'adresse n'est jamais communiquée aux sites." },
+            { q: 'Veilix est-il gratuit ?', a: "Non. Veilix est financé uniquement par ses abonnés, sans publicité ni revente de données. Vous pouvez l'essayer gratuitement pendant 14 jours (moyen de paiement requis), ou acheter des alias à l'unité dès 1,99 € les 10, sans abonnement. Ensuite, le plan Pro (100 alias) coûte 4,99 €/mois ou 44,90 €/an, et le Pack de lancement (alias illimités, offre limitée à 100 exemplaires) 69 €/an." },
             { q: "Comment fonctionne l'essai de 14 jours ?", a: "Vous enregistrez un moyen de paiement, rien n'est débité pendant 14 jours. À la fin de l'essai, l'abonnement démarre automatiquement, sauf si vous l'avez annulé avant." },
             { q: 'Veilix est-il open source ?', a: 'Oui, entièrement : le site et le backend sont open source sous licence AGPL-3.0 et publiquement auditables sur github.com/VeilixHQ/Veilix.' },
           ],
@@ -194,7 +194,7 @@ export const PT = {
     access: {
       badge: 'No Account · No Logs',
       choiceTitle: 'Accédez à Veilix',
-      choiceSub: 'Aucun email, aucun mot de passe. Une clé générée localement dans votre navigateur, qui vous appartient entièrement.',
+      choiceSub: "Ni e-mail ni mot de passe pour vous connecter. Une clé générée localement dans votre navigateur, qui vous appartient entièrement. Pendant la bêta, une adresse de contact chiffrée vous est demandée, jamais pour vous connecter.",
       generateBtn: 'Générer ma clé',
       restoreBtn: "J'ai déjà une clé",
       reassurance: [
@@ -367,8 +367,8 @@ export const PT = {
         {
           category: 'General',
           items: [
-            { q: 'What is Veilix?', a: 'Veilix is a digital identity protection service using email aliases. It lets you create disposable email addresses that forward to your personal inbox.' },
-            { q: 'Is Veilix free?', a: 'Veilix offers a 14-day trial, payment method required. After that, the Pro plan (100 aliases) costs €4.99/month or €44.90/year, and the Launch pack (unlimited aliases, limited to 100 copies) €69/year.' },
+            { q: 'What is Veilix?', a: 'Veilix is an email alias service. It lets you create a different alias for each website: incoming messages are forwarded to your personal inbox, whose address is never shared with websites.' },
+            { q: 'Is Veilix free?', a: 'No. Veilix is funded only by its subscribers, with no advertising and no resale of data. You can try it free for 14 days (payment method required), or buy aliases one by one from €1.99 for 10, with no subscription. After that, the Pro plan (100 aliases) costs €4.99/month or €44.90/year, and the Launch pack (unlimited aliases, limited to 100 copies) €69/year.' },
             { q: 'How does the 14-day trial work?', a: 'You add a payment method, nothing is charged for 14 days. When the trial ends, your subscription starts automatically unless you cancelled before.' },
             { q: 'Is Veilix open source?', a: 'Yes, entirely: the website and the backend are open source under the AGPL-3.0 license and publicly auditable at github.com/VeilixHQ/Veilix.' },
           ],
@@ -423,7 +423,7 @@ export const PT = {
     access: {
       badge: 'No Account · No Logs',
       choiceTitle: 'Access Veilix',
-      choiceSub: 'No email, no password. A key generated locally in your browser, that belongs entirely to you.',
+      choiceSub: 'No email or password to sign in. A key generated locally in your browser, that belongs entirely to you. During the beta, an encrypted contact address is requested, never to sign in.',
       generateBtn: 'Generate my key',
       restoreBtn: 'I already have a key',
       reassurance: [

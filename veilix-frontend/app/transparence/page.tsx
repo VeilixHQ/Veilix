@@ -6,11 +6,11 @@ import { articleJsonLd, pageMetadata } from '@/lib/seo'
 const PATH = '/transparence'
 const TITLE = 'Transparence : ce que Veilix conserve et ne conserve pas'
 const DESCRIPTION = "No Logs, sans mot de passe, anonymat : ce que Veilix stocke, chiffre et efface, d'après son code open source. Données, durées, prestataires et limites."
-const UPDATED = '2026-11-24'
+const UPDATED = '2026-11-27'
 
 const FAQ = [
   { q: 'Veilix lit-il ou stocke-t-il mes e-mails ?', a: "Non. Le contenu des messages et leurs pièces jointes sont traités en mémoire le temps du relais, puis transmis à votre boîte. Veilix n'enregistre ni le contenu, ni l'historique des messages." },
-  { q: "Que signifie « No Logs » chez Veilix ?", a: "Veilix ne tient aucun journal d'activité : pas d'historique des messages, pas d'adresse IP de visiteur enregistrée en clair, pas de contenu. Seuls des compteurs (nombre de messages transférés ou bloqués) et des empreintes techniques à durée limitée sont conservés." },
+  { q: "Que signifie « No Logs » chez Veilix ?", a: "Veilix ne tient aucun journal d'activité : pas d'historique des messages, pas d'adresse IP de visiteur enregistrée en clair, pas de contenu. Sont conservés : des compteurs (nombre de messages transférés ou bloqués), des empreintes techniques à durée limitée et, pour les alertes de fuite et les réponses, l'empreinte du domaine de chaque nouvel expéditeur et l'adresse chiffrée des correspondants à qui vous répondez, effacées avec l'alias." },
   { q: 'Veilix connaît-il mon adresse e-mail personnelle ?', a: "Oui, il en a besoin pour vous relayer les messages. Elle est chiffrée en AES-256-GCM dans la base de données et n'est déchiffrée qu'en mémoire, au moment du relais." },
   { q: 'Comment supprimer toutes mes données ?', a: "Depuis Paramètres, Actions dangereuses, la suppression du compte efface votre clé, vos alias, vos adresses de destination et les données associées." },
 ]
@@ -36,12 +36,12 @@ export default function Transparence() {
       <h1>Transparence : ce que Veilix conserve, et ce qu&apos;il ne conserve pas</h1>
       <p className="lead">Veilix ne lit pas et ne stocke pas le contenu de vos e-mails, et ne tient aucun journal d&apos;activité. Pour faire fonctionner vos alias, il conserve uniquement les données nécessaires, chiffrées ou réduites à une empreinte dès que c&apos;est possible.</p>
       <p>Cette page détaille chacune de ces données d&apos;après le code source de Veilix, publié sous licence AGPL-3.0. Elle précise aussi ce que voient nos prestataires et les limites propres au protocole e-mail.</p>
-      <p className="updated">Mise à jour le 24 novembre 2026</p>
+      <p className="updated">Mise à jour le 27 novembre 2026</p>
 
       <h2 id="engagements">Ce que veulent dire nos engagements</h2>
       <h3>No Logs : aucun journal d&apos;activité</h3>
-      <p>Veilix n&apos;enregistre pas l&apos;historique de vos messages : ni qui vous écrit, ni quand, ni le contenu. Le journal d&apos;accès du serveur est désactivé, et les journaux techniques de l&apos;application ne contiennent que le type d&apos;événement (par exemple « message transféré »), sans adresse, sans adresse IP et sans contenu.</p>
-      <p>Ce qui est conservé : des <strong>compteurs</strong> (nombre de messages transférés et bloqués par alias), la <strong>date de dernière activité</strong> du compte et des <strong>empreintes techniques</strong> effacées automatiquement après quelques jours (détail ci-dessous).</p>
+      <p>Veilix n&apos;enregistre ni l&apos;historique de vos messages ni leur contenu : aucune liste des e-mails reçus, de leurs expéditeurs ou de leurs dates. Le journal d&apos;accès du serveur est désactivé, et les journaux techniques de l&apos;application ne contiennent que le type d&apos;événement (par exemple « message transféré »), sans adresse, sans adresse IP et sans contenu.</p>
+      <p>Ce qui est conservé : des <strong>compteurs</strong> (nombre de messages transférés et bloqués par alias), la <strong>date de dernière activité</strong> du compte et des <strong>empreintes techniques</strong> effacées automatiquement après quelques jours. Pour les alertes de fuite et les réponses depuis un alias, Veilix retient aussi l&apos;<strong>empreinte du domaine de chaque nouvel expéditeur</strong> et la date de sa première apparition, ainsi que l&apos;<strong>adresse chiffrée des correspondants à qui vous répondez</strong>. Ces données sont effacées avec l&apos;alias (détail ci-dessous).</p>
 
       <h3>No Account : ni identifiant ni mot de passe</h3>
       <p>Votre accès repose sur une clé cryptographique générée dans votre navigateur, avec une phrase de récupération de 12 mots (norme BIP39). Cette phrase n&apos;est jamais envoyée à Veilix. Le serveur ne conserve qu&apos;une <strong>empreinte SHA-256</strong> de l&apos;identifiant de votre clé.</p>
@@ -77,7 +77,7 @@ export default function Transparence() {
       <h2 id="jamais">Ce que Veilix ne conserve jamais</h2>
       <ul>
         <li>Le <strong>contenu</strong> de vos e-mails et leurs pièces jointes.</li>
-        <li>L&apos;<strong>historique</strong> des messages : qui écrit à quel alias, et quand.</li>
+        <li>L&apos;<strong>historique</strong> des messages : la liste des e-mails reçus, l&apos;adresse de leurs expéditeurs et leurs dates.</li>
         <li>Les <strong>adresses IP</strong> des visiteurs en clair.</li>
         <li>Votre <strong>phrase de récupération</strong> et votre clé privée.</li>
         <li>Un <strong>mot de passe</strong> : il n&apos;y en a pas.</li>
