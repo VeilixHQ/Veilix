@@ -1,0 +1,169 @@
+name: Agent SEO et GEO
+
+on:
+  schedule:
+    - cron: '17 5 * * 2,5'
+  workflow_dispatch:
+    inputs:
+      brief_url:
+        description: URL du brief de l'agent Data (facultatif)
+        required: false
+        default: ''
+
+permissions:
+  contents: write
+  deployments: read
+
+concurrency:
+  group: agent-seo
+  cancel-in-progress: false
+
+jobs:
+  agent:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    outputs:
+      result: ${{ steps.run.outputs.result }}
+      sha: ${{ steps.push.outputs.sha }}
+      title: ${{ steps.push.outputs.title }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: veilix-frontend/package-lock.json
+
+      - name: Outils de l'agent
+        run: npm install -g @anthropic-ai/claude-code@2.1.322
+
+      - name: Réglages de l'agent sans signature
+        run: |
+          mkdir -p ~/.claude
+          echo '{"includeCoAuthoredBy": false, "attribution": {"commit": "", "pr": ""}}' > ~/.claude/settings.json
+
+      - name: Brief de l'agent Data
+        env:
+          BRIEF_URL: ${{ inputs.brief_url || secrets.SEO_BRIEF_URL }}
+          BRIEF_TOKEN: ${{ secrets.SEO_BRIEF_TOKEN }}
+        run: |
+          mkdir -p .agent-seo
+          if [ -n "$BRIEF_URL" ]; then
+            curl -fsS -m 60 -H "Authorization: Bearer $BRIEF_TOKEN" "$BRIEF_URL" -o .agent-seo/brief.json || echo "Brief indisponible, l'agent travaille sur son propre audit"
+          fi
+
+      - name: Passages de l'agent avec vérification
+        id: run
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          AGENT_MODEL: ${{ vars.AGENT_SEO_MODEL }}
+          VEILIX_GIT_EMAIL: ${{ vars.VEILIX_GIT_EMAIL || 'contact@veilix.fr' }}
+        run: |
+          bash .github/agent-seo/run.sh
+          rc=$?
+          echo "result=$(cat .agent-seo/result 2>/dev/null || echo failed)" >> "$GITHUB_OUTPUT"
+          exit $rc
+
+      - name: Instantané de la production avant publication
+        if: steps.run.outputs.result == 'committed'
+        run: node .github/agent-seo/seo-check.mjs https://veilix.fr https://veilix.fr --write-baseline .agent-seo/prod-baseline.json || true
+
+      - name: Publication sur main
+        id: push
+        if: steps.run.outputs.result == 'committed'
+        run: |
+          git pull --rebase origin main
+          git push origin HEAD:main
+          echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+          echo "title=$(git log -1 --format=%s)" >> "$GITHUB_OUTPUT"
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: agent-seo
+          path: .agent-seo/
+          retention-days: 30
+
+  verify-production:
+    needs: agent
+    if: needs.agent.outputs.result == 'committed'
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+
+      - uses: actions/download-artifact@v4
+        with:
+          name: agent-seo
+          path: .agent-seo
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Attente du déploiement Vercel
+        env:
+          GH_TOKEN: ${{ github.token }}
+          SHA: ${{ needs.agent.outputs.sha }}
+        run: |
+          for i in $(seq 1 60); do
+            STATE=$(gh api "repos/${{ github.repository }}/deployments?sha=$SHA" --jq '.[0].id' 2>/dev/null | xargs -I{} gh api "repos/${{ github.repository }}/deployments/{}/statuses" --jq '.[0].state' 2>/dev/null || true)
+            echo "Déploiement : ${STATE:-en attente}"
+            [ "$STATE" = "success" ] && exit 0
+            [ "$STATE" = "failure" ] || [ "$STATE" = "error" ] && exit 1
+            sleep 20
+          done
+          echo "Aucun statut de déploiement reçu : vérification directe du site"
+          sleep 120
+
+      - name: Contrôle du site en production
+        id: prod
+        run: node .github/agent-seo/seo-check.mjs https://veilix.fr https://veilix.fr --baseline .agent-seo/prod-baseline.json
+
+      - name: Retour arrière automatique
+        if: failure()
+        env:
+          SHA: ${{ needs.agent.outputs.sha }}
+          VEILIX_GIT_EMAIL: ${{ vars.VEILIX_GIT_EMAIL || 'contact@veilix.fr' }}
+        run: |
+          git -c user.name="VeilixHQ" -c user.email="$VEILIX_GIT_EMAIL" revert --no-edit "$SHA"
+          git commit --amend -q -m "Retour arrière : $(git log -1 --format=%s "$SHA")"
+          git push origin HEAD:main
+
+      - name: Alerte Telegram en cas de retour arrière
+        if: failure()
+        env:
+          TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          CHAT: ${{ secrets.TELEGRAM_CHAT_ID }}
+        run: |
+          [ -z "$TOKEN" ] && exit 0
+          curl -fsS "https://api.telegram.org/bot$TOKEN/sendMessage" --data-urlencode "chat_id=$CHAT" --data-urlencode "text=⚠️ Agent SEO : la mise en ligne « ${{ needs.agent.outputs.title }} » a cassé une vérification en production. Retour arrière effectué automatiquement. Détails : ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+
+      - name: Compte rendu Telegram
+        if: success()
+        env:
+          TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          CHAT: ${{ secrets.TELEGRAM_CHAT_ID }}
+        run: |
+          [ -z "$TOKEN" ] && exit 0
+          curl -fsS "https://api.telegram.org/bot$TOKEN/sendMessage" --data-urlencode "chat_id=$CHAT" --data-urlencode "text=✅ Agent SEO : « ${{ needs.agent.outputs.title }} » est en ligne et vérifié sur veilix.fr."
+
+  alert-failure:
+    needs: agent
+    if: failure()
+    runs-on: ubuntu-latest
+    steps:
+      - name: Alerte Telegram
+        env:
+          TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          CHAT: ${{ secrets.TELEGRAM_CHAT_ID }}
+        run: |
+          [ -z "$TOKEN" ] && exit 0
+          curl -fsS "https://api.telegram.org/bot$TOKEN/sendMessage" --data-urlencode "chat_id=$CHAT" --data-urlencode "text=🛑 Agent SEO : aucune modification publiée, la vérification a échoué après plusieurs tentatives. Le site n'a pas été touché. Détails : ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"

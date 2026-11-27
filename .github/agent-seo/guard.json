@@ -1,0 +1,75 @@
+{
+  "forbidden": [
+    {
+      "id": "absolu_inviolable",
+      "pattern": "100\\s?%\\s?(inviolable|sécuris\\w*|sûr|anonyme|protégé)|\\binviolable\\b|incassable|inpiratable",
+      "reason": "terme absolu proscrit"
+    },
+    {
+      "id": "risque_zero",
+      "pattern": "risque\\s+(zéro|nul)|z[ée]ro\\s+risque",
+      "reason": "terme absolu proscrit"
+    },
+    {
+      "id": "zero_knowledge",
+      "pattern": "z[ée]ro[- ]?(connaissance|knowledge)|zero[- ]access",
+      "reason": "le serveur détient la clé qui déchiffre les adresses de destination"
+    },
+    {
+      "id": "bout_en_bout",
+      "pattern": "chiffr\\w* de bout en bout|end[- ]to[- ]end encrypt",
+      "reason": "le relais traite les messages en clair en mémoire"
+    },
+    {
+      "id": "certification",
+      "pattern": "certifié\\w* (iso|soc|hds|anssi)|\\biso ?27001\\b|\\bsoc ?2\\b|secnumcloud",
+      "reason": "aucune certification publiée"
+    },
+    {
+      "id": "europe_strict",
+      "pattern": "100\\s?%\\s?(européen|français|souverain)|hébergement (européen|français) strict",
+      "reason": "prestataires américains"
+    },
+    {
+      "id": "domaines_disponibles",
+      "pattern": "(domaines? personnalisés?|catch-?all).{0,30}(disponibles? (dès )?maintenant|déjà disponibles?)",
+      "reason": "fonction annoncée comme à venir"
+    }
+  ],
+  "signatures": [
+    "(généré|rédigé|écrit|créé|produit)e?s? (par|avec|grâce à) (claude|anthropic|chatgpt|une ia|l.ia|une intelligence artificielle)",
+    "co-authored-by",
+    "claude code",
+    "generated with",
+    "🤖"
+  ],
+  "allowed_paths": [
+    "veilix-frontend/app/",
+    "veilix-frontend/components/",
+    "veilix-frontend/lib/seo.ts",
+    "veilix-frontend/lib/translations-pages.ts",
+    "veilix-frontend/lib/translations.ts",
+    "veilix-frontend/public/llms.txt",
+    "veilix-frontend/public/"
+  ],
+  "denied_paths": [
+    "Backend/",
+    ".github/",
+    "veilix-frontend/lib/api.ts",
+    "veilix-frontend/lib/crypto.ts",
+    "veilix-frontend/lib/hooks.ts",
+    "veilix-frontend/lib/beta.ts",
+    "veilix-frontend/proxy.ts",
+    "veilix-frontend/next.config.ts",
+    "veilix-frontend/package.json",
+    "veilix-frontend/package-lock.json",
+    "veilix-frontend/app/dashboard/",
+    "veilix-frontend/app/settings/",
+    "veilix-frontend/app/admin/",
+    "veilix-frontend/app/access/",
+    "veilix-frontend/app/confirm/",
+    "veilix-frontend/app/api/"
+  ],
+  "max_files": 20,
+  "max_changed_lines": 2500
+}
