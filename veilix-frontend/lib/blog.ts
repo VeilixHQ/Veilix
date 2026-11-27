@@ -6,8 +6,11 @@ export type BlogFaq = { q: string; a: string }
 export type BlogSource = { title: string; url: string; publisher?: string }
 export type BlogCategory = 'fuite' | 'faille' | 'arnaque' | 'piratage' | 'guide'
 
+export type BlogLang = 'fr' | 'en'
+
 export type BlogPost = {
   slug: string
+  translation_of?: string
   title: string
   description: string
   published: string
@@ -29,7 +32,18 @@ export const CATEGORY_LABELS: Record<BlogCategory, string> = {
   guide: 'Guide',
 }
 
-const BLOG_DIR = path.join(process.cwd(), 'content', 'blog')
+export const CATEGORY_LABELS_EN: Record<BlogCategory, string> = {
+  fuite: 'Data breach',
+  faille: 'Security flaw',
+  arnaque: 'Scam and phishing',
+  piratage: 'Hacking',
+  guide: 'Guide',
+}
+
+const BLOG_DIRS: Record<BlogLang, string> = {
+  fr: path.join(process.cwd(), 'content', 'blog'),
+  en: path.join(process.cwd(), 'content', 'blog-en'),
+}
 const SLUG = /^[a-z0-9]+(?:-[a-z0-9]+)*$/
 const DATE = /^\d{4}-\d{2}-\d{2}$/
 
@@ -44,17 +58,18 @@ function isPost(value: unknown): value is BlogPost {
   )
 }
 
-export function getAllPosts(): BlogPost[] {
+export function getAllPosts(lang: BlogLang = 'fr'): BlogPost[] {
+  const dir = BLOG_DIRS[lang]
   let files: string[] = []
   try {
-    files = readdirSync(BLOG_DIR).filter(f => f.endsWith('.json'))
+    files = readdirSync(dir).filter(f => f.endsWith('.json'))
   } catch {
     return []
   }
   const posts: BlogPost[] = []
   for (const file of files) {
     try {
-      const data = JSON.parse(readFileSync(path.join(BLOG_DIR, file), 'utf8'))
+      const data = JSON.parse(readFileSync(path.join(dir, file), 'utf8'))
       if (isPost(data) && `${data.slug}.json` === file) posts.push(data)
     } catch {
       continue
@@ -63,10 +78,18 @@ export function getAllPosts(): BlogPost[] {
   return posts.sort((a, b) => b.published.localeCompare(a.published) || a.slug.localeCompare(b.slug))
 }
 
-export function getPost(slug: string): BlogPost | undefined {
-  return getAllPosts().find(p => p.slug === slug)
+export function getPost(slug: string, lang: BlogLang = 'fr'): BlogPost | undefined {
+  return getAllPosts(lang).find(p => p.slug === slug)
 }
 
-export function formatDate(iso: string): string {
-  return new Date(`${iso}T12:00:00Z`).toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'Europe/Paris' })
+export function getEnglishVersion(frSlug: string): BlogPost | undefined {
+  return getAllPosts('en').find(p => p.translation_of === frSlug)
+}
+
+export function getFrenchOriginal(post: BlogPost): BlogPost | undefined {
+  return post.translation_of ? getPost(post.translation_of, 'fr') : undefined
+}
+
+export function formatDate(iso: string, lang: BlogLang = 'fr'): string {
+  return new Date(`${iso}T12:00:00Z`).toLocaleDateString(lang === 'en' ? 'en-GB' : 'fr-FR', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'Europe/Paris' })
 }

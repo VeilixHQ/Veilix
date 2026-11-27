@@ -11,6 +11,7 @@ const PAGES: { path: string; lastModified: string; priority: number; changeFrequ
   { path: '/comparatif/meilleurs-alias-email', lastModified: '2026-11-25', priority: 0.8, changeFrequency: 'monthly' },
   { path: '/securite', lastModified: '2026-11-25', priority: 0.8, changeFrequency: 'monthly' },
   { path: '/blog', lastModified: '2026-11-27', priority: 0.8, changeFrequency: 'daily' },
+  { path: '/en/blog', lastModified: '2026-11-27', priority: 0.6, changeFrequency: 'daily' },
   { path: '/faq', lastModified: '2026-11-23', priority: 0.8, changeFrequency: 'monthly' },
   { path: '/beta', lastModified: '2026-11-23', priority: 0.7, changeFrequency: 'weekly' },
   { path: '/a-propos', lastModified: '2026-11-26', priority: 0.6, changeFrequency: 'monthly' },
@@ -36,5 +37,11 @@ export default function sitemap(): MetadataRoute.Sitemap {
     changeFrequency: 'monthly',
     priority: 0.7,
   }))
-  return [...pages, ...posts]
+  const englishPosts: MetadataRoute.Sitemap = getAllPosts('en').map(post => ({
+    url: `${SITE_URL}/en/blog/${post.slug}`,
+    lastModified: post.updated,
+    changeFrequency: 'monthly',
+    priority: 0.6,
+  }))
+  return [...pages, ...posts, ...englishPosts]
 }

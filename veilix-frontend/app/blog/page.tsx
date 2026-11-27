@@ -9,7 +9,7 @@ const DESCRIPTION = "Les fuites de données et piratages qui exposent vos e-mail
 
 export const metadata: Metadata = {
   ...pageMetadata({ path: '/blog', title: TITLE, description: DESCRIPTION }),
-  alternates: { canonical: '/blog', types: { 'application/rss+xml': '/blog/rss.xml' } },
+  alternates: { canonical: '/blog', languages: { 'fr-FR': '/blog', en: '/en/blog', 'x-default': '/blog' }, types: { 'application/rss+xml': '/blog/rss.xml' } },
 }
 
 export default function BlogIndex() {
@@ -31,7 +31,7 @@ export default function BlogIndex() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <h1>Fuites de données, piratages et protection de vos e-mails</h1>
       <p className="lead">Chaque article décrypte une fuite ou une attaque réelle à partir de ses sources officielles, explique ce qui a été exposé et donne les gestes concrets pour protéger votre adresse e-mail personnelle.</p>
-      <p>Nous ne publions que lorsqu&apos;une actualité le justifie : pas d&apos;article de remplissage. Suivez le <a href="/blog/rss.xml">flux RSS</a> pour être prévenu.</p>
+      <p>Nous ne publions que lorsqu&apos;une actualité le justifie : pas d&apos;article de remplissage. Suivez le <a href="/blog/rss.xml">flux RSS</a> pour être prévenu. <Link href="/en/blog" hrefLang="en">English edition</Link>.</p>
 
       {posts.length === 0 ? (
         <p>Les premiers articles arrivent dès la prochaine actualité importante. En attendant, découvrez <Link href="/alias-email-anonyme">comment fonctionne un alias email anonyme</Link>.</p>

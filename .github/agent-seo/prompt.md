@@ -20,6 +20,7 @@ Tu travailles dans le dossier veilix-frontend (Next.js App Router). Tu modifies 
    - un appel à l'action vers /beta.
 3. Ajouter chaque nouvelle page dans `veilix-frontend/app/sitemap.ts` (tableau PAGES, date du jour) et dans la liste « Pages principales » de `veilix-frontend/public/llms.txt`.
 4. Renforcer le maillage interne depuis les pages existantes vers la nouvelle page.
+5. Quand il n'y a rien de plus prioritaire : créer la version anglaise d'UNE page clé (dans l'ordre : /alias-email-anonyme, /comparatif/meilleurs-alias-email, /securite, /transparence) sous `veilix-frontend/app/en/…`, traduite fidèlement en anglais naturel, avec `alternates.languages` (fr-FR, en, x-default) des deux côtés, et l'ajouter au sitemap. Ne crée jamais de page dans `content/blog` ni `content/blog-en` : le blog est géré par un autre agent.
 
 ## Règles absolues
 - Français impeccable, ton expert, clair et engageant, au nom de Veilix uniquement. Ne mentionne jamais une IA, Claude, Anthropic ou un outil de génération.
