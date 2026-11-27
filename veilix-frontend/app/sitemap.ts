@@ -18,7 +18,7 @@ const PAGES: { path: string; lastModified: string; priority: number; changeFrequ
   { path: '/feuille-de-route', lastModified: '2026-11-25', priority: 0.5, changeFrequency: 'monthly' },
   { path: '/kit-media', lastModified: '2026-11-27', priority: 0.4, changeFrequency: 'yearly' },
   { path: '/contact', lastModified: '2026-11-23', priority: 0.5, changeFrequency: 'yearly' },
-  { path: '/confidentialite', lastModified: '2026-11-23', priority: 0.4, changeFrequency: 'yearly' },
+  { path: '/confidentialite', lastModified: '2026-11-27', priority: 0.4, changeFrequency: 'yearly' },
   { path: '/conditions-utilisation', lastModified: '2026-11-27', priority: 0.3, changeFrequency: 'yearly' },
   { path: '/politique-anti-abus', lastModified: '2026-11-25', priority: 0.3, changeFrequency: 'yearly' },
   { path: '/mentions-legales', lastModified: '2026-11-23', priority: 0.3, changeFrequency: 'yearly' },
