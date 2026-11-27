@@ -21,7 +21,7 @@ const CONTENT: Record<Lang, {
   fr: {
     kicker: 'Légal',
     title: "Conditions d'utilisation",
-    updated: 'Dernière mise à jour : 16 novembre 2026',
+    updated: 'Dernière mise à jour : 27 novembre 2026',
     tabs: { cgu: 'CGU', cgv: 'CGV', beta: 'Bêta', abus: 'Signaler un abus' },
     titles: {
       cgu: "Conditions générales d'utilisation",
@@ -49,7 +49,7 @@ const CONTENT: Record<Lang, {
       ],
       cgv: [
         { title: '1. Objet', content: "Les présentes conditions régissent la vente des abonnements Veilix et des crédits d'alias. Le paiement en ligne ouvre le 1er février 2027." },
-        { title: '2. Offres et prix', content: "Pro : 4,99 € par mois ou 44,90 € par an, 100 alias inclus, alias désactivés compris. Pack de lancement : 69 € par an, alias illimités, limité aux 100 premières ventes. Il n'existe pas de plan gratuit." },
+        { title: '2. Offres et prix', content: "Pro : 4,99 € par mois ou 44,90 € par an, 100 alias inclus, alias désactivés compris. Pack de lancement : 69 € par an, alias illimités, 100 exemplaires numérotés, dont ceux attribués aux testeurs de la bêta privée. Il n'existe pas de plan gratuit." },
         { title: '3. Crédits', content: "Un crédit permet de créer un alias. Il est consommé à la création et n'est pas rendu si l'alias est supprimé. Les crédits restent utilisables au-delà du quota d'un abonnement Pro." },
         { title: "4. Période d'essai", content: "Les abonnements commencent par un essai de 14 jours. Un moyen de paiement est demandé à l'inscription, sans débit pendant l'essai. Sans résiliation avant la fin de l'essai, l'abonnement démarre automatiquement." },
         { title: '5. Paiement et renouvellement', content: "Les paiements sont traités par Stripe par carte, Google Pay ou Apple Pay. Les abonnements se renouvellent automatiquement à chaque échéance. En cas d'échec de paiement, l'accès est suspendu jusqu'à régularisation." },
@@ -79,7 +79,7 @@ const CONTENT: Record<Lang, {
   en: {
     kicker: 'Legal',
     title: 'Terms of Use',
-    updated: 'Last updated: November 16, 2026',
+    updated: 'Last updated: November 27, 2026',
     tabs: { cgu: 'Terms of Service', cgv: 'Sales Terms', beta: 'Beta', abus: 'Report Abuse' },
     titles: {
       cgu: 'Terms of Service',
@@ -107,7 +107,7 @@ const CONTENT: Record<Lang, {
       ],
       cgv: [
         { title: '1. Purpose', content: 'These terms govern the sale of Veilix subscriptions and alias credits. Online payment opens on February 1, 2027.' },
-        { title: '2. Offers and prices', content: 'Pro: €4.99 per month or €44.90 per year, 100 aliases included, disabled aliases counted. Launch pack: €69 per year, unlimited aliases, limited to the first 100 sales. There is no free plan.' },
+        { title: '2. Offers and prices', content: 'Pro: €4.99 per month or €44.90 per year, 100 aliases included, disabled aliases counted. Launch pack: €69 per year, unlimited aliases, 100 numbered copies, including those given to private beta testers. There is no free plan.' },
         { title: '3. Credits', content: 'One credit creates one alias. It is used when the alias is created and is not refunded if the alias is deleted. Credits remain usable beyond the quota of a Pro subscription.' },
         { title: '4. Trial', content: 'Subscriptions start with a 14-day trial. A payment method is required at signup, with no charge during the trial. Unless cancelled before the trial ends, the subscription starts automatically.' },
         { title: '5. Payment and renewal', content: 'Payments are processed by Stripe by card, Google Pay or Apple Pay. Subscriptions renew automatically at each term. If a payment fails, access is suspended until it is settled.' },

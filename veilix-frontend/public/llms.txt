@@ -11,7 +11,7 @@ Faits clés :
 - Fonctionnalités : alias aléatoires, réponse depuis l'alias, pièces jointes, blocage d'expéditeurs par adresse ou domaine, statistiques par alias, alertes de fuite, chiffrement PGP/MIME, clés API, rapport hebdomadaire, export des données.
 - Offres : Pro 4,99 €/mois ou 44,90 €/an ; Pack de lancement 69 €/an ; crédits à l'unité dès 1,99 € les 10 alias ; essai gratuit de 14 jours.
 - Code source : licence AGPL-3.0, https://github.com/VeilixHQ/Veilix
-- Statut : bêta privée (novembre 2026).
+- Statut : bêta privée sur invitation à partir du 1er décembre 2026.
 
 ## Pages principales
 

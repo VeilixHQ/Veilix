@@ -7,7 +7,7 @@ import { articleJsonLd, pageMetadata } from '@/lib/seo'
 const PATH = '/kit-media'
 const TITLE = 'Kit média de Veilix'
 const DESCRIPTION = 'Logos, couleurs, typographie, présentation et faits clés de Veilix, le service d’alias email anonymes open source hébergé en Europe.'
-const UPDATED = '2026-11-25'
+const UPDATED = '2026-11-27'
 
 const LOGOS = [
   { name: 'Logo blanc', usage: 'Sur fond sombre', file: '/vlx-white.svg', format: 'SVG', bg: '#060608' },
@@ -35,7 +35,7 @@ export default function KitMedia() {
 
       <h1>Kit média</h1>
       <p className="lead">Tout ce qu&apos;il faut pour parler de Veilix : présentation, faits clés, logos et couleurs. Vous pouvez les utiliser librement dans un article, un comparatif ou une vidéo consacrés au service.</p>
-      <p className="updated">Mise à jour le 25 novembre 2026</p>
+      <p className="updated">Mise à jour le 27 novembre 2026</p>
 
       <h2 id="presentation">Veilix en quelques mots</h2>
       <div className="note">
@@ -50,7 +50,7 @@ export default function KitMedia() {
               ['Nom', 'Veilix (avec une majuscule, sans espace)'],
               ['Site', 'veilix.fr'],
               ['Catégorie', "Service d'alias email (relais)"],
-              ['Statut', 'Bêta privée (novembre 2026)'],
+              ['Statut', 'Bêta privée sur invitation à partir du 1er décembre 2026'],
               ['Hébergement', 'Union européenne : Railway (Amsterdam), Vercel (Paris), Mailgun (région UE)'],
               ['Code source', 'Open source, licence AGPL-3.0'],
               ['Engagements', 'No Account, No Logs, Open Source'],
