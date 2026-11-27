@@ -1,4 +1,5 @@
 import type { MetadataRoute } from 'next'
+import { getAllPosts } from '@/lib/blog'
 
 const SITE_URL = 'https://veilix.fr'
 
@@ -9,6 +10,7 @@ const PAGES: { path: string; lastModified: string; priority: number; changeFrequ
   { path: '/transparence', lastModified: '2026-11-25', priority: 0.8, changeFrequency: 'monthly' },
   { path: '/comparatif/meilleurs-alias-email', lastModified: '2026-11-25', priority: 0.8, changeFrequency: 'monthly' },
   { path: '/securite', lastModified: '2026-11-25', priority: 0.8, changeFrequency: 'monthly' },
+  { path: '/blog', lastModified: '2026-11-27', priority: 0.8, changeFrequency: 'daily' },
   { path: '/faq', lastModified: '2026-11-23', priority: 0.8, changeFrequency: 'monthly' },
   { path: '/beta', lastModified: '2026-11-23', priority: 0.7, changeFrequency: 'weekly' },
   { path: '/a-propos', lastModified: '2026-11-26', priority: 0.6, changeFrequency: 'monthly' },
@@ -22,10 +24,17 @@ const PAGES: { path: string; lastModified: string; priority: number; changeFrequ
 ]
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  return PAGES.map(({ path, lastModified, priority, changeFrequency }) => ({
+  const pages: MetadataRoute.Sitemap = PAGES.map(({ path, lastModified, priority, changeFrequency }) => ({
     url: `${SITE_URL}${path}`,
     lastModified,
     changeFrequency,
     priority,
   }))
+  const posts: MetadataRoute.Sitemap = getAllPosts().map(post => ({
+    url: `${SITE_URL}/blog/${post.slug}`,
+    lastModified: post.updated,
+    changeFrequency: 'monthly',
+    priority: 0.7,
+  }))
+  return [...pages, ...posts]
 }
