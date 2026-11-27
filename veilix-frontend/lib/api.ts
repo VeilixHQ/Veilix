@@ -335,3 +335,11 @@ export async function createApiToken(name: string): Promise<ApiToken & { token: 
 export async function revokeApiToken(id: number): Promise<void> {
   await jsonOrThrow(await fetchWithAuth(`/api-tokens/${id}`, { method: 'DELETE' }), 'Révocation impossible')
 }
+
+export type PackAvailability = { total: number; taken: number; remaining: number }
+
+export async function getPackAvailability(): Promise<PackAvailability> {
+  const res = await fetch(`${API_URL}/pack/availability`, { cache: 'no-store' })
+  if (!res.ok) throw new ApiError(res.status, 'Compteur indisponible')
+  return res.json()
+}

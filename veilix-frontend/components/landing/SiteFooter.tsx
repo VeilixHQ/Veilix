@@ -42,7 +42,7 @@ export function SiteFooter({ t }: { t: Translations }) {
         <div className="footer-brand">
           <Link href="/" aria-label="Veilix" style={{ display: 'flex', alignItems: 'center', gap: 9, height: 24, marginBottom: 16, textDecoration: 'none', width: 'fit-content' }}>
             <span aria-hidden style={{ width: 23, height: 21, flexShrink: 0, position: 'relative', overflow: 'hidden' }}>
-              <Image src="/vlx-white.svg" alt="" width={LOGO_SCALE} height={LOGO_SCALE} style={{ position: 'absolute', left: -16, top: -16, width: LOGO_SCALE, height: LOGO_SCALE, maxWidth: 'none' }} />
+              <Image src="/vlx-white.svg" alt="Logo Veilix" width={LOGO_SCALE} height={LOGO_SCALE} style={{ position: 'absolute', left: -16, top: -16, width: LOGO_SCALE, height: LOGO_SCALE, maxWidth: 'none' }} />
             </span>
             <span style={{ fontSize: 20, lineHeight: '24px', fontWeight: 800, letterSpacing: '-0.3px', color: 'var(--c-heading)' }}>Veilix</span>
           </Link>

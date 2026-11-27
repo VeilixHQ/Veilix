@@ -280,7 +280,6 @@ export const T = {
         links: [
           { label: 'FAQ', href: '/faq' },
           { label: 'Transparence', href: '/transparence' },
-          { label: 'Statut', href: 'https://veilix.betteruptime.com' },
           { label: 'Open Source', href: 'https://github.com/VeilixHQ/Veilix' },
           { label: 'Discord', href: 'https://discord.gg/Cfze5qmvhV' },
         ],
@@ -289,7 +288,7 @@ export const T = {
         title: 'Entreprise',
         links: [
           { label: 'À propos', href: '/a-propos' },
-          { label: 'Feuille de route', href: '/feuille-de-route' },
+          { label: 'Statut', href: 'https://status.veilix.fr' },
           { label: 'Blog', href: '/blog' },
           { label: 'Contact', href: '/contact' },
         ],
@@ -573,7 +572,6 @@ export const T = {
         links: [
           { label: 'FAQ', href: '/faq' },
           { label: 'Transparency', href: '/transparence' },
-          { label: 'Status', href: 'https://veilix.betteruptime.com' },
           { label: 'Open Source', href: 'https://github.com/VeilixHQ/Veilix' },
           { label: 'Discord', href: 'https://discord.gg/Cfze5qmvhV' },
         ],
@@ -582,7 +580,7 @@ export const T = {
         title: 'Company',
         links: [
           { label: 'About', href: '/a-propos' },
-          { label: 'Roadmap', href: '/feuille-de-route' },
+          { label: 'Status', href: 'https://status.veilix.fr' },
           { label: 'Blog', href: '/blog' },
           { label: 'Contact', href: '/contact' },
         ],

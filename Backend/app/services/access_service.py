@@ -14,6 +14,7 @@ from app.core.keys import stored_key_id
 from app.models.access_code import AccessCode
 from app.models.beta import BetaSignup
 from app.models.key import Key
+from app.services import pack_service
 from app.services.key_service import get_key_by_id
 
 CODE_ALPHABET = "ABCDEFGHJKMNPQRSTUVWXYZ23456789"
@@ -154,6 +155,8 @@ def register_with_code(db: Session, key_id: str, code: str, contact_email: str |
     db.add(key)
     try:
         db.flush()
+        if key.plan == "pack" and pack_service.assign_founder_number(db, key) is None:
+            key.plan = "pro"
         access.status = "used"
         access.used_at = now
         access.key_id = key.id

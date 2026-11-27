@@ -73,7 +73,7 @@ def test_parcours_prive_complet_du_lien_d_invitation_au_premier_alias(client, be
     assert inscription.json()["plan"] == "pack" and inscription.json()["status"] == "active"
     compte = client.get("/key/me", headers=entetes(cle)).json()
     assert compte["alias_quota"] is None
-    assert compte["badges"] == [{"id": "pionnier", "number": None}]
+    assert compte["badges"] == [{"id": "pionnier", "number": None}, {"id": "fondateur", "number": 1}]
     assert client.post("/alias", headers=entetes(cle), json={"destination_email": "pionnier@example.com"}).status_code == 200
 
     assert client.post("/key/check-code", json={"access_code": code}).json() == {"valid": False, "phase": None, "needs_contact": False}
