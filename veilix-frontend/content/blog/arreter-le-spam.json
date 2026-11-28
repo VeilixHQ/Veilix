@@ -1,0 +1,70 @@
+{
+  "slug": "arreter-le-spam",
+  "title": "Spam : comment bloquer les spams et ne plus en recevoir sur votre boîte mail",
+  "description": "Signaler, se désinscrire, filtrer et utiliser un alias par site : la méthode complète pour bloquer les spams et ne plus en recevoir dans votre boîte mail.",
+  "published": "2026-11-28",
+  "updated": "2026-11-28",
+  "category": "guide",
+  "summary": "Bloquer les spams se fait en quatre étapes : ne jamais répondre ni cliquer et signaler sur Signal Spam, se désinscrire des envois légitimes, filtrer dans sa messagerie, puis couper le problème à la source en donnant un alias différent à chaque site.",
+  "sections": [
+    {
+      "heading": "Que veut dire spam ?",
+      "body": "Un **spam**, ou pourriel, est un courrier publicitaire que vous n'avez pas demandé. La CNIL le distingue des tentatives d'escroquerie : le **scam**, qui promet un gain ou un héritage contre une avance de frais, et le **phishing** (hameçonnage), où le fraudeur se fait passer pour votre banque, les impôts ou un organisme connu pour récupérer vos données.\n\nLe premier est pénible, les deux autres sont dangereux. La méthode ci-dessous traite les trois."
+    },
+    {
+      "heading": "Pourquoi vous recevez autant de spams",
+      "body": "Votre adresse circule plus que vous ne le pensez :\n\n- vous l'avez donnée à de nombreux sites, newsletters et jeux-concours ;\n- certains l'ont partagée avec des partenaires ;\n- elle figure peut-être dans une fuite de données publiée ;\n- elle apparaît publiquement sur un site, un forum ou un CV en ligne.\n\nUne fois votre adresse dans ces listes, la supprimer est presque impossible. D'où l'intérêt de la protéger en amont."
+    },
+    {
+      "heading": "Étape 1 : ne pas répondre, ne pas cliquer, signaler",
+      "body": "Face à un spam ou à un message suspect, la CNIL recommande de **ne pas répondre** et de **ne pas ouvrir les pièces jointes, les images ou les liens**.\n\nSignalez ensuite le message sur [Signal Spam](https://www.signal-spam.fr/), la plateforme française de signalement. Elle propose des modules pour Thunderbird, Outlook, Mail sur Mac et les navigateurs, qui permettent de signaler en un clic. Les signalements aident à identifier les spammeurs.\n\nPour une escroquerie, la CNIL indique aussi la plateforme PHAROS, accessible sur internet-signalement.gouv.fr."
+    },
+    {
+      "heading": "Étape 2 : se désinscrire des envois légitimes",
+      "body": "Une entreprise ne peut pas vous envoyer de publicité par e-mail sans votre **consentement préalable**, donné par une action volontaire comme une case à cocher non pré-cochée. Il existe une exception si vous êtes déjà client et que la publicité porte sur des produits similaires. Dans tous les cas, chaque message doit vous permettre de **vous opposer simplement et gratuitement** à de nouveaux envois.\n\nUtilisez donc le lien de désinscription, mais **seulement pour les expéditeurs que vous connaissez** : une marque chez qui vous avez commandé, une newsletter à laquelle vous vous êtes inscrit. Sur un spam d'origine inconnue, cliquer peut confirmer que votre adresse est active."
+    },
+    {
+      "heading": "Étape 3 : bloquer et filtrer dans votre messagerie",
+      "body": "Votre messagerie apprend de vos actions :\n\n- marquez les messages indésirables comme **spam** plutôt que de les supprimer, pour entraîner le filtre ;\n- **bloquez l'expéditeur** quand il revient sous la même adresse ;\n- créez des **filtres** pour ranger automatiquement les newsletters que vous voulez garder.\n\nCes réglages réduisent le bruit, mais les spammeurs changent souvent d'adresse d'envoi."
+    },
+    {
+      "heading": "Étape 4 : couper le spam à la source avec un alias par site",
+      "body": "La solution durable est de ne plus donner votre adresse personnelle. Avec un [alias email](/alias-email-anonyme), chaque site reçoit une adresse différente qui relaie les messages vers votre boîte.\n\n- Un alias reçoit du spam ? **Désactivez-le** : plus aucun message ne vous parvient, votre adresse personnelle reste intacte.\n- Un seul expéditeur pose problème ? **Bloquez-le**, par adresse ou par domaine entier, sans couper l'alias.\n- Vous voyez **quel site** a laissé fuiter ou revendu votre adresse, puisque chaque alias lui est propre.\n\nPour un usage ponctuel, une adresse jetable peut suffire : la page [email jetable ou alias](/email-jetable) compare les deux approches."
+    },
+    {
+      "heading": "Et les SMS indésirables ?",
+      "body": "Pour un SMS non sollicité, la CNIL indique de le transférer au **33700**, le dispositif d'alerte des opérateurs, puis d'envoyer le numéro de l'expéditeur quand il vous est demandé. L'envoi est gratuit chez Bouygues Telecom, Orange et SFR, et facturé au prix d'un SMS normal chez les autres opérateurs."
+    }
+  ],
+  "checklist": [
+    "Ne répondez jamais à un spam et n'ouvrez ni lien ni pièce jointe.",
+    "Signalez les spams et le phishing sur Signal Spam.",
+    "Désinscrivez-vous uniquement des expéditeurs que vous connaissez.",
+    "Marquez les messages comme spam pour entraîner votre filtre.",
+    "Donnez un alias différent à chaque site pour pouvoir le couper."
+  ],
+  "faq": [
+    {
+      "q": "Comment ne plus recevoir de spam sur ma boîte mail ?",
+      "a": "Signalez les spams, désinscrivez-vous des expéditeurs légitimes et filtrez le reste. Pour que cela ne recommence pas, donnez un alias différent à chaque site : vous pourrez le désactiver dès qu'il reçoit du spam."
+    },
+    {
+      "q": "Faut-il cliquer sur « se désinscrire » ?",
+      "a": "Oui pour une marque ou une newsletter que vous connaissez : la loi l'oblige à respecter votre demande. Non pour un spam d'origine inconnue, car cliquer peut confirmer que votre adresse est active."
+    },
+    {
+      "q": "Où signaler un spam ?",
+      "a": "Sur Signal Spam, la plateforme française de signalement, directement ou avec son module pour votre messagerie. Une escroquerie peut aussi être signalée sur la plateforme PHAROS."
+    },
+    {
+      "q": "Changer d'adresse mail suffit-il ?",
+      "a": "Temporairement. Si vous redonnez la nouvelle adresse aux mêmes sites, le spam revient. Avec un alias par site, vous protégez votre adresse personnelle une fois pour toutes."
+    }
+  ],
+  "sources": [
+    { "title": "Spam, phishing, arnaques : signaler pour agir", "url": "https://www.cnil.fr/fr/spam-phishing-arnaques-signaler-pour-agir", "publisher": "CNIL" },
+    { "title": "La prospection commerciale par courrier électronique", "url": "https://www.cnil.fr/fr/la-prospection-commerciale-par-courrier-electronique", "publisher": "CNIL" },
+    { "title": "Signal Spam, plateforme de signalement", "url": "https://www.signal-spam.fr/", "publisher": "Signal Spam" }
+  ],
+  "tags": ["spam", "bloquer les spams", "alias email"]
+}

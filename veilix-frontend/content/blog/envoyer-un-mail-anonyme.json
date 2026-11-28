@@ -1,0 +1,62 @@
+{
+  "slug": "envoyer-un-mail-anonyme",
+  "title": "Envoyer un mail anonyme : méthodes, limites et bonnes pratiques",
+  "description": "Comment écrire ou répondre à un e-mail sans révéler votre adresse : alias, adresse dédiée, ce qui peut encore vous identifier et les usages interdits.",
+  "published": "2026-11-28",
+  "updated": "2026-11-28",
+  "category": "guide",
+  "summary": "Masquer son adresse est simple : on répond depuis un alias ou on utilise une adresse dédiée. L'anonymat complet est plus difficile, car l'heure d'envoi, le contenu ou les pièces jointes peuvent encore vous identifier. Et l'anonymat face à un site n'est jamais une impunité : harceler ou escroquer reste interdit et poursuivi.",
+  "sections": [
+    {
+      "heading": "Ce que veut dire « anonyme » pour un e-mail",
+      "body": "Un e-mail transporte plus que son texte. Les en-têtes, définis par la norme RFC 5322, indiquent l'**adresse de l'expéditeur** (champ From), la **date d'envoi avec le fuseau horaire** (champ Date) et la liste des **serveurs traversés** (champs Received).\n\nEnvoyer un mail anonyme, c'est faire en sorte que le destinataire ne puisse pas remonter jusqu'à vous à partir de ces informations. Il y a deux niveaux :\n\n- **masquer votre adresse** : le destinataire ne voit pas votre adresse personnelle, ce qui est facile ;\n- **ne laisser aucune trace qui vous identifie** : beaucoup plus difficile, car le contenu, l'heure ou une pièce jointe peuvent vous trahir."
+    },
+    {
+      "heading": "Méthode 1 : répondre depuis un alias",
+      "body": "Un [alias email](/alias-email-anonyme) est une adresse intermédiaire qui relaie les messages vers votre boîte. Quand vous répondez à un message reçu sur l'alias, la réponse part **depuis l'alias** : votre adresse personnelle est retirée avant l'envoi.\n\nC'est la méthode la plus pratique pour échanger avec un vendeur, un site ou un inconnu sans lui donner votre adresse.\n\nUne précision honnête : avec Veilix, vous pouvez **répondre** aux messages reçus sur un alias, mais pas encore **écrire en premier** à un nouveau correspondant depuis un alias. Certains services d'alias le permettent, par exemple SimpleLogin dans son offre payante."
+    },
+    {
+      "heading": "Méthode 2 : utiliser une adresse dédiée",
+      "body": "Pour écrire en premier, la solution la plus simple est une **boîte de messagerie séparée**, créée avec un pseudonyme et réservée à cet usage.\n\n- Choisissez un nom d'adresse qui ne contient ni votre nom ni votre date de naissance.\n- Ne la reliez pas à votre adresse ou à votre numéro personnels si vous voulez qu'elle reste séparée : certaines messageries le permettent, vérifiez leurs conditions.\n- Gardez en tête que sans adresse ou numéro de secours, une boîte perdue est souvent irrécupérable."
+    },
+    {
+      "heading": "Ce qui peut encore vous identifier",
+      "body": "Même avec une adresse masquée, plusieurs éléments peuvent révéler qui vous êtes :\n\n- **le contenu** : une signature automatique, un prénom, une tournure habituelle, une information que vous seul connaissez ;\n- **l'heure et le fuseau horaire** inscrits dans le champ Date ;\n- **les métadonnées des pièces jointes** : un document bureautique ou un PDF contient souvent le nom de son auteur dans ses propriétés ;\n- **les en-têtes techniques** : selon le fournisseur, ils peuvent contenir des informations sur l'appareil ou la connexion d'origine ;\n- **les images de suivi** dans les messages que vous recevez : les afficher peut indiquer à l'expéditeur que vous avez ouvert le message.\n\nAvant d'envoyer, relisez le message comme si vous étiez le destinataire, retirez la signature et videz les propriétés des pièces jointes."
+    },
+    {
+      "heading": "Usages légitimes et usages interdits",
+      "body": "Protéger son adresse est légitime : contacter un vendeur, répondre à une annonce, se renseigner sans être relancé, ou simplement garder sa vie privée.\n\nL'anonymat face à un site n'est pas une impunité. Le harcèlement, les menaces, l'usurpation d'identité, le spam et l'hameçonnage sont interdits par la loi et par la [politique anti-abus](/politique-anti-abus) de Veilix. Un service d'alias connaît le lien entre un alias et l'adresse vers laquelle il relaie : chez Veilix, ce lien est chiffré et ne peut être transmis que sur réquisition judiciaire, comme l'explique la page [Transparence](/transparence)."
+    }
+  ],
+  "checklist": [
+    "Répondez depuis un alias plutôt que depuis votre adresse personnelle.",
+    "Pour écrire en premier, utilisez une adresse dédiée avec un pseudonyme.",
+    "Retirez votre signature automatique avant d'envoyer.",
+    "Videz les propriétés des pièces jointes (auteur, organisation).",
+    "N'utilisez jamais l'anonymat pour harceler, menacer ou tromper."
+  ],
+  "faq": [
+    {
+      "q": "Peut-on envoyer un mail anonyme gratuitement ?",
+      "a": "Oui, en créant une boîte séparée avec un pseudonyme chez une messagerie gratuite. Pour répondre sans révéler votre adresse personnelle, un alias est plus pratique ; chez Veilix, il est payant, dès 1,99 € les 10 alias sans abonnement."
+    },
+    {
+      "q": "Comment envoyer un mail anonyme avec Gmail ?",
+      "a": "Gmail ne masque pas votre adresse : même avec le signe +, votre adresse réelle reste lisible. Il faut soit une seconde adresse Gmail créée avec un pseudonyme, soit répondre depuis un alias qui relaie vers votre Gmail."
+    },
+    {
+      "q": "Un mail anonyme est-il traçable ?",
+      "a": "Le destinataire ne voit pas votre adresse, mais le contenu, l'heure d'envoi et les pièces jointes peuvent vous identifier. Le service utilisé connaît aussi le lien avec votre compte et peut le transmettre sur réquisition judiciaire."
+    },
+    {
+      "q": "Est-il légal d'envoyer un mail anonyme ?",
+      "a": "Oui, protéger son identité est légal. Ce qui est interdit, c'est le contenu : harcèlement, menaces, diffamation, escroquerie ou usurpation d'identité restent poursuivis, que l'expéditeur soit anonyme ou non."
+    }
+  ],
+  "sources": [
+    { "title": "RFC 5322 : Internet Message Format (champs From, Date et Received)", "url": "https://www.rfc-editor.org/rfc/rfc5322", "publisher": "IETF" },
+    { "title": "Transparence : ce que Veilix conserve, et ce qu'il ne conserve pas", "url": "https://veilix.fr/transparence", "publisher": "Veilix" },
+    { "title": "Politique anti-abus", "url": "https://veilix.fr/politique-anti-abus", "publisher": "Veilix" }
+  ],
+  "tags": ["mail anonyme", "alias email", "vie privée"]
+}

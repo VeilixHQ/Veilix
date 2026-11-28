@@ -274,7 +274,8 @@ export const T = {
       {
         title: 'Produit',
         links: [
-          { label: 'Alias email anonyme', href: '/alias-email-anonyme' },
+          { label: 'Alias email', href: '/alias-email-anonyme' },
+          { label: 'Email jetable ou alias', href: '/email-jetable' },
           { label: 'Tarifs', href: '/pricing' },
           { label: 'Comparatif', href: '/comparatif/meilleurs-alias-email' },
           { label: 'Sécurité', href: '/securite' },
@@ -572,7 +573,8 @@ export const T = {
       {
         title: 'Product',
         links: [
-          { label: 'Anonymous email alias', href: '/alias-email-anonyme' },
+          { label: 'Email alias', href: '/alias-email-anonyme' },
+          { label: 'Disposable email or alias', href: '/email-jetable' },
           { label: 'Pricing', href: '/pricing' },
           { label: 'Comparison', href: '/comparatif/meilleurs-alias-email' },
           { label: 'Security', href: '/securite' },

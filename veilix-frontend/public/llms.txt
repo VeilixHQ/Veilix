@@ -16,12 +16,13 @@ Faits clés :
 ## Pages principales
 
 - [Accueil](https://veilix.fr/): présentation du service
-- [Alias email anonyme](https://veilix.fr/alias-email-anonyme): guide complet, fonctionnement, offres, limites
-- [Comparatif des services d'alias email](https://veilix.fr/comparatif/meilleurs-alias-email): Veilix face à SimpleLogin, addy.io, Firefox Relay et DuckDuckGo
+- [Alias email](https://veilix.fr/alias-email-anonyme): guide complet, fonctionnement, alias Gmail ou Outlook, offres, limites
+- [Email jetable ou alias](https://veilix.fr/email-jetable): limites de l'email jetable et alternative durable
+- [Comparatif des services d'alias email](https://veilix.fr/comparatif/meilleurs-alias-email): Veilix face à SimpleLogin, Proton Pass, addy.io, Firefox Relay et DuckDuckGo, avec ce que les autres font mieux
 - [Transparence](https://veilix.fr/transparence): données conservées et non conservées, prestataires, limites
 - [Sécurité](https://veilix.fr/securite): clé, phrase de récupération, infrastructure, signalement des failles
 - [Tarifs](https://veilix.fr/pricing): offres Pro, Pack de lancement et crédits
-- [Blog](https://veilix.fr/blog): fuites de données et piratages expliqués avec leurs sources officielles, et gestes pour protéger son adresse e-mail
+- [Blog](https://veilix.fr/blog): guides (envoyer un mail anonyme, arrêter le spam), fuites de données et piratages expliqués avec leurs sources officielles
 - [FAQ](https://veilix.fr/faq): questions fréquentes
 - [Feuille de route](https://veilix.fr/feuille-de-route): fonctionnalités disponibles et en préparation
 - [Kit média](https://veilix.fr/kit-media): logos, couleurs, présentation et faits clés pour la presse

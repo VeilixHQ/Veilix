@@ -8,6 +8,7 @@ const PAGES: { path: string; lastModified: string; priority: number; changeFrequ
   { path: '/pricing', lastModified: '2026-11-28', priority: 0.9, changeFrequency: 'monthly' },
   { path: '/alias-email-anonyme', lastModified: '2026-11-28', priority: 0.9, changeFrequency: 'monthly' },
   { path: '/transparence', lastModified: '2026-11-28', priority: 0.8, changeFrequency: 'monthly' },
+  { path: '/email-jetable', lastModified: '2026-11-28', priority: 0.8, changeFrequency: 'monthly' },
   { path: '/comparatif/meilleurs-alias-email', lastModified: '2026-11-28', priority: 0.8, changeFrequency: 'monthly' },
   { path: '/securite', lastModified: '2026-11-25', priority: 0.8, changeFrequency: 'monthly' },
   { path: '/blog', lastModified: '2026-11-27', priority: 0.8, changeFrequency: 'daily' },

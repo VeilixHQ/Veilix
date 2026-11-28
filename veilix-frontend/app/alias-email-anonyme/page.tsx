@@ -2,22 +2,26 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import { ContentShell } from '@/components/content/ContentShell'
 import { articleJsonLd, pageMetadata } from '@/lib/seo'
+import { SIGNUP_OPEN, START_HREF } from '@/lib/launch'
 
 const PATH = '/alias-email-anonyme'
-const TITLE = 'Alias email anonyme : protégez votre adresse e-mail personnelle'
-const DESCRIPTION = "Qu'est-ce qu'un alias email anonyme, à quoi il sert et comment il marche. Veilix : un alias par site, sans mot de passe, open source et hébergé en Europe."
-const UPDATED = '2026-11-24'
+const TITLE = 'Alias email : protégez votre adresse avec un alias mail par site'
+const DESCRIPTION = "Un alias email relaie vos messages sans révéler votre adresse. Créez un alias mail par site avec Veilix : sans mot de passe, open source, hébergé en Europe."
+const PUBLISHED = '2026-11-24'
+const UPDATED = '2026-11-28'
 
 const FAQ = [
-  { q: "Qu'est-ce qu'un alias email anonyme ?", a: "C'est une adresse intermédiaire que vous donnez à un site à la place de votre adresse e-mail personnelle. Les messages reçus sur l'alias vous sont relayés, et le site ne connaît jamais votre adresse personnelle." },
+  { q: "Qu'est-ce qu'un alias email ?", a: "C'est une adresse intermédiaire, aussi appelée alias mail ou adresse alias, que vous donnez à un site à la place de votre adresse e-mail personnelle. Les messages reçus sur l'alias vous sont relayés, et le site ne connaît jamais votre adresse personnelle." },
+  { q: 'Quelle différence entre un alias email et une adresse jetable ?', a: "Une adresse jetable est une boîte temporaire, souvent publique, qui disparaît après quelques minutes ou quelques jours. Un alias est permanent : il relaie les messages vers votre propre boîte tant que vous le gardez actif, et vous pouvez répondre depuis celui-ci." },
+  { q: "Un alias Gmail avec le signe + suffit-il ?", a: "Il aide à trier vos messages, mais il ne cache pas votre adresse : dans votre.nom+site@gmail.com, votre adresse réelle reste lisible, et un site peut retirer la partie après le +. Un alias dédié est une adresse distincte, sans lien visible avec la vôtre." },
   { q: 'Le site voit-il mon adresse quand je réponds ?', a: "Non. Avec Veilix, la réponse part depuis l'alias : votre adresse e-mail personnelle est retirée du message avant son envoi." },
   { q: "Que faire si un alias reçoit du spam ?", a: "Désactivez-le en un clic : les messages ne vous sont plus relayés. Vous pouvez aussi bloquer un expéditeur ou un domaine entier sans désactiver l'alias." },
   { q: 'Veilix stocke-t-il mes e-mails ?', a: "Non. Les messages sont relayés sans être enregistrés. La page Transparence détaille les seules données conservées." },
   { q: 'Où sont hébergées les données ?', a: "L'API, la base de données et l'acheminement des e-mails sont hébergés dans l'Union européenne." },
-  { q: 'Combien coûte Veilix ?', a: "L'offre Pro coûte 4,99 € par mois ou 44,90 € par an, le Pack de lancement 69 € par an, et des crédits permettent d'acheter des alias à l'unité. Un essai gratuit de 14 jours est proposé." },
+  { q: 'Combien coûte Veilix ?', a: "L'offre Pro coûte 4,99 € par mois ou 44,90 € par an, le Pack de lancement 69 € par an, et des crédits permettent d'acheter des alias à l'unité dès 1,99 € les 10. Un essai gratuit de 14 jours est proposé, moyen de paiement requis." },
 ]
 
-export const metadata: Metadata = pageMetadata({ path: PATH, title: 'Alias email anonyme : protégez votre adresse | Veilix', description: DESCRIPTION })
+export const metadata: Metadata = pageMetadata({ path: PATH, title: 'Alias email : créer un alias mail par site | Veilix', description: DESCRIPTION })
 
 function Table({ head, rows }: { head: string[]; rows: string[][] }) {
   return (
@@ -32,18 +36,21 @@ function Table({ head, rows }: { head: string[]; rows: string[][] }) {
 
 export default function AliasEmailAnonyme() {
   return (
-    <ContentShell breadcrumb="Alias email anonyme">
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(articleJsonLd({ path: PATH, title: TITLE, description: DESCRIPTION, published: UPDATED, modified: UPDATED, breadcrumb: 'Alias email anonyme', faq: FAQ })) }} />
+    <ContentShell breadcrumb="Alias email">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(articleJsonLd({ path: PATH, title: TITLE, description: DESCRIPTION, published: PUBLISHED, modified: UPDATED, breadcrumb: 'Alias email', faq: FAQ })) }} />
 
-      <h1>Alias email anonyme : protégez votre adresse e-mail personnelle</h1>
-      <p className="lead">Un alias email anonyme est une adresse intermédiaire, comme <code>x7k2m9pl4q@alias.veilix.fr</code>, que vous donnez à un site à la place de votre adresse e-mail personnelle. Les messages reçus sur l&apos;alias vous sont relayés, et le site ne connaît jamais votre adresse personnelle.</p>
+      <h1>Alias email : protégez votre adresse avec un alias mail par site</h1>
+      <p className="lead">Un alias email est une adresse intermédiaire, comme <code>x7k2m9pl4q@alias.veilix.fr</code>, que vous donnez à un site à la place de votre adresse e-mail personnelle. Les messages reçus sur l&apos;alias vous sont relayés, et le site ne connaît jamais votre adresse personnelle.</p>
       <p>Veilix vous donne un alias différent pour chaque site, sans mot de passe pour vous inscrire. Le service est open source et hébergé en Europe.</p>
-      <p className="updated">Mise à jour le 24 novembre 2026</p>
+      <p className="updated">Mise à jour le 28 novembre 2026</p>
 
       <h2 id="definition">Qu&apos;est-ce qu&apos;un alias email ?</h2>
-      <p>Un alias email est une adresse qui ne possède pas de boîte de réception propre : tout ce qu&apos;elle reçoit est transféré vers une autre adresse, la vôtre. Vous continuez à lire vos messages dans votre messagerie habituelle (Gmail, Outlook, Proton Mail ou autre).</p>
-      <p>Un alias est <strong>anonyme</strong> quand il ne révèle rien de vous : son nom est aléatoire, il ne contient ni votre nom ni votre adresse, et vos réponses partent depuis l&apos;alias lui-même.</p>
-      <p>Contrairement à un <strong>email temporaire</strong>, qui disparaît après quelques minutes, un alias est <strong>permanent</strong> : il reste actif tant que vous le souhaitez, et vous pouvez répondre depuis celui-ci.</p>
+      <p>Un alias email, qu&apos;on appelle aussi alias mail ou adresse alias, est une adresse qui ne possède pas de boîte de réception propre : tout ce qu&apos;elle reçoit est transféré vers une autre adresse, la vôtre. Vous continuez à lire vos messages dans votre messagerie habituelle (Gmail, Outlook, Proton Mail ou autre).</p>
+      <p>Le mot alias veut dire « autre nom » : c&apos;est un second nom pour la même boîte. Un alias est <strong>anonyme</strong> quand il ne révèle rien de vous : son nom est aléatoire, il ne contient ni votre nom ni votre adresse, et vos réponses partent depuis l&apos;alias lui-même.</p>
+
+      <h2 id="jetable">Alias mail ou adresse jetable ?</h2>
+      <p>Une <strong>adresse jetable</strong> est une boîte temporaire, souvent publique, qui disparaît après quelques minutes ou quelques jours. Elle suffit pour un téléchargement ponctuel, mais vous perdez tout message ultérieur : facture, confirmation, réinitialisation de mot de passe.</p>
+      <p>Un <strong>alias</strong> est permanent : il reste actif tant que vous le souhaitez, relaie les messages vers votre propre boîte et vous permet de répondre. Le comparatif complet est sur la page <Link href="/email-jetable">email jetable ou alias</Link>.</p>
 
       <h2 id="pourquoi">Pourquoi utiliser un alias email ?</h2>
       <ul>
@@ -54,7 +61,7 @@ export default function AliasEmailAnonyme() {
         <li><strong>Garder le contrôle</strong> : vous coupez un alias quand vous voulez, au lieu de dépendre d&apos;un lien de désinscription.</li>
       </ul>
 
-      <h2 id="fonctionnement">Comment fonctionne Veilix, étape par étape</h2>
+      <h2 id="creer">Comment créer un alias email avec Veilix</h2>
       <ol>
         <li><strong>Créez un alias</strong> en un clic depuis votre tableau de bord, avec un libellé pour vous y retrouver.</li>
         <li><strong>Donnez l&apos;alias</strong> au site à la place de votre adresse e-mail personnelle.</li>
@@ -62,6 +69,18 @@ export default function AliasEmailAnonyme() {
         <li><strong>Répondez depuis l&apos;alias</strong> : votre adresse personnelle est retirée du message avant son envoi.</li>
         <li><strong>Désactivez l&apos;alias</strong> à tout moment, ou bloquez un expéditeur précis.</li>
       </ol>
+
+      <h2 id="gmail-outlook">Alias Gmail, Outlook ou service dédié : les différences</h2>
+      <p>Les messageries proposent leurs propres alias. Ils sont utiles pour trier, beaucoup moins pour protéger votre adresse.</p>
+      <Table
+        head={['Solution', 'Ce que voit le site', 'Limite principale']}
+        rows={[
+          ['Alias Gmail avec + (votre.nom+site@gmail.com)', 'Votre adresse réelle, suivie d’un mot', 'Le site peut retirer la partie après le + et retrouver votre adresse'],
+          ['Alias de votre messagerie (Outlook, Proton Mail…)', 'Une autre adresse du même compte', 'Nombre limité, souvent liée à votre nom, désactivation peu pratique'],
+          ['Service d’alias dédié (Veilix et autres)', 'Une adresse aléatoire sans lien avec vous', 'Dépend d’un service tiers, qu’il faut choisir avec soin'],
+        ]}
+      />
+      <p>Pour choisir un service dédié, comparez la confidentialité, l&apos;hébergement et le prix : notre <Link href="/comparatif/meilleurs-alias-email">comparatif des services d&apos;alias email</Link> met Veilix face à SimpleLogin, Proton Pass, addy.io, Firefox Relay et DuckDuckGo, en reconnaissant leurs points forts.</p>
 
       <h2 id="sans-mot-de-passe">Une inscription sans mot de passe</h2>
       <p>Veilix ne vous demande ni identifiant ni mot de passe. Votre navigateur génère une clé cryptographique et une phrase de récupération de 12 mots (norme BIP39), que vous seul possédez. Pour retrouver votre accès sur un autre appareil, vous saisissez ces 12 mots.</p>
@@ -91,11 +110,10 @@ export default function AliasEmailAnonyme() {
           ['Crédits', 'Dès 1,99 € les 10 alias', 'Des alias à l’unité, sans abonnement'],
         ]}
       />
-      <p>Un essai gratuit de 14 jours est proposé. Détail complet sur la page <Link href="/pricing">Tarifs</Link>.</p>
+      <p>Veilix n&apos;a pas d&apos;offre gratuite : il est financé uniquement par ses abonnés, sans publicité ni revente de données. Un essai gratuit de 14 jours est proposé, moyen de paiement requis. Détail complet sur la page <Link href="/pricing">Tarifs</Link>.</p>
 
-      <h2 id="anonymat">Un alias email est-il vraiment anonyme ?</h2>
-      <p>Pour les sites auxquels vous le donnez, oui : ils ne voient que l&apos;alias. Il existe toutefois des limites propres au protocole e-mail : le contenu d&apos;un message (une signature, un nom) peut vous identifier, et votre fournisseur de messagerie voit les messages relayés. Veilix les explique sans détour sur la page <Link href="/transparence">Transparence</Link>, et détaille ses mesures de protection sur la page <Link href="/securite">Sécurité</Link>.</p>
-      <p>Vous hésitez avec un autre service ? Consultez notre <Link href="/comparatif/meilleurs-alias-email">comparatif des services d&apos;alias email</Link> : Veilix face à SimpleLogin, addy.io, Firefox Relay et DuckDuckGo.</p>
+      <h2 id="limites">Ce que l&apos;alias protège, et ses limites</h2>
+      <p>Pour les sites auxquels vous le donnez, l&apos;alias masque votre adresse : ils ne voient que lui. Il existe toutefois des limites propres au protocole e-mail : le contenu d&apos;un message (une signature, un nom) peut vous identifier, et votre fournisseur de messagerie voit les messages relayés. Veilix les explique sans détour sur la page <Link href="/transparence">Transparence</Link>, et détaille ses mesures de protection sur la page <Link href="/securite">Sécurité</Link>.</p>
 
       <h2 id="faq">Questions fréquentes</h2>
       {FAQ.map(item => (
@@ -107,8 +125,8 @@ export default function AliasEmailAnonyme() {
       <p style={{ marginTop: 18 }}>D&apos;autres réponses sur la page <Link href="/faq">FAQ</Link>.</p>
 
       <h2 id="essayer">Essayer Veilix</h2>
-      <p>Veilix ouvre à tous le 1er février 2027. Rejoignez la liste d&apos;attente pour être prévenu de l&apos;ouverture.</p>
-      <Link href="/beta" className="cta">Rejoindre la bêta</Link>
+      <p>{SIGNUP_OPEN ? 'Créez votre premier alias en quelques secondes, avec 14 jours d’essai gratuit.' : 'Veilix ouvre à tous le 1er février 2027. Rejoignez la liste d’attente pour être prévenu de l’ouverture.'}</p>
+      <Link href={START_HREF} className="cta">{SIGNUP_OPEN ? 'Essayer 14 jours' : 'Être prévenu du lancement'}</Link>
     </ContentShell>
   )
 }
