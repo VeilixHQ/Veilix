@@ -37,7 +37,7 @@ export default function EmailJetable() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(articleJsonLd({ path: PATH, title: TITLE, description: DESCRIPTION, published: PUBLISHED, modified: UPDATED, breadcrumb: 'Email jetable', faq: FAQ })) }} />
 
       <h1>Email jetable ou alias : lequel choisir pour protéger votre adresse ?</h1>
-      <p className="lead">Un email jetable, ou adresse mail temporaire, sert à s&apos;inscrire quelque part sans donner sa vraie adresse. C&apos;est pratique pour un usage unique, mais risqué pour tout compte que vous comptez garder. L&apos;alias email répond au même besoin, en durable.</p>
+      <p className="lead">Un email jetable, qu&apos;on appelle aussi adresse mail temporaire, mail éphémère, mail poubelle ou fausse adresse mail, sert à s&apos;inscrire quelque part sans donner sa vraie adresse. C&apos;est pratique pour un usage unique, mais risqué pour tout compte que vous comptez garder. L&apos;alias email répond au même besoin, en durable.</p>
       <p className="updated">Mise à jour le 28 novembre 2026</p>
 
       <h2 id="definition">Qu&apos;est-ce qu&apos;un email jetable ?</h2>

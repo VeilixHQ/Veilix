@@ -36,6 +36,7 @@ function fromReferrer(referrer: string): string | null {
 
 function fromQuery(search: string): string | null {
   const params = new URLSearchParams(search)
+  if (params.has('gclid') || params.has('gbraid') || params.has('wbraid')) return 'googleads'
   const value = (params.get('utm_source') || params.get('ref') || '').trim().toLowerCase()
   if (!value) return null
   const viaHost = value.includes('.') ? fromReferrer(`https://${value}`) : null

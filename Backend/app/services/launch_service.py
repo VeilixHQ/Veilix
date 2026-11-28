@@ -39,7 +39,7 @@ def count(db: Session) -> int:
     return db.query(LaunchSignup).count()
 
 
-def signup(db: Session, email: str, consent: bool) -> None:
+def signup(db: Session, email: str, consent: bool) -> bool:
     if not consent:
         raise HTTPException(status_code=400, detail="Votre accord est nécessaire pour être prévenu du lancement.")
     now = now_utc()
@@ -48,19 +48,20 @@ def signup(db: Session, email: str, consent: bool) -> None:
     address = email.strip()
     digest = hash_email(seat_identity(address))
     if db.query(LaunchSignup).filter(LaunchSignup.email_hmac == digest).first():
-        return
+        return False
     record = LaunchSignup(email=encrypt(address)[0], email_hmac=digest, consent_at=now, created_at=now)
     db.add(record)
     try:
         db.commit()
     except IntegrityError:
         db.rollback()
-        return
+        return False
     db.refresh(record)
     try:
         email_service.send_launch_waitlist(address, launch_day(), leave_url(record))
     except Exception as exc:
         logger.error("Envoi de la confirmation de liste d'attente impossible : %s", type(exc).__name__)
+    return True
 
 
 def leave(db: Session, token: str) -> bool:

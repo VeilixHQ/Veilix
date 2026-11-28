@@ -1,5 +1,12 @@
 import type { Metadata } from 'next'
 import { connection } from 'next/server'
+import '@fontsource/inter/300.css'
+import '@fontsource/inter/400.css'
+import '@fontsource/inter/500.css'
+import '@fontsource/inter/600.css'
+import '@fontsource/inter/700.css'
+import '@fontsource/inter/800.css'
+import '@fontsource/inter/900.css'
 import './globals.css'
 import { ChannelCapture } from '@/components/ChannelCapture'
 
@@ -95,10 +102,6 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   await connection()
   return (
     <html lang="fr" data-scroll-behavior="smooth">
-      <head>
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
-      </head>
       <body>
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(STRUCTURED_DATA) }} />
         <ChannelCapture />

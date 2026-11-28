@@ -11,11 +11,11 @@ from app.models.acquisition import AcquisitionDaily
 
 CHANNELS = {
     "x", "reddit", "tiktok", "linkedin", "youtube", "instagram", "facebook", "mastodon", "bluesky", "discord", "telegram",
-    "google", "bing", "duckduckgo", "qwant", "ecosia", "brave",
+    "google", "googleads", "bing", "duckduckgo", "qwant", "ecosia", "brave",
     "chatgpt", "perplexity", "claude", "gemini", "copilot", "mistral",
     "newsletter", "github", "producthunt", "presse", "direct", "autre",
 }
-ALIASES = {"twitter": "x", "t.co": "x", "x.com": "x", "chatgpt.com": "chatgpt", "perplexity.ai": "perplexity", "reddit.com": "reddit", "tiktok.com": "tiktok", "google.com": "google", "le chat": "mistral", "lechat": "mistral", "openai": "chatgpt", "duck": "duckduckgo"}
+ALIASES = {"twitter": "x", "t.co": "x", "x.com": "x", "chatgpt.com": "chatgpt", "perplexity.ai": "perplexity", "reddit.com": "reddit", "tiktok.com": "tiktok", "google.com": "google", "le chat": "mistral", "lechat": "mistral", "openai": "chatgpt", "duck": "duckduckgo", "gads": "googleads"}
 EVENTS = {"waitlist", "register"}
 log = logging.getLogger("veilix.acquisition")
 

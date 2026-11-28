@@ -94,3 +94,13 @@ def test_beta_publique_fermee_par_defaut(monkeypatch):
     monkeypatch.setattr(config, "BETA_PUBLIC_OPENS_AT", beta_service.now_utc() - timedelta(days=1))
     monkeypatch.setattr(config, "BETA_PUBLIC_ENDS_AT", None)
     assert beta_service.capacity("public", beta_service.now_utc()) is None
+
+
+def test_inscription_comptee_par_canal_une_seule_fois(client, emails, db, lancement):
+    from app.models.acquisition import AcquisitionDaily
+
+    inscrire_liste(client, "ia@example.com", channel="chatgpt.com")
+    inscrire_liste(client, "ia@example.com", channel="chatgpt.com")
+    inscrire_liste(client, "pub@example.com", channel="googleads")
+    lignes = {(r.channel, r.event): r.count for r in db.query(AcquisitionDaily).all()}
+    assert lignes == {("chatgpt", "waitlist"): 1, ("googleads", "waitlist"): 1}

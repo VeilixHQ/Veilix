@@ -411,7 +411,7 @@ function PricingFAQItem({ q, a }: { q: string; a: string }) {
         <span style={{ fontSize: 13, fontWeight: 600, color: 'var(--c-e2e8f0)' }}>{q}</span>
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#64748b" strokeWidth="2" strokeLinecap="round" style={{ flexShrink: 0, marginLeft: 12, transition: 'transform 0.2s', transform: open ? 'rotate(45deg)' : 'rotate(0)' }}><line x1="12" y1="5" x2="12" y2="19" /><line x1="5" y1="12" x2="19" y2="12" /></svg>
       </button>
-      {open && <div style={{ padding: '0 18px 16px', fontSize: 13, color: 'var(--c-64748b)', lineHeight: 1.7, whiteSpace: 'pre-line' }}>{a}</div>}
+      <div hidden={!open} style={{ padding: '0 18px 16px', fontSize: 13, color: 'var(--c-64748b)', lineHeight: 1.7, whiteSpace: 'pre-line' }}>{a}</div>
     </div>
   )
 }

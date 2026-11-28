@@ -185,7 +185,7 @@ export async function joinLaunchList(email: string, website: string) {
   const res = await fetch(`${API_URL}/launch/signup`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ email, consent: true, website: website || null }),
+    body: JSON.stringify({ email, consent: true, website: website || null, channel: getChannel() }),
   })
   if (!res.ok) throw new ApiError(res.status, await errorDetail(res, 'Inscription impossible'))
   return res.json()
